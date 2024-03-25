@@ -1,9 +1,11 @@
 package ch.uzh.ifi.hase.soprafs24.entity;
 
-import ch.uzh.ifi.hase.soprafs24.constant.UserStatus;
+import ch.uzh.ifi.hase.soprafs24.constant.PlayerStatus;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Internal User Representation
@@ -16,17 +18,14 @@ import java.io.Serializable;
  * the primary key
  */
 @Entity
-@Table(name = "USER")
-public class User implements Serializable {
+@Table(name = "PLAYER")
+public class Player implements Serializable {
 
   private static final long serialVersionUID = 1L;
 
   @Id
   @GeneratedValue
   private Long id;
-
-  @Column(nullable = false)
-  private String name;
 
   @Column(nullable = false, unique = true)
   private String username;
@@ -35,7 +34,19 @@ public class User implements Serializable {
   private String token;
 
   @Column(nullable = false)
-  private UserStatus status;
+  private PlayerStatus status;
+
+  @Column
+  private Integer totalScore;
+
+  @Column
+  private Integer currentScore;
+
+  // TODO: add currentAnswers: List<Answer> attribute
+
+  public void clearScore() {
+      this.currentScore = 0;
+  }
 
   public Long getId() {
     return id;
@@ -43,14 +54,6 @@ public class User implements Serializable {
 
   public void setId(Long id) {
     this.id = id;
-  }
-
-  public String getName() {
-    return name;
-  }
-
-  public void setName(String name) {
-    this.name = name;
   }
 
   public String getUsername() {
@@ -69,11 +72,11 @@ public class User implements Serializable {
     this.token = token;
   }
 
-  public UserStatus getStatus() {
+  public PlayerStatus getStatus() {
     return status;
   }
 
-  public void setStatus(UserStatus status) {
+  public void setStatus(PlayerStatus status) {
     this.status = status;
   }
 }

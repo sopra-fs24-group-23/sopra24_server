@@ -1,13 +1,13 @@
 package ch.uzh.ifi.hase.soprafs24.rest.dto;
 
-import ch.uzh.ifi.hase.soprafs24.constant.UserStatus;
+import ch.uzh.ifi.hase.soprafs24.constant.PlayerStatus;
 
-public class UserGetDTO {
+public class PlayerGetDTO {
 
   private Long id;
   private String name;
   private String username;
-  private UserStatus status;
+  private PlayerStatus status;
 
   public Long getId() {
     return id;
@@ -33,11 +33,11 @@ public class UserGetDTO {
     this.username = username;
   }
 
-  public UserStatus getStatus() {
+  public PlayerStatus getStatus() {
     return status;
   }
 
-  public void setStatus(UserStatus status) {
+  public void setStatus(PlayerStatus status) {
     this.status = status;
   }
 }
