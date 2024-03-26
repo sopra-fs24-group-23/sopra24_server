@@ -1,9 +1,8 @@
 package ch.uzh.ifi.hase.soprafs24.rest.mapper;
 
-import ch.uzh.ifi.hase.soprafs24.constant.PlayerStatus;
-import ch.uzh.ifi.hase.soprafs24.entity.Player;
-import ch.uzh.ifi.hase.soprafs24.rest.dto.PlayerGetDTO;
-import ch.uzh.ifi.hase.soprafs24.rest.dto.PlayerPostDTO;
+import ch.uzh.ifi.hase.soprafs24.entity.User;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.UserGetDTO;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.UserPostDTO;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -17,31 +16,36 @@ public class DTOMapperTest {
   @Test
   public void testCreateUser_fromUserPostDTO_toUser_success() {
     // create UserPostDTO
-    PlayerPostDTO playerPostDTO = new PlayerPostDTO();
-    playerPostDTO.setName("name");
-    playerPostDTO.setUsername("username");
+    UserPostDTO userPostDTO = new UserPostDTO();
+    userPostDTO.setUsername("username");
+    userPostDTO.setPassword("password");
 
     // MAP -> Create user
-    Player player = DTOMapper.INSTANCE.convertPlayerPostDTOtoEntity(playerPostDTO);
+    User user = DTOMapper.INSTANCE.convertUserPostDTOtoEntity(userPostDTO);
 
     // check content
-    assertEquals(playerPostDTO.getUsername(), player.getUsername());
+    assertEquals(userPostDTO.getUsername(), user.getUsername());
+    assertEquals(userPostDTO.getPassword(), user.getPassword());
   }
 
   @Test
   public void testGetUser_fromUser_toUserGetDTO_success() {
     // create User
-    Player player = new Player();
-    player.setUsername("firstname@lastname");
-    player.setStatus(PlayerStatus.OFFLINE);
-    player.setToken("1");
+    User user = new User();
+    user.setUsername("firstname@lastname");
+    user.setId(1L);
+    user.setGamesPlayed(20);
+    user.setGamesWon(15);
+    user.setTotalScore(204);
 
     // MAP -> Create UserGetDTO
-    PlayerGetDTO playerGetDTO = DTOMapper.INSTANCE.convertEntityToPlayerGetDTO(player);
+    UserGetDTO userGetDTO = DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
 
     // check content
-    assertEquals(player.getId(), playerGetDTO.getId());
-    assertEquals(player.getUsername(), playerGetDTO.getUsername());
-    assertEquals(player.getStatus(), playerGetDTO.getStatus());
+    assertEquals(user.getUsername(), userGetDTO.getUsername());
+    assertEquals(user.getId(), userGetDTO.getId());
+    assertEquals(user.getGamesPlayed(), userGetDTO.getGamesPlayed());
+    assertEquals(user.getGamesWon(), userGetDTO.getGamesWon());
+    assertEquals(user.getTotalScore(), userGetDTO.getTotalScore());
   }
 }
