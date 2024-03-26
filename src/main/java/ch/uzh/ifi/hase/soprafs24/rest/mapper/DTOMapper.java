@@ -3,6 +3,7 @@ package ch.uzh.ifi.hase.soprafs24.rest.mapper;
 import ch.uzh.ifi.hase.soprafs24.entity.Player;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.PlayerGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.PlayerPostDTO;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.PlayerTokenDTO;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
@@ -29,4 +30,6 @@ public interface DTOMapper {
   @Mapping(source = "username", target = "username")
   @Mapping(source = "status", target = "status")
   PlayerGetDTO convertEntityToPlayerGetDTO(Player player);
+    @Mapping(source = "token", target = "token")
+    Player convertPlayerTokenDTOtoEntity(PlayerTokenDTO userTokenDTO);
 }

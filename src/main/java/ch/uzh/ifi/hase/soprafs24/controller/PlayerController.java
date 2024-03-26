@@ -3,6 +3,7 @@ package ch.uzh.ifi.hase.soprafs24.controller;
 import ch.uzh.ifi.hase.soprafs24.entity.Player;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.PlayerGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.PlayerPostDTO;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.PlayerTokenDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs24.service.PlayerService;
 import org.springframework.http.HttpStatus;
@@ -21,10 +22,10 @@ import java.util.List;
 @RestController
 public class PlayerController {
 
-  private final PlayerService playerController;
+  private final PlayerService playerService;
 
-  PlayerController(PlayerService playerController) {
-    this.playerController = playerController;
+  PlayerController(PlayerService playerService) {
+    this.playerService = playerService;
   }
 
   @GetMapping("/users")
@@ -32,7 +33,7 @@ public class PlayerController {
   @ResponseBody
   public List<PlayerGetDTO> getAllUsers() {
     // fetch all users in the internal representation
-    List<Player> players = playerController.getUsers();
+    List<Player> players = playerService.getUsers();
     List<PlayerGetDTO> playerGetDTOS = new ArrayList<>();
 
     // convert each user to the API representation
@@ -50,8 +51,27 @@ public class PlayerController {
     Player playerInput = DTOMapper.INSTANCE.convertPlayerPostDTOtoEntity(playerPostDTO);
 
     // create user
-    Player createdPlayer = playerController.createUser(playerInput);
+    Player createdPlayer = playerService.createUser(playerInput);
     // convert internal representation of user back to API
     return DTOMapper.INSTANCE.convertEntityToPlayerGetDTO(createdPlayer);
   }
+    @PostMapping("/login")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public PlayerGetDTO loginUser(@RequestBody PlayerPostDTO userPostDTO){
+
+
+        Player player = playerService.loginPlayer(userPostDTO.getUsername(), userPostDTO.getPassword());
+        return DTOMapper.INSTANCE.convertEntityToPlayerGetDTO(player);
+    }
+    @PostMapping("/logout")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public PlayerGetDTO logout(@RequestBody PlayerTokenDTO userTokenDTO){
+        Player input = DTOMapper.INSTANCE.convertPlayerTokenDTOtoEntity(userTokenDTO);
+        System.out.println("Received token DTO: " + input.getToken());
+        Player player = playerService.logout(input.getToken());
+        return DTOMapper.INSTANCE.convertEntityToPlayerGetDTO(player);
+    }
 }
+

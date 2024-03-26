@@ -51,6 +51,35 @@ public class PlayerService {
     log.debug("Created Information for User: {}", newPlayer);
     return newPlayer;
   }
+    public Player loginPlayer(String username, String password){
+        Player loggedInUser = playerRepository.findByUsername(username);
+        if (loggedInUser==null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User doesnt exist");
+        }
+        if (!loggedInUser.getPassword().equals(password)){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"incorrect password");
+        }
+        if (PlayerStatus.ONLINE.equals(loggedInUser.getStatus())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User already logged in");
+        }
+        loggedInUser.setStatus(PlayerStatus.ONLINE);
+        loggedInUser.setToken(UUID.randomUUID().toString());
+        playerRepository.flush();
+        return loggedInUser;
+    }
+    public Player logout(String token){
+        Player loggedOutUser = playerRepository.findByToken(token);
+        System.out.println("token:"+ token);
+        if (loggedOutUser == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,"User with provided token does not exist");
+
+        }
+        loggedOutUser.setToken(null);
+        loggedOutUser.setStatus(PlayerStatus.OFFLINE);
+        loggedOutUser = playerRepository.save(loggedOutUser);
+        playerRepository.flush();
+        return loggedOutUser;
+    }
 
   /**
    * This is a helper method that will check the uniqueness criteria of the
@@ -71,4 +100,6 @@ public class PlayerService {
           String.format(baseErrorMessage, "username", "is"));
     }
   }
+    public Player findById(Long userId){
+        return this.playerRepository.findById(userId).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,"The user with the provided ID doesn't exist.")); }
 }

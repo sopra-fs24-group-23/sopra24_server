@@ -30,6 +30,9 @@ public class Player implements Serializable {
   @Column(nullable = false, unique = true)
   private String username;
 
+  @Column (nullable = false)
+  private String password;
+
   @Column(nullable = false, unique = true)
   private String token;
 
@@ -79,4 +82,9 @@ public class Player implements Serializable {
   public void setStatus(PlayerStatus status) {
     this.status = status;
   }
+
+  public String getPassword() { return password;}
+  public void setPassword(String password){
+  this.password = password;
+    }
 }
