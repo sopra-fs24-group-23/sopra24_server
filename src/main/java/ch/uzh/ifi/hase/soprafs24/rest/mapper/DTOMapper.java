@@ -1,9 +1,11 @@
 package ch.uzh.ifi.hase.soprafs24.rest.mapper;
 
 import ch.uzh.ifi.hase.soprafs24.entity.Player;
+import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.PlayerGetDTO;
-import ch.uzh.ifi.hase.soprafs24.rest.dto.PlayerPostDTO;
-import ch.uzh.ifi.hase.soprafs24.rest.dto.PlayerTokenDTO;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.UserGetDTO;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.UserPostDTO;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.UserTokenDTO;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
 
@@ -21,15 +23,21 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public interface DTOMapper {
 
-  DTOMapper INSTANCE = Mappers.getMapper(DTOMapper.class);
+    DTOMapper INSTANCE = Mappers.getMapper(DTOMapper.class);
 
-  @Mapping(source = "username", target = "username")
-  Player convertPlayerPostDTOtoEntity(PlayerPostDTO playerPostDTO);
+    @Mapping(source = "username", target = "username")
+    @Mapping(source = "password", target = "password")
+    User convertUserPostDTOtoEntity(UserPostDTO userPostDTO);
 
-  @Mapping(source = "id", target = "id")
-  @Mapping(source = "username", target = "username")
-  @Mapping(source = "status", target = "status")
-  PlayerGetDTO convertEntityToPlayerGetDTO(Player player);
+    @Mapping(source = "id", target = "id")
+    @Mapping(source = "username", target = "username")
+    @Mapping(source = "totalScore", target = "totalScore")
+    @Mapping(source = "gamesPlayed", target = "gamesPlayed")
+    @Mapping(source = "gamesWon", target = "gamesWon")
+    UserGetDTO convertEntityToUserGetDTO(User user);
     @Mapping(source = "token", target = "token")
-    Player convertPlayerTokenDTOtoEntity(PlayerTokenDTO userTokenDTO);
+    User convertUserTokenDTOtoEntity(UserTokenDTO userTokenDTO);
+
+    @Mapping(source = "token", target = "token")
+    UserTokenDTO convertUserToUserTokenDTO(User user);
 }

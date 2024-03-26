@@ -1,6 +1,6 @@
 package ch.uzh.ifi.hase.soprafs24.rest.dto;
 
-public class PlayerTokenDTO {
+public class UserTokenDTO {
     private String token;
     public String getToken() {
         return token;
