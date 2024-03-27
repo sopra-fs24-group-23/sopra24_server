@@ -1,7 +1,5 @@
 package ch.uzh.ifi.hase.soprafs24.repository;
 
-import ch.uzh.ifi.hase.soprafs24.constant.PlayerStatus;
-import ch.uzh.ifi.hase.soprafs24.entity.Player;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

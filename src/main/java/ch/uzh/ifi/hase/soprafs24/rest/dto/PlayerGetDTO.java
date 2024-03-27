@@ -1,6 +1,5 @@
 package ch.uzh.ifi.hase.soprafs24.rest.dto;
 
-import ch.uzh.ifi.hase.soprafs24.constant.PlayerStatus;
 import ch.uzh.ifi.hase.soprafs24.entity.Answer;
 
 import java.util.List;
