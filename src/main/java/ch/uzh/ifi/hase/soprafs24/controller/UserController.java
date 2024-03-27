@@ -1,10 +1,8 @@
 package ch.uzh.ifi.hase.soprafs24.controller;
 
-import ch.uzh.ifi.hase.soprafs24.entity.Player;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.*;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
-import ch.uzh.ifi.hase.soprafs24.service.PlayerService;
 import ch.uzh.ifi.hase.soprafs24.service.UserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -55,7 +53,7 @@ public class UserController {
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(createdUser);
     }
 
-    @PutMapping("/users/{id}")
+    @PutMapping("/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
     public UserGetDTO updateUser(@PathVariable Long userId, @RequestBody UserPutDTO userPutDTO) {
