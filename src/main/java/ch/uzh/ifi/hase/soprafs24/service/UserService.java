@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -50,6 +51,15 @@ public class UserService {
 
         log.debug("Created Information for User: {}", newUser);
         return newUser;
+    }
+
+    public User updateUser(User userInput, Long userId) {
+        User persistedUser = findById(userId);
+        // update attributes
+        persistedUser.setUsername(userInput.getUsername());
+        // save to DB
+        userRepository.saveAndFlush(persistedUser);
+        return persistedUser;
     }
     public User loginUser(String username, String password){
         User persistedUser = userRepository.findByUsername(username);
