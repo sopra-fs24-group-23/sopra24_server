@@ -62,6 +62,13 @@ public class UserController {
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(updatedUser);
     }
 
+    @GetMapping("/users/{userId}")
+    @ResponseStatus(HttpStatus.OK)
+    public UserGetDTO getUser(@PathVariable Long userId) {
+        User user = userService.findById(userId);
+        return DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
+    }
+
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
