@@ -1,7 +1,5 @@
 package ch.uzh.ifi.hase.soprafs24.entity;
 
-import ch.uzh.ifi.hase.soprafs24.constant.PlayerStatus;
-
 import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;

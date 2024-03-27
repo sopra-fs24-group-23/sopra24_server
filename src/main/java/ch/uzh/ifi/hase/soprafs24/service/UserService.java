@@ -1,6 +1,5 @@
 package ch.uzh.ifi.hase.soprafs24.service;
 
-import ch.uzh.ifi.hase.soprafs24.constant.PlayerStatus;
 import ch.uzh.ifi.hase.soprafs24.entity.Player;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
@@ -50,6 +49,15 @@ public class UserService {
 
         log.debug("Created Information for User: {}", newUser);
         return newUser;
+    }
+
+    public User updateUser(User userInput, Long userId) {
+        User persistedUser = findById(userId);
+        // update attributes
+        persistedUser.setUsername(userInput.getUsername());
+        // save to DB
+        userRepository.saveAndFlush(persistedUser);
+        return persistedUser;
     }
     public User loginUser(String username, String password){
         User persistedUser = userRepository.findByUsername(username);
