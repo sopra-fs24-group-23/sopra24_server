@@ -56,10 +56,10 @@ public class UserController {
     @PutMapping("/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public UserGetDTO updateUser(@PathVariable Long userId, @RequestBody UserPutDTO userPutDTO) {
+    public UserAuthenticationDTO updateUser(@PathVariable Long userId, @RequestBody UserPutDTO userPutDTO) {
         User userInput = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(userPutDTO);
         User updatedUser = userService.updateUser(userInput, userId);
-        return DTOMapper.INSTANCE.convertEntityToUserGetDTO(updatedUser);
+        return DTOMapper.INSTANCE.convertEntityToUserAuthenticationDTO(updatedUser);
     }
 
     @GetMapping("/users/{userId}")
@@ -82,8 +82,8 @@ public class UserController {
     @PostMapping("/logout")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public UserGetDTO logout(@RequestBody UserTokenDTO userTokenDTO){
-        User userInput = DTOMapper.INSTANCE.convertUserTokenDTOtoEntity(userTokenDTO);
+    public UserGetDTO logout(@RequestBody UserAuthenticationDTO userAuthenticationDTO){
+        User userInput = DTOMapper.INSTANCE.convertUserAuthenticationDTOtoEntity(userAuthenticationDTO);
         User user = userService.logout(userInput.getToken());
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
     }
