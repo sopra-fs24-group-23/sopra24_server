@@ -72,11 +72,11 @@ public class UserController {
     @PostMapping("/login")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public UserTokenDTO loginUser(@RequestBody UserPostDTO userPostDTO){
+    public UserGetDTO loginUser(@RequestBody UserPostDTO userPostDTO){
         // authenticate user
         User user = userService.loginUser(userPostDTO.getUsername(), userPostDTO.getPassword());
         // convert internal representation back to API
-        return DTOMapper.INSTANCE.convertUserToUserTokenDTO(user);
+        return DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
     }
 
     @PostMapping("/logout")
