@@ -31,11 +31,14 @@ public interface DTOMapper {
     @Mapping(source = "gamesPlayed", target = "gamesPlayed")
     @Mapping(source = "gamesWon", target = "gamesWon")
     UserGetDTO convertEntityToUserGetDTO(User user);
-    @Mapping(source = "token", target = "token")
-    User convertUserTokenDTOtoEntity(UserTokenDTO userTokenDTO);
 
     @Mapping(source = "token", target = "token")
-    UserTokenDTO convertUserToUserTokenDTO(User user);
+    @Mapping(source = "id", target = "id")
+    User convertUserAuthenticationDTOtoEntity(UserAuthenticationDTO userAuthenticationDTO);
+
+    @Mapping(source = "token", target = "token")
+    @Mapping(source = "id", target = "id")
+    UserAuthenticationDTO convertEntityToUserAuthenticationDTO(User user);
 
     @Mapping(source = "username", target = "username")
     User convertUserPutDTOtoEntity(UserPutDTO userPutDTO);
