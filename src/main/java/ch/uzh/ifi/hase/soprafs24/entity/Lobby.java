@@ -10,19 +10,20 @@ public class Lobby {
     private Player host;
     private GameSettings settings;
     private Boolean isGameRunning;
+    private Boolean isLobbyFull;
 
     public Lobby(Player host) {
         // initialize fields
         this.host = host;
         this.settings = new GameSettings();
         this.isGameRunning = false;
+        this.isLobbyFull = false;
         // initialize player list and add host directly
         this.players = new ArrayList<>();
         this.players.add(host);
     }
 
     public void startGame() { // removed parameters here (see UML); can be got from attributes
-
     }
 
     public List<Player> getPlayers() {
@@ -31,12 +32,16 @@ public class Lobby {
 
     public void addPlayer(Player player) throws LobbyFullException {
         // if lobby is not full - add player
-        if (this.players.size() > this.settings.getMaxPlayers()) {
+        if (!isLobbyFull & !isGameRunning) {
             this.players.add(player);
+            // if this player took the last spot, set lobby full
+            if (this.players.size() == this.settings.getMaxPlayers()) {
+                this.setLobbyFull(true);
+            }
         }
         // if lobby is full - throw exception
         else {
-            throw new LobbyFullException("The lobby is full, the player could not be added.");
+            throw new LobbyFullException("Sorry, the lobby you are trying to join is full.");
         }
     }
 
@@ -67,5 +72,13 @@ public class Lobby {
 
     public void setGameRunning(Boolean gameRunning) {
         isGameRunning = gameRunning;
+    }
+
+    public Boolean getLobbyFull() {
+        return isLobbyFull;
+    }
+
+    public void setLobbyFull(Boolean lobbyFull) {
+        isLobbyFull = lobbyFull;
     }
 }
