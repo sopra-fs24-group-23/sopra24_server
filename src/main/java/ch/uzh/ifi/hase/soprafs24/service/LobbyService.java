@@ -4,9 +4,12 @@ import ch.uzh.ifi.hase.soprafs24.controller.LobbyWebsocketController;
 import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.entity.Player;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
+import ch.uzh.ifi.hase.soprafs24.exceptions.LobbyFullException;
 import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -39,7 +42,13 @@ public class LobbyService {
 
         // create new player object from user and add to the lobby
         Player player = new Player(user.getId(), user.getUsername());
-        lobby.addPlayer(player);
+
+        try {
+            lobby.addPlayer(player);
+        }
+        catch (LobbyFullException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "The lobby are trying to join is full.");
+        }
 
         // update clients via websocket
         lobbyWsController.updatePlayerList(lobbyId, lobby.getPlayers());
