@@ -8,11 +8,13 @@ public class GameSettings {
     private List<Category> categories;
     private Integer maxRounds;
     private Integer timeLimit; // in seconds
+    private Integer maxPlayers;
 
     public GameSettings() {
-        // TODO: set standard categories
+        // setting standard values - TODO: set standard categories
         this.maxRounds = 5;
         this.timeLimit = 30;
+        this.maxPlayers = 4;
     }
 
     public GameSettings(Integer maxRounds, Integer timeLimit) {
@@ -35,5 +37,13 @@ public class GameSettings {
 
     public void setTimeLimit(Integer timeLimit) {
         this.timeLimit = timeLimit;
+    }
+
+    public Integer getMaxPlayers() {
+        return maxPlayers;
+    }
+
+    public void setMaxPlayers(Integer maxPlayers) {
+        this.maxPlayers = maxPlayers;
     }
 }
