@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs24.controller;
 
 import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyIdDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyStateDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.UserTokenDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
@@ -21,10 +22,10 @@ public class LobbyController {
     @PostMapping("/lobbies")
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public LobbyStateDTO createLobby(@RequestBody UserTokenDTO userTokenDTO) {
+    public LobbyIdDTO createLobby(@RequestBody UserTokenDTO userTokenDTO) {
         User host = DTOMapper.INSTANCE.convertUserTokenDTOtoEntity(userTokenDTO);
         Lobby createdLobby = lobbyService.createLobby(host);
-        return DTOMapper.INSTANCE.convertEntityToLobbyStateDTO(createdLobby);
+        return DTOMapper.INSTANCE.convertEntityToLobbyIdDTO(createdLobby);
     }
 
     @DeleteMapping("/lobbies/{lobbyId}")

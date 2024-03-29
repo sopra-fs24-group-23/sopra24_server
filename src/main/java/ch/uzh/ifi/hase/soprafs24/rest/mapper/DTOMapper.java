@@ -57,4 +57,7 @@ public interface DTOMapper {
     @Mapping(source = "isLobbyFull", target = "isLobbyFull")
     @Mapping(source = "isGameRunning", target = "isGameRunning")
     LobbyStateDTO convertEntityToLobbyStateDTO(Lobby lobby);
+
+    @Mapping(source = "id", target = "id")
+    LobbyIdDTO convertEntityToLobbyIdDTO(Lobby lobby);
 }
