@@ -41,6 +41,17 @@ public class LobbyService {
         return newLobby;
     }
 
+    public void deleteLobby(String lobbyId, User userToken) {
+        Lobby lobby = this.lobbies.get(lobbyId);
+        User host = userRepository.findByUsername(lobby.getHost().getUsername());
+
+        // if request was made by host
+        if (host.getToken().equals(userToken.getToken())) {
+            // delete lobby
+            lobbies.remove(lobbyId);
+        }
+    }
+
     public void addPlayer(String lobbyId, User userToAdd) {
         // retrieve lobby from Service hashmap
         Lobby lobby = lobbies.get(lobbyId);
