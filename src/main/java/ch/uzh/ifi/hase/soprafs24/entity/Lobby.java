@@ -4,8 +4,11 @@ import ch.uzh.ifi.hase.soprafs24.exceptions.LobbyFullException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class Lobby {
+
+    private String id;
     private List<Player> players;
     private Player host;
     private GameSettings settings;
@@ -14,6 +17,7 @@ public class Lobby {
 
     public Lobby(Player host) {
         // initialize fields
+        this.id = UUID.randomUUID().toString();
         this.host = host;
         this.settings = new GameSettings();
         this.isGameRunning = false;
@@ -80,5 +84,13 @@ public class Lobby {
 
     public void setLobbyFull(Boolean lobbyFull) {
         isLobbyFull = lobbyFull;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }
