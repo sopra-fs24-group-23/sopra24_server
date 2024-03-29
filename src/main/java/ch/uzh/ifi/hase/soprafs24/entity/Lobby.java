@@ -40,7 +40,7 @@ public class Lobby {
             this.players.add(player);
             // if this player took the last spot, set lobby full
             if (this.players.size() == this.settings.getMaxPlayers()) {
-                this.setLobbyFull(true);
+                this.setIsLobbyFull(true);
             }
         }
         // if lobby is full - throw exception
@@ -70,19 +70,19 @@ public class Lobby {
         this.settings = settings;
     }
 
-    public Boolean getGameRunning() {
+    public Boolean getIsGameRunning() {
         return isGameRunning;
     }
 
-    public void setGameRunning(Boolean gameRunning) {
+    public void setIsGameRunning(Boolean gameRunning) {
         isGameRunning = gameRunning;
     }
 
-    public Boolean getLobbyFull() {
+    public Boolean getIsLobbyFull() {
         return isLobbyFull;
     }
 
-    public void setLobbyFull(Boolean lobbyFull) {
+    public void setIsLobbyFull(Boolean lobbyFull) {
         isLobbyFull = lobbyFull;
     }
 

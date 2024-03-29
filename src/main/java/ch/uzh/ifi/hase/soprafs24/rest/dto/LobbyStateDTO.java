@@ -4,19 +4,19 @@ public class LobbyStateDTO {
     private Boolean isLobbyFull;
     private Boolean isGameRunning;
 
-    public Boolean getLobbyFull() {
+    public Boolean getIsLobbyFull() {
         return isLobbyFull;
     }
 
-    public void setLobbyFull(Boolean lobbyFull) {
+    public void setIsLobbyFull(Boolean lobbyFull) {
         isLobbyFull = lobbyFull;
     }
 
-    public Boolean getGameRunning() {
+    public Boolean getIsGameRunning() {
         return isGameRunning;
     }
 
-    public void setGameRunning(Boolean gameRunning) {
+    public void setIsGameRunning(Boolean gameRunning) {
         isGameRunning = gameRunning;
     }
 }
