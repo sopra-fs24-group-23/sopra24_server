@@ -7,19 +7,17 @@ import java.util.List;
 public class GameSettings {
     private List<Category> categories;
     private Integer maxRounds;
-    private Integer timeLimit; // in seconds
+    private Integer votingDuration;
+    private Integer scoreboardDuration;
+    private Integer maxPlayers;
 
     public GameSettings() {
-        // TODO: set standard categories
+        // setting standard values - TODO: set standard categories
         this.maxRounds = 5;
-        this.timeLimit = 30;
+        this.votingDuration = 30;
+        this.scoreboardDuration = 30;
+        this.maxPlayers = 4;
     }
-
-    public GameSettings(Integer maxRounds, Integer timeLimit) {
-        this.maxRounds = maxRounds;
-        this.timeLimit = timeLimit;
-    }
-
 
     public Integer getMaxRounds() {
         return maxRounds;
@@ -29,11 +27,28 @@ public class GameSettings {
         this.maxRounds = maxRounds;
     }
 
-    public Integer getTimeLimit() {
-        return timeLimit;
+
+    public Integer getMaxPlayers() {
+        return maxPlayers;
     }
 
-    public void setTimeLimit(Integer timeLimit) {
-        this.timeLimit = timeLimit;
+    public void setMaxPlayers(Integer maxPlayers) {
+        this.maxPlayers = maxPlayers;
+    }
+
+    public Integer getVotingDuration() {
+        return votingDuration;
+    }
+
+    public void setVotingDuration(Integer votingDuration) {
+        this.votingDuration = votingDuration;
+    }
+
+    public Integer getScoreboardDuration() {
+        return scoreboardDuration;
+    }
+
+    public void setScoreboardDuration(Integer scoreboardDuration) {
+        this.scoreboardDuration = scoreboardDuration;
     }
 }
