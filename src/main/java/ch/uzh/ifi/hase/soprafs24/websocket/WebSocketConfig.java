@@ -14,10 +14,9 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
         registry.addEndpoint("/ws")
         .setAllowedOrigins(
                 "http://localhost:3000/",
-                "https://localhost:3000/",
-                "http://sopra-fs24-group-23-client.oa.r.appspot.com/",
                 "https://sopra-fs24-group-23-client.oa.r.appspot.com/"
         )
+        .setAllowedOriginPatterns("*")
         .withSockJS();
     }
 
