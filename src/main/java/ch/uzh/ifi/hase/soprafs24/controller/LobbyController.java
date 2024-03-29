@@ -9,7 +9,6 @@ import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
-
 @RestController
 public class LobbyController {
 
@@ -28,4 +27,10 @@ public class LobbyController {
         return DTOMapper.INSTANCE.convertEntityToLobbyStateDTO(createdLobby);
     }
 
+    @DeleteMapping("/lobbies/{lobbyId}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteLobby(@PathVariable String lobbyId, UserTokenDTO userTokenDTO) {
+        User userToken = DTOMapper.INSTANCE.convertUserTokenDTOtoEntity(userTokenDTO);
+        lobbyService.deleteLobby(lobbyId, userToken);
+    }
 }
