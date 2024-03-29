@@ -12,9 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 @Service
 @Transactional
@@ -22,18 +20,28 @@ public class LobbyService {
 
     private final UserRepository userRepository;
     private final LobbyWebsocketController lobbyWsController;
-    private HashMap<Long, Lobby> lobbies;
+    private HashMap<String, Lobby> lobbies;
 
     public LobbyService(
             @Qualifier("userRepository") UserRepository userRepository,
             LobbyWebsocketController lobbyWsController
     ) {
         this.userRepository = userRepository;
-        this.lobbies = new HashMap<Long, Lobby>();
+        this.lobbies = new HashMap<String, Lobby>();
         this.lobbyWsController = lobbyWsController;
     }
 
-    public void addPlayer(Long lobbyId, User userToAdd) {
+    public Lobby createLobby(User hostToken) {
+        // fetch host from DB and initialize player object
+        User host = userRepository.findByToken(hostToken.getToken());
+        Player hostPlayer = new Player(host.getId(), host.getUsername());
+        // create new lobby, store to lobby list
+        Lobby newLobby = new Lobby(hostPlayer);
+        this.lobbies.put(newLobby.getId(), newLobby);
+        return newLobby;
+    }
+
+    public void addPlayer(String lobbyId, User userToAdd) {
         // retrieve lobby from Service hashmap
         Lobby lobby = lobbies.get(lobbyId);
 
