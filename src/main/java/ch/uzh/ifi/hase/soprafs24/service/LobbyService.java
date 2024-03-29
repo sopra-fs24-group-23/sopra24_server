@@ -13,22 +13,19 @@ import org.springframework.web.server.ResponseStatusException;
 
 import javax.transaction.Transactional;
 import java.util.HashMap;
+import java.util.List;
 
 @Service
 @Transactional
 public class LobbyService {
 
     private final UserRepository userRepository;
-    private final LobbyWebsocketController lobbyWsController;
     private HashMap<String, Lobby> lobbies;
 
     public LobbyService(
-            @Qualifier("userRepository") UserRepository userRepository,
-            LobbyWebsocketController lobbyWsController
-    ) {
+            @Qualifier("userRepository") UserRepository userRepository) {
         this.userRepository = userRepository;
         this.lobbies = new HashMap<String, Lobby>();
-        this.lobbyWsController = lobbyWsController;
     }
 
     public Lobby createLobby(User hostToken) {
@@ -52,7 +49,7 @@ public class LobbyService {
         }
     }
 
-    public void addPlayer(String lobbyId, User userToAdd) {
+    public List<Player> addPlayer(String lobbyId, User userToAdd) {
         // retrieve lobby from Service hashmap
         Lobby lobby = lobbies.get(lobbyId);
 
@@ -69,7 +66,6 @@ public class LobbyService {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "The lobby are trying to join is full.");
         }
 
-        // update clients via websocket
-        lobbyWsController.updatePlayerList(lobbyId, lobby.getPlayers());
+        return lobby.getPlayers();
     }
 }
