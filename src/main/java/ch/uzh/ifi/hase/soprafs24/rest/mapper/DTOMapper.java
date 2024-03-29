@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs24.rest.mapper;
 
+import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.entity.Player;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.*;
@@ -52,4 +53,8 @@ public interface DTOMapper {
     @Mapping(source = "currentScore", target = "currentScore")
     @Mapping(source = "currentAnswers", target = "currentAnswers")
     PlayerGetDTO convertEntityToPlayerGetDTO(Player player);
+
+    @Mapping(source = "isLobbyFull", target = "isLobbyFull")
+    @Mapping(source = "isGameRunning", target = "isGameRunning")
+    LobbyStateDTO convertEntityToLobbyStateDTO(Lobby lobby);
 }
