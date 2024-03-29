@@ -28,13 +28,13 @@ public class LobbyWebsocketController {
     }
 
     @MessageMapping("/{lobbyId}/players/add")
-    public void addPlayer(@DestinationVariable Long lobbyId, UserTokenDTO userTokenDTO) {
+    public void addPlayer(@DestinationVariable String lobbyId, UserTokenDTO userTokenDTO) {
         User userToAdd = DTOMapper.INSTANCE.convertUserTokenDTOtoEntity(userTokenDTO);
         lobbyService.addPlayer(lobbyId, userToAdd);
     }
 
     /** Server to client(s) communication **/
-    public void updatePlayerList(Long lobbyId, List<Player> players) {
+    public void updatePlayerList(String lobbyId, List<Player> players) {
         // convert player list to DTO list
         List<PlayerGetDTO> playerGetDTOS = new ArrayList<PlayerGetDTO>();
         for (Player player : players) {
