@@ -1,6 +1,6 @@
 package ch.uzh.ifi.hase.soprafs24.rest.dto;
 
-public class UserGetDTO {
+public class UserGetDTO extends UserTokenDTO {
 
     private Long id;
     private String username;
