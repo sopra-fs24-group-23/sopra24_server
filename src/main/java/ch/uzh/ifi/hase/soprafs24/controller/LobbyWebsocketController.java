@@ -27,7 +27,7 @@ public class LobbyWebsocketController {
         this.lobbyService = lobbyService;
     }
 
-    @MessageMapping("/{lobbyId}/players/add")
+    @MessageMapping("/lobbies/{lobbyId}/players/add")
     public void addPlayer(@DestinationVariable String lobbyId, UserTokenDTO userTokenDTO) {
         User userToAdd = DTOMapper.INSTANCE.convertUserTokenDTOtoEntity(userTokenDTO);
         List<Player> players = lobbyService.addPlayer(lobbyId, userToAdd);
