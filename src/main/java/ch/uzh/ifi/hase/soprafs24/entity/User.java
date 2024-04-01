@@ -26,7 +26,7 @@ public class User implements Serializable {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false, unique = true)
+    @Column()
     private String token;
 
     @Column
