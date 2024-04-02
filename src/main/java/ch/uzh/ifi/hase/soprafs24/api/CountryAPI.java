@@ -49,7 +49,8 @@ public class CountryAPI extends APIManager {
                 System.out.println(countries);
                 for (int i = 0; i < countries.length(); i++) {
                     JSONObject country = countries.getJSONObject(i);
-                    if (country.optString("value").equalsIgnoreCase(answer)) {
+                    String countryValue = country.optString("value");
+                    if (countryValue.toLowerCase().contains(answer.toLowerCase())) {
                         return "correct";
                     }
                 }
@@ -69,7 +70,7 @@ public class CountryAPI extends APIManager {
         String baseUrl = "https://referential.p.rapidapi.com";
 
         CountryAPI countryAPI = new CountryAPI(apiKey, baseUrl);
-        String answer = "Switzerland"; // Example country name
+        String answer = "Congo"; // Example country name
         String result = countryAPI.performRequest(answer); // Pass the country name
 
         System.out.println("Is " + answer + " a country? " + result);
