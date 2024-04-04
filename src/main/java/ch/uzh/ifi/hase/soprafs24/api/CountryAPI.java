@@ -70,7 +70,7 @@ public class CountryAPI extends APIManager {
         String baseUrl = "https://referential.p.rapidapi.com";
 
         CountryAPI countryAPI = new CountryAPI(apiKey, baseUrl);
-        String answer = "Congo"; // Example country name
+        String answer = "china"; // Example country name
         String result = countryAPI.performRequest(answer); // Pass the country name
 
         System.out.println("Is " + answer + " a country? " + result);
