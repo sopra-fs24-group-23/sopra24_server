@@ -9,6 +9,11 @@ public class Round {
     private List<String> answers;
     private List<Player> players;
 
+    public Round(Integer roundNumber, String letter) {
+        this.roundNumber = roundNumber;
+        this.letter = letter;
+    }
+
     public void startRound() {
 
     }
