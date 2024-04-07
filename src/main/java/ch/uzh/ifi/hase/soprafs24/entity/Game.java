@@ -6,34 +6,27 @@ import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
 
-@Entity
-@Table(name = "GAME")
-public class Game implements Serializable {
+public class Game {
 
-    @Serial
-    private static final long serialVersionUID = 1L;
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long GameId;
 
-    private String currentLetter;
-
-    @Transient
     private Lobby lobby;
 
-    @Transient
-    private List<Player> players = new ArrayList<>();
-    @Transient
+    private List<Player> players;
+
     private GameSettings settings;
 
-    // no-argument constructor (required by JPA)
-    public Game() {
-    }
+    private Round[] rounds;
+
+    private int currentRound;
+
 
     public Game(GameSettings settings, Lobby lobby) {
         this.settings = settings;
         this.lobby = lobby;
+        this.players = lobby.getPlayers();
+        this.rounds = new Round[settings.getMaxRounds()];
+        this.currentRound = 0;
     }
 
     public void startGame() throws IllegalStateException {

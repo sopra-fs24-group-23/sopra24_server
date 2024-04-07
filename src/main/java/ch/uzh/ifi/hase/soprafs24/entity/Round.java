@@ -7,11 +7,13 @@ public class Round {
     private String letter;
     private Integer timer;
     private List<String> answers;
-    private List<Player> players;
 
-    public Round(Integer roundNumber, String letter) {
+    private Game mainGame;
+
+    public Round(Integer roundNumber, String letter, Game mainGame) {
         this.roundNumber = roundNumber;
         this.letter = letter;
+        this.mainGame = mainGame;
     }
 
     public void startRound() {
