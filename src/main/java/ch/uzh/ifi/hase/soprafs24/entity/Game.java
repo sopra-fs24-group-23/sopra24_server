@@ -29,27 +29,52 @@ public class Game {
         this.currentRound = 0;
     }
 
-    public void startGame() throws IllegalStateException {
-        if (this.players.size() < 2 ) {
-            throw new IllegalStateException("Cannot start game: Not enough players.");
-        }
-        if (this.lobby.getIsGameRunning()) {
-            throw new IllegalStateException("Game is already running.");
-        }
-        // Start the game logic
-        this.lobby.setIsGameRunning(true);
-        // Initialize game rounds etc.
+
+    public int getCurrentRound() {
+        return currentRound;
     }
 
-    public void endGame() {
-
+    public void setCurrentRound(int currentRound) {
+        this.currentRound = currentRound;
     }
 
-    public void addPlayer(Player player) {
-        players.add(player);
+    public Round[] getRounds() {
+        return rounds;
     }
 
-    public void removePlayer(Player player) {
-        players.remove(player);
+    public void setRounds(Round[] rounds) {
+        this.rounds = rounds;
+    }
+
+    public GameSettings getSettings() {
+        return settings;
+    }
+
+    public void setSettings(GameSettings settings) {
+        this.settings = settings;
+    }
+
+    public List<Player> getPlayers() {
+        return players;
+    }
+
+    public void setPlayers(List<Player> players) {
+        this.players = players;
+    }
+
+    public Lobby getLobby() {
+        return lobby;
+    }
+
+    public void setLobby(Lobby lobby) {
+        this.lobby = lobby;
+    }
+
+    public Long getGameId() {
+        return GameId;
+    }
+
+    public void setGameId(Long gameId) {
+        GameId = gameId;
     }
 }

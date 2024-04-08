@@ -27,6 +27,9 @@ public class LobbyService {
         this.userRepository = userRepository;
         this.lobbies = new HashMap<String, Lobby>();
     }
+    public Lobby getLobbyById(String lobbyId) {
+        return lobbies.get(lobbyId);
+    }
 
     public Lobby createLobby(User hostToken) {
         // fetch host from DB and initialize player object
@@ -68,4 +71,14 @@ public class LobbyService {
 
         return lobby.getPlayers();
     }
+
+    public void removePlayer(String lobbyId, Player player) {
+        Lobby lobby = getLobbyById(lobbyId);
+        if (lobby != null) {
+            lobby.removePlayer(player);
+        } else {
+            throw new IllegalArgumentException("Lobby not found");
+        }
+    }
+
 }
