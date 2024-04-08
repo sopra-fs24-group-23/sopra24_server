@@ -1,10 +1,6 @@
 package ch.uzh.ifi.hase.soprafs24.entity;
 
-import java.util.ArrayList;
 import java.util.List;
-import javax.persistence.*;
-import java.io.Serial;
-import java.io.Serializable;
 
 public class Game {
 
@@ -19,6 +15,8 @@ public class Game {
     private Round[] rounds;
 
     private int currentRound;
+
+    private boolean gameEnded = false;
 
 
     public Game(GameSettings settings, Lobby lobby) {
@@ -76,5 +74,31 @@ public class Game {
 
     public void setGameId(Long gameId) {
         GameId = gameId;
+    }
+
+    // If a player leaves a game
+    public void removePlayer(Player player) {
+        // TODO: check if exception handling necessary
+        this.players.remove(player);
+    }
+
+    public boolean isGameEnded() {
+        return gameEnded;
+    }
+
+    public void setGameEnded(boolean gameEnded) {
+        this.gameEnded = gameEnded;
+    }
+
+    public boolean startNextRound() {
+        if (currentRound < this.settings.getMaxRounds()) {
+            currentRound++;
+            // round specific data here
+            return true;
+        }
+        else {
+            // end of game logic here
+            return false;
+        }
     }
 }

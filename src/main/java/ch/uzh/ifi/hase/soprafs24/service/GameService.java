@@ -1,3 +1,5 @@
+package ch.uzh.ifi.hase.soprafs24.service;
+
 import ch.uzh.ifi.hase.soprafs24.entity.Game;
 import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.entity.Player;
@@ -36,6 +38,39 @@ public class GameService {
         }
         lobby.setIsGameRunning(true);
         // Initialize game rounds etc.
+        game.startNextRound();
+    }
+
+    public void advanceRound(Long gameId) {
+        Game game = games.get(gameId);
+        boolean roundStarted = game.startNextRound();
+        if (!roundStarted) {
+            // Handle end-of game scenario
+            endGame(gameId);
+        }
+        else {
+            // Reset or update round-specific data
+        //resetRoundData(game);
+
+        // Notify players about the new round
+        //notifyPlayers(gameId, "Round " + game.getCurrentRound() + " is starting!");
+
+        // Execute any additional round initialization logic
+        //initializeNewRound(game);
+        }
+    }
+
+    private void resetRoundData(Game game) {
+
+    }
+
+    private void notifyPlayers(Long gameId, String message) {
+        // Example: Send a message to all players in the game
+        // This could involve updating a UI element, sending a push notification, etc.
+    }
+
+    private void initializeNewRound(Game game) {
+        // set round timers, etc.
     }
 
     public void endGame(Long gameId) {
@@ -45,13 +80,8 @@ public class GameService {
         // Additional logic to handle the end of the game
     }
 
-    public void addPlayer(Long gameId, Player player) {
-        Game game = games.get(gameId);
-       // game.addPlayer(player);
-    }
-
     public void removePlayer(Long gameId, Player player) {
         Game game = games.get(gameId);
-      //  game.removePlayer(player);
+        game.removePlayer(player);
     }
 }
