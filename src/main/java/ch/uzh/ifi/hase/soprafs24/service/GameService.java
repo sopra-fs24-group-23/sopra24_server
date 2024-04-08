@@ -21,7 +21,7 @@ public class GameService {
     }
 
     public Game createGame(Lobby lobby) {
-        Game newGame = new Game(lobby.getSettings(), lobby);
+        Game newGame = new Game(lobby);
         games.put(newGame.getGameId(), newGame);
         return newGame;
     }

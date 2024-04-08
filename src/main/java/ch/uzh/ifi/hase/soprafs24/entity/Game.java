@@ -19,8 +19,8 @@ public class Game {
     private boolean gameEnded = false;
 
 
-    public Game(GameSettings settings, Lobby lobby) {
-        this.settings = settings;
+    public Game(Lobby lobby) {
+        this.settings = lobby.getSettings();
         this.lobby = lobby;
         this.players = lobby.getPlayers();
         this.rounds = new Round[settings.getMaxRounds()];
@@ -94,6 +94,7 @@ public class Game {
         if (currentRound < this.settings.getMaxRounds()) {
             currentRound++;
             // round specific data here
+            rounds[currentRound] = new Round(currentRound + 1, this);
             return true;
         }
         else {
