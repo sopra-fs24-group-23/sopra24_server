@@ -9,6 +9,7 @@ import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
@@ -28,23 +29,24 @@ public class LobbyWebsocketController {
     }
 
     @MessageMapping("/lobbies/{lobbyId}/players/add")
-    public void addPlayer(@DestinationVariable String lobbyId, UserTokenDTO userTokenDTO) {
+    public void addPlayer(@DestinationVariable String lobbyId, @Payload UserTokenDTO userTokenDTO) {
         User userToAdd = DTOMapper.INSTANCE.convertUserTokenDTOtoEntity(userTokenDTO);
         List<Player> players = lobbyService.addPlayer(lobbyId, userToAdd);
+        System.out.println("Received request to add player");
         this.updatePlayerList(lobbyId, players);
     }
 
     /** Server to client(s) communication **/
     public void updatePlayerList(String lobbyId, List<Player> players) {
+        System.out.println("Sending updated player list to clients");
         // convert player list to DTO list
         List<PlayerGetDTO> playerGetDTOS = new ArrayList<PlayerGetDTO>();
         for (Player player : players) {
             playerGetDTOS.add(DTOMapper.INSTANCE.convertEntityToPlayerGetDTO(player));
         }
-
         // send DTOs of updated player-list to clients
         msgTemplate.convertAndSend(
-                String.format("/lobbies/%d/players", lobbyId),
+                String.format("/topic/lobbies/%s/players", lobbyId),
                 playerGetDTOS
         );
     }

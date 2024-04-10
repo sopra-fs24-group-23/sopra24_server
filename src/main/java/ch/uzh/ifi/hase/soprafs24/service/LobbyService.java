@@ -66,7 +66,7 @@ public class LobbyService {
             lobby.addPlayer(player);
         }
         catch (LobbyFullException e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "The lobby are trying to join is full.");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "The lobby you are trying to join is full.");
         }
 
         return lobby.getPlayers();

@@ -26,7 +26,7 @@ import java.util.UUID;
 @Transactional
 public class UserService {
 
-    private final Logger log = LoggerFactory.getLogger(PlayerService.class);
+    private final Logger log = LoggerFactory.getLogger(UserService.class);
 
     private final UserRepository userRepository;
 
