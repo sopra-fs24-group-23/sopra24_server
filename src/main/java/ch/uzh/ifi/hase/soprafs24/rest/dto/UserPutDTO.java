@@ -11,4 +11,5 @@ public class UserPutDTO {
     public void setUsername(String username) {
         this.username = username;
     }
+
 }

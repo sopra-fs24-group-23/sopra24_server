@@ -16,8 +16,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 "http://localhost:3000/",
                 "https://sopra-fs24-group-23-client.oa.r.appspot.com/"
         )
-        .setAllowedOriginPatterns("*")
-        .withSockJS();
+        .setAllowedOriginPatterns("*");
     }
 
     /** This message configures websocket endpoint

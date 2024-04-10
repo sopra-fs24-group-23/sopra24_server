@@ -53,6 +53,18 @@ public class UserService {
 
     public User updateUser(User userInput, Long userId) {
         User persistedUser = findById(userId);
+
+        // Check if the username is empty
+        if (userInput.getUsername() == null || userInput.getUsername().trim().isEmpty()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The username cannot be empty. Please try again.");
+        }
+
+        // Check if username is already
+        User userByUsername = userRepository.findByUsername(userInput.getUsername());
+        if(userByUsername != null && !userByUsername.getId().equals(userId)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "This username is already taken. Please choose a different username.");
+        }
+
         // update attributes
         persistedUser.setUsername(userInput.getUsername());
         // save to DB
