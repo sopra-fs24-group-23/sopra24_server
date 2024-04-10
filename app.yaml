@@ -13,5 +13,3 @@ manual_scaling:
 
 service_account: server-service@sopra-fs24-group-23-server.iam.gserviceaccount.com
 
-script: this field is required, but ignored
-
