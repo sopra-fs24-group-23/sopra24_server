@@ -28,3 +28,6 @@
 - 4.4 - 10.4, Franziska, [https://github.com/sopra-fs24-group-23/sopra24_server/issues/116](https://github.com/sopra-fs24-group-23/sopra24_server/issues/116)
 - 4.4 - 10.4, Franziska, [https://github.com/sopra-fs24-group-23/sopra24_server/issues/115](https://github.com/sopra-fs24-group-23/sopra24_server/issues/115)
 - 4.4 - 10.4, Franziska, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/61](https://github.com/sopra-fs24-group-23/sopra24_client/issues/61)
+- 4.4 - 10.4, Nilaksan, [https://github.com/sopra-fs24-group-23/sopra24_server/issues/112](https://github.com/sopra-fs24-group-23/sopra24_server/issues/112)
+- 
+
