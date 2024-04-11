@@ -2,14 +2,12 @@ package ch.uzh.ifi.hase.soprafs24.entity;
 
 import ch.uzh.ifi.hase.soprafs24.exceptions.LobbyFullException;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class Lobby {
 
     private String id;
-    private List<Player> players;
+    private HashMap<String, Player> players;
     private Player host;
     private GameSettings settings;
     private Boolean isGameRunning;
@@ -23,21 +21,21 @@ public class Lobby {
         this.isGameRunning = false;
         this.isLobbyFull = false;
         // initialize player list and add host directly
-        this.players = new ArrayList<>();
-        this.players.add(host);
+        this.players = new HashMap<String, Player>();
+        this.players.put(host.getUsername(), host);
     }
 
     public void startGame() { // removed parameters here (see UML); can be got from attributes
     }
 
     public List<Player> getPlayers() {
-        return this.players;
+        return new ArrayList<>(this.players.values());
     }
 
     public void addPlayer(Player player) throws LobbyFullException {
         // if lobby is not full - add player
         if (!isLobbyFull & !isGameRunning) {
-            this.players.add(player);
+            this.players.put(player.getUsername(), player);
             // if this player took the last spot, set lobby full
             if (this.players.size() == this.settings.getMaxPlayers()) {
                 this.setIsLobbyFull(true);
@@ -49,9 +47,8 @@ public class Lobby {
         }
     }
 
-    public void removePlayer(Player player) {
-        // TODO: check if exception handling necessary
-        this.players.remove(player);
+    public void removePlayer(String username) {
+        this.players.remove(username);
     }
 
     public Player getHost() {
