@@ -28,11 +28,23 @@ public class LobbyWebsocketController {
         this.lobbyService = lobbyService;
     }
 
-    @MessageMapping("/lobbies/{lobbyId}/players/add")
+    @MessageMapping("/lobbies/{lobbyId}/join")
     public void addPlayer(@DestinationVariable String lobbyId, @Payload UserTokenDTO userTokenDTO) {
+        // convert tokenDTO to user
         User userToAdd = DTOMapper.INSTANCE.convertUserTokenDTOtoEntity(userTokenDTO);
+        // add user to lobby as a player
         List<Player> players = lobbyService.addPlayer(lobbyId, userToAdd);
-        System.out.println("Received request to add player");
+        // update clients with new player-list
+        this.updatePlayerList(lobbyId, players);
+    }
+
+    @MessageMapping("/lobbies/{lobbyID}/leave")
+    public void removePlayer(@DestinationVariable String lobbyId, @Payload UserTokenDTO userTokenDTO) {
+        // convert tokenDTO to user
+        User userToRemove = DTOMapper.INSTANCE.convertUserTokenDTOtoEntity(userTokenDTO);
+        // remove user from lobby
+        List<Player> players = lobbyService.removePlayer(lobbyId, userToRemove);
+        // update clients with new player-list
         this.updatePlayerList(lobbyId, players);
     }
 
