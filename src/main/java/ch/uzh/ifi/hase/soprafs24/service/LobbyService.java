@@ -1,6 +1,5 @@
 package ch.uzh.ifi.hase.soprafs24.service;
 
-import ch.uzh.ifi.hase.soprafs24.controller.LobbyWebsocketController;
 import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.entity.Player;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
@@ -72,13 +71,16 @@ public class LobbyService {
         return lobby.getPlayers();
     }
 
-    public void removePlayer(String lobbyId, Player player) {
+    public List<Player> removePlayer(String lobbyId, User userToRemove) {
         Lobby lobby = getLobbyById(lobbyId);
+
         if (lobby != null) {
-            lobby.removePlayer(player);
+            lobby.removePlayer(userToRemove.getUsername());
         } else {
             throw new IllegalArgumentException("Lobby not found");
         }
+
+        return lobby.getPlayers();
     }
 
 }
