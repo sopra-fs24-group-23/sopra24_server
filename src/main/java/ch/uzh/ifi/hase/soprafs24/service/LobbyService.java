@@ -97,6 +97,8 @@ public class LobbyService {
 
         // Remove player from the lobby
         lobby.removePlayer(user.getUsername());
+
+        // If player is host close the lobby/game
     }
 
 

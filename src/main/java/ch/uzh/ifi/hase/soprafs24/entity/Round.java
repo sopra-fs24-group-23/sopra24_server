@@ -9,18 +9,34 @@ public class Round {
     private Integer timer;
     private List<String> answers;
     private String startLetter;
-
+    private int points;
     private Game mainGame;
+    private boolean roundEnded = false;
 
     public Round(Integer roundNumber, Game mainGame) {
         this.roundNumber = roundNumber;
-        this.letters = new String[] {"A", "B", "C", "D"};
+        this.letters = new String[] {"A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M",
+        "N", "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z"};
         this.startLetter = generateRandomLetter();
         this.mainGame = mainGame;
     }
 
     public void startRound() {
+        // Reset or initialize points and answers for the new round
+        this.points = 0;
+        this.answers.clear();
 
+        // Generate a new start letter for the round
+        this.startLetter = generateRandomLetter();
+
+        // Reset or set timer based on the game settings
+        this.timer = mainGame.getSettings().getMaxRoundsDuration();
+
+        // Set round as not ended
+        this.roundEnded = false;
+
+        // Notify the game/players that the round has started
+       // mainGame.notifyPlayers("Round " + roundNumber + "started with letter: " + startLetter);
     }
     public void endRound() {
 
@@ -36,4 +52,12 @@ public class Round {
     public void displayAnswers() {}
     public void checkAnswers() {}
     public void calculateScores() {}
+
+    public boolean isRoundEnded() {
+        return roundEnded;
+    }
+
+    public void setRoundEnded(boolean gameEnded) {
+        this.roundEnded = gameEnded;
+    }
 }

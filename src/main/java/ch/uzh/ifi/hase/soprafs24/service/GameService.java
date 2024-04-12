@@ -20,6 +20,10 @@ public class GameService {
 
     }
 
+    public Game getGameById(Long GameId) {
+        return games.get(GameId);
+    }
+
     public Game createGame(Lobby lobby) {
         Game newGame = new Game(lobby);
         games.put(newGame.getGameId(), newGame);
@@ -29,10 +33,11 @@ public class GameService {
 
     public void startGame(Long gameId) {
         Game game = games.get(gameId);
-        if (game.getPlayers().size() < 2) {
+        Lobby lobby = lobbyService.getLobbyById(game.getLobby().getId());
+
+        if (lobby.getPlayers().size() < 2) {
             throw new IllegalStateException("Cannot start game: Not enough players.");
         }
-        Lobby lobby = lobbyService.getLobbyById(game.getLobby().getId());
         if (lobby.getIsGameRunning()) {
             throw new IllegalStateException("Game is already running.");
         }
