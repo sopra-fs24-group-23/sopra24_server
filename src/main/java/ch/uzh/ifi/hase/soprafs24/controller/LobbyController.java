@@ -34,4 +34,6 @@ public class LobbyController {
         User userToken = DTOMapper.INSTANCE.convertUserTokenDTOtoEntity(userTokenDTO);
         lobbyService.deleteLobby(lobbyId, userToken);
     }
+
+
 }
