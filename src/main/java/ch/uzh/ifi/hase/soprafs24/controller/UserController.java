@@ -5,6 +5,7 @@ import ch.uzh.ifi.hase.soprafs24.rest.dto.*;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs24.service.UserService;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -87,5 +88,17 @@ public class UserController {
         User user = userService.logout(userInput.getToken());
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
     }
+    @PostMapping("/users/{userId}/leaveLobby/{lobbyId}") //not too sure if this is how we defined the endpoint in m2
+    public ResponseEntity<LeaveLobbyResponseDTO> leaveLobby(@PathVariable Long userId, @PathVariable String lobbyId) {
+        try {
+            userService.userLeaveLobby(userId, lobbyId);
+            return ResponseEntity.ok(new LeaveLobbyResponseDTO("User successfully left the lobby."));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(new LeaveLobbyResponseDTO("Error: " + e.getMessage()));
+        }
+    }
+
+
 }
 

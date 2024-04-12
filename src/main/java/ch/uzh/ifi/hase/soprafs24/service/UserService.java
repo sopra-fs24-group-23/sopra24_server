@@ -131,4 +131,11 @@ public class UserService {
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND,"The user with the provided ID doesn't exist.")
         );
     }
+    @Autowired
+    private LobbyService lobbyService;
+    public void userLeaveLobby(Long userId, String lobbyId) {
+        User user = findById(userId);
+        lobbyService.leaveLobby(lobbyId, user);
+    }
+
 }

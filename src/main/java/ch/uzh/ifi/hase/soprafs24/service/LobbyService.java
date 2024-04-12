@@ -82,5 +82,22 @@ public class LobbyService {
 
         return lobby.getPlayers();
     }
+    public void leaveLobby(String lobbyId, User user) {
+        Lobby lobby = lobbies.get(lobbyId);
+        if (lobby == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby not found.");
+        }
+
+        // Check if the user is part of the lobby
+        boolean isPlayerInLobby = lobby.getPlayers().stream()
+                .anyMatch(player -> player.getId().equals(user.getId()));
+        if (!isPlayerInLobby) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is not part of this lobby.");
+        }
+
+        // Remove player from the lobby
+        lobby.removePlayer(user.getUsername());
+    }
+
 
 }
