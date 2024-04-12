@@ -2,7 +2,9 @@ package ch.uzh.ifi.hase.soprafs24.service;
 
 import ch.uzh.ifi.hase.soprafs24.entity.Player;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
+import ch.uzh.ifi.hase.soprafs24.exceptions.LobbyFullException;
 import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.UserTokenDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -137,5 +139,23 @@ public class UserService {
         User user = findById(userId);
         lobbyService.leaveLobby(lobbyId, user);
     }
+    public UserService(@Qualifier("userRepository") UserRepository userRepository, LobbyService lobbyService) {
+        this.userRepository = userRepository;
+        this.lobbyService = lobbyService;
+    }
 
-}
+    public void joinLobby(String lobbyId, UserTokenDTO token) {
+        User user = userRepository.findByToken(token.getToken());
+
+                //.orElseThrow(() ->
+                //new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found."));
+
+        try {
+            lobbyService.addPlayer(lobbyId, user);
+
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Unable to join the lobby.");
+        }
+
+
+    }}
