@@ -70,4 +70,11 @@ public interface DTOMapper {
     @Mapping (source = "scoreboardDuration", target = "scoreboardDuration")
     @Mapping (source = "maxPlayers", target = "maxPlayers")
     GameSettings convertGameSettingsDTOToGameSettings(GameSettingsDTO gameSettingsDTO);
+
+    @Mapping (source = "maxRounds", target = "maxRounds")
+    @Mapping (source = "votingDuration", target = "votingDuration")
+    @Mapping (source = "maxRoundsDuration", target = "maxRoundsDuration")
+    @Mapping (source = "scoreboardDuration", target = "scoreboardDuration")
+    @Mapping (source = "maxPlayers", target = "maxPlayers")
+    GameSettingsDTO convertGameSettingsToGameSettingsDTO(GameSettings gameSettings);
 }

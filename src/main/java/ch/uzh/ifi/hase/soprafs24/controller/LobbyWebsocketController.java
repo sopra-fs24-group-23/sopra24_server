@@ -1,10 +1,9 @@
 package ch.uzh.ifi.hase.soprafs24.controller;
 
+import ch.uzh.ifi.hase.soprafs24.entity.GameSettings;
 import ch.uzh.ifi.hase.soprafs24.entity.Player;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
-import ch.uzh.ifi.hase.soprafs24.rest.dto.LeaveLobbyResponseDTO;
-import ch.uzh.ifi.hase.soprafs24.rest.dto.PlayerGetDTO;
-import ch.uzh.ifi.hase.soprafs24.rest.dto.UserTokenDTO;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.*;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,6 +64,26 @@ public class LobbyWebsocketController {
         msgTemplate.convertAndSend(
                 String.format("/topic/lobbies/%s/players", lobbyId),
                 playerGetDTOS
+        );
+    }
+
+    public void updateSettings(String lobbyId, GameSettings settings) {
+        GameSettingsDTO gameSettingsDTO = DTOMapper.INSTANCE.convertGameSettingsToGameSettingsDTO(settings);
+
+        msgTemplate.convertAndSend(
+                String.format("/topic/lobbies/%s/settings", lobbyId),
+                gameSettingsDTO
+        );
+    }
+
+    public void updateLobbyState(String lobbyId, Boolean isGameRunning, Boolean isLobbyFull) {
+        LobbyStateDTO lobbyStateDTO = new LobbyStateDTO();
+        lobbyStateDTO.setIsGameRunning(isGameRunning);
+        lobbyStateDTO.setIsLobbyFull(isLobbyFull);
+
+        msgTemplate.convertAndSend(
+                String.format("/topic/lobbies/%s/settings", lobbyId),
+                lobbyStateDTO
         );
     }
 }
