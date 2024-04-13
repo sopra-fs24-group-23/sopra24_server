@@ -40,4 +40,6 @@
 - 4.4 - 10.4, Nilaksan, [https://github.com/sopra-fs24-group-23/sopra24_server/issues/109]([url](https://github.com/sopra-fs24-group-23/sopra24_server/issues/109)
 - 4.4 - 10.4, Nilaksan, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/22](https://github.com/sopra-fs24-group-23/sopra24_client/issues/22)
   
-
+## Week 3
+- 11.4 - 17.4, Franziska, [https://github.com/orgs/sopra-fs24-group-23/projects/3/views/1?pane=issue&itemId=56847602](https://github.com/orgs/sopra-fs24-group-23/projects/3/views/1?pane=issue&itemId=56847602)
+- 11.4 - 17-4, Franziska, [https://github.com/orgs/sopra-fs24-group-23/projects/3/views/1?pane=issue&itemId=56942873](https://github.com/orgs/sopra-fs24-group-23/projects/3/views/1?pane=issue&itemId=56942873)
