@@ -51,6 +51,8 @@ public interface DTOMapper {
     @Mapping(source = "username", target = "username")
     @Mapping(source = "currentScore", target = "currentScore")
     @Mapping(source = "currentAnswers", target = "currentAnswers")
+    @Mapping(source = "hasAnswered", target = "hasAnswered")
+    @Mapping(source = "hasVoted", target = "hasVoted")
     PlayerGetDTO convertEntityToPlayerGetDTO(Player player);
 
     @Mapping(source = "isLobbyFull", target = "isLobbyFull")

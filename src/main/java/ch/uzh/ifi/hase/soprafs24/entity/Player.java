@@ -15,6 +15,8 @@ public class Player {
     private final String username;
     private Integer currentScore;
     private List<Answer> currentAnswers;
+    private boolean hasAnswered;
+    private boolean hasVoted;
 
     public Player(Long id, String username) {
         this.id = id;
@@ -48,4 +50,19 @@ public class Player {
         this.currentAnswers = currentAnswers;
     }
 
+    public boolean isHasAnswered() {
+        return hasAnswered;
+    }
+
+    public void setHasAnswered(boolean hasAnswered) {
+        this.hasAnswered = hasAnswered;
+    }
+
+    public boolean isHasVoted() {
+        return hasVoted;
+    }
+
+    public void setHasVoted(boolean hasVoted) {
+        this.hasVoted = hasVoted;
+    }
 }
