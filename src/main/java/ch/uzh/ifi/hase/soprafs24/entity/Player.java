@@ -22,7 +22,7 @@ public class Player {
         this.id = id;
         this.username = username;
         this.currentScore = 0;
-        this.currentAnswers = new ArrayList<Answer>();
+        this.currentAnswers = new ArrayList<>();
     }
 
     public Long getId() {
@@ -50,7 +50,7 @@ public class Player {
         this.currentAnswers = currentAnswers;
     }
 
-    public boolean isHasAnswered() {
+    public boolean getHasAnswered() {
         return hasAnswered;
     }
 
@@ -58,7 +58,7 @@ public class Player {
         this.hasAnswered = hasAnswered;
     }
 
-    public boolean isHasVoted() {
+    public boolean getHasVoted() {
         return hasVoted;
     }
 
