@@ -27,6 +27,10 @@ public class LobbyService {
         this.lobbies = new HashMap<String, Lobby>();
     }
     public Lobby getLobbyById(String lobbyId) {
+        Lobby lobby = lobbies.get(lobbyId);
+        if (lobby == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The lobby you tried to update was not found.");
+        }
         return lobbies.get(lobbyId);
     }
 
