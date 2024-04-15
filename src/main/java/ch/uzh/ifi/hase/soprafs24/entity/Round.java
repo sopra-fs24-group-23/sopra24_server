@@ -39,7 +39,13 @@ public class Round {
        // mainGame.notifyPlayers("Round " + roundNumber + "started with letter: " + startLetter);
     }
     public void endRound() {
+        // Set round as ended
+        this.roundEnded = true;
 
+        // Calculate the scores
+
+        // Notify the game/players that the round has ended
+        //mainGame.notifyPlayers("Round " + roundNumber + " ended.");
     }
 
     public String generateRandomLetter() {

@@ -8,8 +8,10 @@ import ch.uzh.ifi.hase.soprafs24.rest.dto.GameSettingsDTO;
 import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+
 import javax.transaction.Transactional;
 import java.util.HashMap;
+
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -79,52 +81,44 @@ public class GameService {
         }
     }
 
-        public void endRound () {
+    public void endRound() {
+        if (currentGame != null) {
             // End the round
-        }
+            currentGame.getRounds()[currentGame.getCurrentRound()].endRound();
 
-
-        public void advanceRound (Long gameId){
-            Game game = games.get(gameId);
-            boolean roundStarted = game.startNextRound();
-            if (!roundStarted) {
-                // Handle end-of game scenario
-                endGame(gameId);
+            // Check if there are more rounds
+            if (currentGame.hasMoreRounds()) {
+                // Start the next round
+                currentGame.startNextRound();
             }
             else {
-                // Reset or update round-specific data
-                //resetRoundData(game);
-
-                // Notify players about the new round
-                //notifyPlayers(gameId, "Round " + game.getCurrentRound() + " is starting!");
-
-                // Execute any additional round initialization logic
-                //initializeNewRound(game);
+                // End the game
+                endGame(currentGame.getGameId());
             }
         }
-
-        private void resetRoundData (Game game){
-
-        }
-
-        private void notifyPlayers (Long gameId, String message){
-            // Example: Send a message to all players in the game
-            // This could involve updating a UI element, sending a push notification, etc.
-        }
-
-        private void initializeNewRound (Game game){
-            // set round timers, etc.
-        }
-
-        public void endGame (Long gameId){
-            Game game = games.get(gameId);
-            Lobby lobby = lobbyService.getLobbyById(game.getLobby().getId());
-            lobby.setIsGameRunning(false);
-            // Additional logic to handle the end of the game
-        }
-
-        public void removePlayer (Long gameId, Player player){
-            Game game = games.get(gameId);
-            game.removePlayer(player);
-        }
     }
+
+    private void resetRoundData(Game game) {
+
+    }
+
+    private void notifyPlayers(Long gameId, String message) {
+        // Send a message to all players in the game
+    }
+
+    private void initializeNewRound(Game game) {
+        // set round timers, etc.
+    }
+
+    public void endGame(Long gameId) {
+        Game game = games.get(gameId);
+        Lobby lobby = lobbyService.getLobbyById(game.getLobby().getId());
+        lobby.setIsGameRunning(false);
+        // Additional logic to handle the end of the game
+    }
+
+    public void removePlayer(Long gameId, Player player) {
+        Game game = games.get(gameId);
+        game.removePlayer(player);
+    }
+}

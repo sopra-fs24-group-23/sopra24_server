@@ -102,4 +102,8 @@ public class Game {
             return false;
         }
     }
+
+    public boolean hasMoreRounds() {
+        return currentRound < this.settings.getMaxRounds();
+    }
 }
