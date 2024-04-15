@@ -16,10 +16,23 @@ public class Answer {
         this.category = category;
         this.answer = answer;
     }
+    // TODO: add mechanism to punish wrongful doubting
 
-    public Boolean checkAnswer() {
-        this.isCorrect = category.validateAnswer(this.answer);
-        return isCorrect;
+    public int calculateScore() {
+        int score = 0;
+        // if the answer is a non-doubted joker
+        if (this.isJoker && !this.isDoubted) {
+            this.isCorrect = true;
+        }
+        else {
+            this.isCorrect = category.validateAnswer(this.answer);
+        }
+
+        if (isCorrect) {
+            score = isDuplicate ? 5 : 10;
+        }
+
+        return score;
     };
 
     public Boolean getDuplicate() {

@@ -8,7 +8,8 @@ import java.util.List;
 public class GameStateDTO {
     private GamePhase gamePhase;
     private List<PlayerGetDTO> players;
-
+    private String currentLetter;
+    private Integer currentRoundNumber;
     public GamePhase getGamePhase() {
         return gamePhase;
     }
@@ -23,5 +24,21 @@ public class GameStateDTO {
 
     public void setPlayers(List<PlayerGetDTO> players) {
         this.players = players;
+    }
+
+    public String getCurrentLetter() {
+        return currentLetter;
+    }
+
+    public void setCurrentLetter(String currentLetter) {
+        this.currentLetter = currentLetter;
+    }
+
+    public Integer getCurrentRoundNumber() {
+        return currentRoundNumber;
+    }
+
+    public void setCurrentRoundNumber(Integer currentRoundNumber) {
+        this.currentRoundNumber = currentRoundNumber;
     }
 }

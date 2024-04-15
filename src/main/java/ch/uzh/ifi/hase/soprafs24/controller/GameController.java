@@ -28,7 +28,7 @@ public class GameController {
         this.gameService = gameService;
     }
 
-
+/*
    @PostMapping("/games")
    @ResponseStatus(HttpStatus.CREATED)
    @ResponseBody
@@ -39,7 +39,7 @@ public class GameController {
     return DTOMapper.INSTANCE.convertEntityToGameDTO(createdGame);
    }
 
-  /* @PostMapping("/games/{gameId}/rounds/{roundNumber}/end")
+   @PostMapping("/games/{gameId}/rounds/{roundNumber}/end")
    public ResponseEntity<?> endRound(@PathVariable Long gameId, Integer roundNumber) {
        try {
 
@@ -65,6 +65,7 @@ public class GameController {
            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                    .body("An error occured while trying to end the round");
        }
-   } */
+   }
+ */
 }
 

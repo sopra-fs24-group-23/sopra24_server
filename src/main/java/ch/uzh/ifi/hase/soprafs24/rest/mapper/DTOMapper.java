@@ -60,20 +60,17 @@ public interface DTOMapper {
     @Mapping(source = "id", target = "id")
     LobbyIdDTO convertEntityToLobbyIdDTO(Lobby lobby);
 
-    @Mapping(source = "gameId", target = "gameId")
-    GameDTO convertEntityToGameDTO(Game game);
-
     //@Mapping (source = "categories", target = "categories")
     @Mapping (source = "maxRounds", target = "maxRounds")
     @Mapping (source = "votingDuration", target = "votingDuration")
-    @Mapping (source = "maxRoundsDuration", target = "maxRoundsDuration")
+    @Mapping (source = "inputDuration", target = "inputDuration")
     @Mapping (source = "scoreboardDuration", target = "scoreboardDuration")
     @Mapping (source = "maxPlayers", target = "maxPlayers")
     GameSettings convertGameSettingsDTOToGameSettings(GameSettingsDTO gameSettingsDTO);
 
     @Mapping (source = "maxRounds", target = "maxRounds")
     @Mapping (source = "votingDuration", target = "votingDuration")
-    @Mapping (source = "maxRoundsDuration", target = "maxRoundsDuration")
+    @Mapping (source = "inputDuration", target = "inputDuration")
     @Mapping (source = "scoreboardDuration", target = "scoreboardDuration")
     @Mapping (source = "maxPlayers", target = "maxPlayers")
     GameSettingsDTO convertGameSettingsToGameSettingsDTO(GameSettings gameSettings);
