@@ -28,7 +28,7 @@ public class GameController {
         this.gameService = gameService;
     }
 
-
+/*
    @PostMapping("/games")
    @ResponseStatus(HttpStatus.CREATED)
    @ResponseBody
@@ -66,5 +66,6 @@ public class GameController {
                    .body("An error occured while trying to end the round");
        }
    }
+ */
 }
 

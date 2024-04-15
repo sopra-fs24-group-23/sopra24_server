@@ -1,105 +1,149 @@
 package ch.uzh.ifi.hase.soprafs24.entity;
 
+import ch.uzh.ifi.hase.soprafs24.constant.GamePhase;
+import org.springframework.scheduling.annotation.Async;
+
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
+import java.util.concurrent.*;
 
 public class Game {
 
-    private Long GameId;
-
-    private Lobby lobby;
-
     private List<Player> players;
-
     private GameSettings settings;
-
-    private Round[] rounds;
-
-    private int currentRound;
-
-    private boolean gameEnded = false;
+    private Integer currentRoundNumber;
+    private GamePhase currentPhase;
+    private String currentLetter;
+    private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
 
-    public Game(Lobby lobby) {
-        this.settings = lobby.getSettings();
-        this.lobby = lobby;
-        this.players = lobby.getPlayers();
-        this.rounds = new Round[settings.getMaxRounds()];
-        this.currentRound = 0;
-    }
-
-
-    public int getCurrentRound() {
-        return currentRound;
-    }
-
-    public void setCurrentRound(int currentRound) {
-        this.currentRound = currentRound;
-    }
-
-    public Round[] getRounds() {
-        return rounds;
-    }
-
-    public void setRounds(Round[] rounds) {
-        this.rounds = rounds;
-    }
-
-    public GameSettings getSettings() {
-        return settings;
-    }
-
-    public void setSettings(GameSettings settings) {
+    public Game(GameSettings settings, List<Player> players) {
         this.settings = settings;
-    }
-
-    public List<Player> getPlayers() {
-        return players;
-    }
-
-    public void setPlayers(List<Player> players) {
         this.players = players;
+        this.currentRoundNumber = 0;
     }
 
-    public Lobby getLobby() {
-        return lobby;
-    }
+    public boolean initializeRound() {
+        if (currentRoundNumber < settings.getMaxRounds()) {
+            currentRoundNumber++;
+            currentPhase = GamePhase.SCOREBOARD;
+            currentLetter = generateRandomLetter();
 
-    public void setLobby(Lobby lobby) {
-        this.lobby = lobby;
-    }
+            // reset player answers
+            for(Player player : players) {
+                player.setCurrentAnswers(new ArrayList<>());
+            }
 
-    public Long getGameId() {
-        return GameId;
-    }
-
-    public void setGameId(Long gameId) {
-        GameId = gameId;
-    }
-
-    // If a player leaves a game
-    public void removePlayer(Player player) {
-        // TODO: check if exception handling necessary
-        this.players.remove(player);
-    }
-
-    public boolean isGameEnded() {
-        return gameEnded;
-    }
-
-    public void setGameEnded(boolean gameEnded) {
-        this.gameEnded = gameEnded;
-    }
-
-    public boolean startNextRound() {
-        if (currentRound < this.settings.getMaxRounds()) {
-            currentRound++;
-            // round specific data here
-            rounds[currentRound] = new Round(currentRound + 1, this);
             return true;
         }
-        else {
-            // end of game logic here
-            return false;
+        return false;
+    }
+
+    @Async
+    public CompletableFuture<Void> calculateScores(){
+        CompletableFuture<Void> future = new CompletableFuture<>();
+
+        for (Player player : players) {
+            for (Answer answer : player.getCurrentAnswers()) {
+                player.setCurrentScore(
+                        player.getCurrentScore() + answer.calculateScore()
+                );
+            }
         }
+        return future;
+    }
+
+    @Async
+    public CompletableFuture<Void> waitScoreboard() {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+
+        // schedule timeout logic after X seconds
+        scheduler.schedule(() -> {
+            future.complete(null);
+        }, settings.getScoreboardDuration().longValue(), TimeUnit.SECONDS);
+
+        return future;
+    }
+
+    @Async
+    public CompletableFuture<Void> waitInput() {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+
+        // schedule condition check every second
+        ScheduledFuture<?> scheduledFuture = scheduler.scheduleAtFixedRate(() -> {
+            if (allPlayersHaveAnswered()) {
+                future.complete(null);
+            }
+        }, 0, 1, TimeUnit.SECONDS);
+
+        // schedule timeout logic after X seconds
+        scheduler.schedule(() -> {
+            scheduledFuture.cancel(false);
+            if (!future.isDone()) {
+                future.complete(null);
+            }
+        }, settings.getInputDuration().longValue(), TimeUnit.SECONDS);
+
+        return future;
+    }
+
+    @Async
+    public CompletableFuture<Void> waitVoting() {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+
+        ScheduledFuture<?> scheduledFuture = scheduler.scheduleAtFixedRate(() -> {
+            if (allPlayersHaveVoted()) {
+                future.complete(null);
+            }
+        }, 0, 1, TimeUnit.SECONDS);
+
+        // schedule timeout logic after X seconds
+        scheduler.schedule(() -> {
+            scheduledFuture.cancel(false);
+            if (!future.isDone()) {
+                future.complete(null);
+            }
+        }, settings.getVotingDuration().longValue(), TimeUnit.SECONDS);
+
+        return future;
+    }
+
+    /* HELPER METHODS */
+
+    /** Checks whether all players have submitted an answer **/
+    private boolean allPlayersHaveAnswered() {
+        for (Player player : players) {
+            if(player.getCurrentAnswers().isEmpty()) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    private boolean allPlayersHaveVoted() {
+        // TODO: implement a way to check if players have answered
+        return true;
+    }
+
+    /** Generate a random uppercase letter **/
+    private String generateRandomLetter() {
+        Random random = new Random();
+        return ("A" + random.nextInt(26));
+    }
+
+    /* GETTERS / SETTERS */
+
+    public GameState getState() {
+        return new GameState(
+                currentLetter,
+                currentPhase,
+                players,
+                currentRoundNumber
+        );
+    }
+
+    public void setPhase(GamePhase phase) {
+        this.currentPhase = phase;
     }
 }

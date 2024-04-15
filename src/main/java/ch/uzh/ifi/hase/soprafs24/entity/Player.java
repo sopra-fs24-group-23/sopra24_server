@@ -10,6 +10,7 @@ import java.util.List;
 
 public class Player {
 
+    // TODO: need a way to check if a player has voted
     private final Long id;
     private final String username;
     private Integer currentScore;

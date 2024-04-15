@@ -8,8 +8,7 @@ public class GameSettings {
     private List<Category> categories;
     private Integer maxRounds;
     private Integer votingDuration;
-
-    private Integer maxRoundsDuration;
+    private Integer inputDuration;
     private Integer scoreboardDuration;
     private Integer maxPlayers;
 
@@ -18,7 +17,7 @@ public class GameSettings {
         this.maxRounds = 5;
         this.votingDuration = 30;
         this.scoreboardDuration = 30;
-        this.maxRoundsDuration = 500;
+        this.inputDuration = 60;
         this.maxPlayers = 4;
     }
 
@@ -55,11 +54,11 @@ public class GameSettings {
         this.scoreboardDuration = scoreboardDuration;
     }
 
-    public Integer getMaxRoundsDuration() {
-        return maxRoundsDuration;
+    public Integer getInputDuration() {
+        return inputDuration;
     }
 
-    public void setMaxRoundsDuration(Integer maxRoundsDuration) {
-        this.maxRoundsDuration = maxRoundsDuration;
+    public void setInputDuration(Integer inputDuration) {
+        this.inputDuration = inputDuration;
     }
 }

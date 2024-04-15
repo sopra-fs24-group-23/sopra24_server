@@ -6,7 +6,7 @@ public class GameSettingsDTO {
     private List<String> categories;
     private Integer maxRounds;
     private Integer votingDuration;
-    private Integer maxRoundsDuration;
+    private Integer inputDuration;
     private Integer scoreboardDuration;
     private Integer maxPlayers;
 
@@ -34,14 +34,6 @@ public class GameSettingsDTO {
         this.votingDuration = votingDuration;
     }
 
-    public Integer getMaxRoundsDuration() {
-        return maxRoundsDuration;
-    }
-
-    public void setMaxRoundsDuration(Integer maxRoundsDuration) {
-        this.maxRoundsDuration = maxRoundsDuration;
-    }
-
     public Integer getScoreboardDuration() {
         return scoreboardDuration;
     }
@@ -56,5 +48,13 @@ public class GameSettingsDTO {
 
     public void setMaxPlayers(Integer maxPlayers) {
         this.maxPlayers = maxPlayers;
+    }
+
+    public Integer getInputDuration() {
+        return inputDuration;
+    }
+
+    public void setInputDuration(Integer inputDuration) {
+        this.inputDuration = inputDuration;
     }
 }
