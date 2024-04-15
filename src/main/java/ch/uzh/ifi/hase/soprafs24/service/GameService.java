@@ -53,16 +53,34 @@ public class GameService {
                 updateClients(gameId, game.getState());
                 // wait for inputDuration OR until all players have answered
                 game.waitInput().thenRun(() -> {
-                    // change phase to VOTING
-                    game.setPhase(GamePhase.VOTING);
-                    // inform clients that voting has started
+                    // change phase to AWAITING_ANSWERS
+                    game.setPhase(GamePhase.AWAITING_ANSWERS);
+                    // inform clients to send answers
                     updateClients(gameId, game.getState());
-                    // wait for votingDuration OR until all players have voted
-                    game.waitVoting().thenRun(() -> {
-                        // make async calls to check answers
-                        game.calculateScores().thenRun(() -> {
-                            // update clients with new scores
+                    // wait for all answers to arrive
+                    game.waitForAnswers().thenRun(() -> {
+                        // change phase to VOTING
+                        game.setPhase(GamePhase.VOTING);
+                        // inform clients that voting has started
+                        updateClients(gameId, game.getState());
+                        // wait for voting duration
+                        game.waitVoting().thenRun(() -> {
+                            // change phase to AWAITING_VOTES
+                            game.setPhase(GamePhase.AWAITING_VOTES);
+                            // inform clients to send votes
                             updateClients(gameId, game.getState());
+                            // wait for all votes to arrive
+                            game.waitForVotes().thenRun(() -> {
+                                // make async calls to calculate score
+                                game.calculateScores().thenRun(() -> {
+                                    // change phase to VOTING_RESULTS
+                                    game.setPhase(GamePhase.VOTING_RESULTS);
+                                    // inform clients to display voting results
+                                    updateClients(gameId, game.getState());
+                                    // delay round-end to display voting results
+                                    game.waitScoreboard();
+                                });
+                            });
                         });
                     });
                 });
