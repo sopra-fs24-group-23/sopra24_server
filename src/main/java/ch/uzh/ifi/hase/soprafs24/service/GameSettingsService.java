@@ -3,15 +3,35 @@ package ch.uzh.ifi.hase.soprafs24.service;
 import ch.uzh.ifi.hase.soprafs24.entity.Game;
 import ch.uzh.ifi.hase.soprafs24.entity.GameSettings;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.GameSettingsDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class GameSettingsService {
 
+    private final GameService gameService;
+
+    @Autowired
+    public GameSettingsService(GameService gameService) {
+        this.gameService = gameService;
+    }
     public GameSettings getSettings(Game game){
         return game.getSettings();
     }
-    public GameSettings updateSettings(GameSettingsDTO settingsDTO) {
+    public GameSettings updateSettings(String lobbyId, GameSettingsDTO settingsDTO) {
+        // Get the game associated with the lobby
+        Game game = null;
+        for (Game g : gameService.getGames().values()) {
+            if (g.getLobby().getId().equals(lobbyId)) {
+                game = g;
+                break;
+            }
+        }
+        // if the game doesn't exist throw an error
+        if (game == null) {
+            throw new IllegalArgumentException("Game not found");
+        }
+        // Convert DTO to a GameSettings entity
         GameSettings settings = convertDTOToEntity(settingsDTO);
         return settings;
     }

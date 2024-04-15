@@ -19,7 +19,7 @@ public class GameSettingsController {
 
     @PostMapping("/lobbies/{lobbyId}/game-settings")
     public ResponseEntity<Void> updateGameSettings(@PathVariable String lobbyId, @RequestBody GameSettingsDTO gameSettingsDTO) {
-        gameSettingsService.updateSettings(gameSettingsDTO);
+        gameSettingsService.updateSettings(lobbyId, gameSettingsDTO);
         return ResponseEntity.ok().build();
     }
 }

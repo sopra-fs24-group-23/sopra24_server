@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,10 @@ public class GameService {
 
     public Game getGameById(Long GameId) {
         return games.get(GameId);
+    }
+
+    public Map<Long, Game> getGames() {
+        return games;
     }
 
     public Game createGame(Lobby lobby) {
@@ -76,7 +81,9 @@ public class GameService {
                 // Decrease the round duration
                 settings.setMaxRoundsDuration(settings.getMaxRoundsDuration() - 1);
                 GameSettingsDTO settingsDTO = gameSettingsService.convertEntityToDTO(settings);
-                gameSettingsService.updateSettings(settingsDTO);
+                // Get the lobbyId from the current game
+                String lobbyId = currentGame.getLobby().getId();
+                gameSettingsService.updateSettings(lobbyId, settingsDTO);
             }
         }
     }
