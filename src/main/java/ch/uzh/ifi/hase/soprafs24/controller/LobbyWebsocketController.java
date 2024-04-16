@@ -42,7 +42,7 @@ public class LobbyWebsocketController {
         this.updatePlayerList(lobbyId, players);
     }
 
-    @MessageMapping("/lobbies/{lobbyID}/leave")
+    @MessageMapping("/lobbies/{lobbyId}/leave")
     public void removePlayer(@DestinationVariable String lobbyId, @Payload UserTokenDTO userTokenDTO) {
         // convert tokenDTO to user
         User userToRemove = DTOMapper.INSTANCE.convertUserTokenDTOtoEntity(userTokenDTO);
