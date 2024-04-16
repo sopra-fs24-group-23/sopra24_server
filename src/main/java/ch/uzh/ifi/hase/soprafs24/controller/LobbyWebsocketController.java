@@ -6,6 +6,7 @@ import ch.uzh.ifi.hase.soprafs24.entity.Player;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.*;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
+import ch.uzh.ifi.hase.soprafs24.service.GameService;
 import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
 import ch.uzh.ifi.hase.soprafs24.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,10 +31,24 @@ public class LobbyWebsocketController {
 
     private final LobbyService lobbyService;
     private UserService userService;  // Autowiring the userService
+    private final GameService gameService;
 
 
-    public LobbyWebsocketController(LobbyService lobbyService) {
+
+    public LobbyWebsocketController(LobbyService lobbyService, GameService gameService) {
         this.lobbyService = lobbyService;
+        this.gameService = gameService;
+    }
+
+    @MessageMapping("/lobbies/{lobbyId}/startGame")
+    public void startGame(@DestinationVariable String lobbyId) {
+        // Retrieve the game settings and players for the lobby
+        Lobby lobby = lobbyService.getLobbyById(lobbyId);
+        GameSettings settings = lobby.getSettings();
+        List<Player> players = lobby.getPlayers();
+
+        // Call the runGame method
+        gameService.runGame(lobbyId, settings, players);
     }
 
     @MessageMapping("/lobbies/{lobbyId}/join")
