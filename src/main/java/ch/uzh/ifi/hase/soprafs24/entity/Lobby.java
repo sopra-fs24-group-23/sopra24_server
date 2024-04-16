@@ -25,9 +25,6 @@ public class Lobby {
         this.players.put(host.getUsername(), host);
     }
 
-    public void startGame() { // removed parameters here (see UML); can be got from attributes
-    }
-
     public List<Player> getPlayers() {
         return new ArrayList<>(this.players.values());
     }
