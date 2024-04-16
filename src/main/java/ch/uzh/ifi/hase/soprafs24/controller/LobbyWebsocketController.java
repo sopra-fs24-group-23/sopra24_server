@@ -42,6 +42,9 @@ public class LobbyWebsocketController {
         User userToAdd = DTOMapper.INSTANCE.convertUserTokenDTOtoEntity(userTokenDTO);
         // add user to lobby as a player
         List<Player> players = lobbyService.addPlayer(lobbyId, userToAdd);
+        // Send current game settings to all players
+        GameSettings currentSettings = lobbyService.getLobbyById(lobbyId).getSettings();
+        this.updateSettings(lobbyId, currentSettings);
         // update clients with new player-list
         this.updatePlayerList(lobbyId, players);
     }

@@ -71,7 +71,7 @@ public class LobbyService {
     public List<Player> addPlayer(String lobbyId, User userToAdd) {
         // retrieve lobby from Service hashmap
         Lobby lobby = lobbies.get(lobbyId);
-
+        
         // find user corresponding to received token
         User user = userRepository.findByToken(userToAdd.getToken());
 
