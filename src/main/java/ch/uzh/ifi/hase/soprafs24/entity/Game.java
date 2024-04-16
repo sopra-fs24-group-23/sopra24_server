@@ -33,9 +33,11 @@ public class Game {
             currentPhase = GamePhase.SCOREBOARD;
             currentLetter = generateRandomLetter();
 
-            // reset player answers
+            // reset player answers and flags
             for(Player player : players) {
                 player.setCurrentAnswers(new ArrayList<>());
+                player.setHasAnswered(false);
+                player.setHasVoted(false);
             }
 
             return true;
@@ -59,14 +61,7 @@ public class Game {
 
     @Async
     public CompletableFuture<Void> waitScoreboard() {
-        CompletableFuture<Void> future = new CompletableFuture<>();
-
-        // schedule timeout logic after X seconds
-        scheduler.schedule(() -> {
-            future.complete(null);
-        }, settings.getScoreboardDuration().longValue(), TimeUnit.SECONDS);
-
-        return future;
+        return waitForDuration(settings.getScoreboardDuration().longValue());
     }
 
     @Async
@@ -92,20 +87,71 @@ public class Game {
     }
 
     @Async
+    public CompletableFuture<Void> waitForAnswers() {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+
+        // schedule check every second; complete future if all answers received
+        ScheduledFuture<?> scheduledFuture = scheduler.scheduleAtFixedRate(() -> {
+            boolean allAnswersReceived = true;
+            for (Player player : players ) {
+                if (!player.getHasAnswered()) {
+                    allAnswersReceived = false;
+                    break;
+                }
+            }
+
+            if (allAnswersReceived) {
+                future.complete(null);
+            }
+
+        }, 0, 1, TimeUnit.SECONDS);
+
+        return future;
+    }
+    @Async
     public CompletableFuture<Void> waitVoting() {
+        return waitForDuration(settings.getVotingDuration().longValue());
+    }
+
+    @Async
+    public CompletableFuture<Void> waitForVotes() {
+        CompletableFuture<Void> future = new CompletableFuture<>();
+
+        // schedule check every second; complete future if all votes received
+        ScheduledFuture<?> scheduledFuture = scheduler.scheduleAtFixedRate(() -> {
+            boolean allVotesReceived = true;
+            for (Player player : players ) {
+                if (!player.getHasVoted()) {
+                    allVotesReceived = false;
+                    break;
+                }
+            }
+
+            if (allVotesReceived) {
+                future.complete(null);
+            }
+
+        }, 0, 1, TimeUnit.SECONDS);
+
+        return future;
+    }
+
+
+    /* HELPER METHODS */
+
+    /** Generate a random uppercase letter **/
+
+    @Async
+    public CompletableFuture<Void> waitForDuration(Long duration) {
         CompletableFuture<Void> future = new CompletableFuture<>();
 
         // schedule timeout logic after X seconds
         scheduler.schedule(() -> {
             future.complete(null);
-        }, settings.getVotingDuration().longValue(), TimeUnit.SECONDS);
+        }, duration, TimeUnit.SECONDS);
 
         return future;
     }
-
-    /* HELPER METHODS */
-
-    /** Generate a random uppercase letter **/
     private String generateRandomLetter() {
         Random random = new Random();
         return ("A" + random.nextInt(26));

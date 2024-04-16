@@ -15,12 +15,14 @@ public class Player {
     private final String username;
     private Integer currentScore;
     private List<Answer> currentAnswers;
+    private boolean hasAnswered;
+    private boolean hasVoted;
 
     public Player(Long id, String username) {
         this.id = id;
         this.username = username;
         this.currentScore = 0;
-        this.currentAnswers = new ArrayList<Answer>();
+        this.currentAnswers = new ArrayList<>();
     }
 
     public Long getId() {
@@ -48,4 +50,19 @@ public class Player {
         this.currentAnswers = currentAnswers;
     }
 
+    public boolean getHasAnswered() {
+        return hasAnswered;
+    }
+
+    public void setHasAnswered(boolean hasAnswered) {
+        this.hasAnswered = hasAnswered;
+    }
+
+    public boolean getHasVoted() {
+        return hasVoted;
+    }
+
+    public void setHasVoted(boolean hasVoted) {
+        this.hasVoted = hasVoted;
+    }
 }
