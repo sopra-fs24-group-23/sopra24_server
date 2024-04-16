@@ -10,28 +10,20 @@ import java.util.List;
 
 public class Player {
 
-    // TODO: need a way to check if a player has voted
-    private final Long id;
-    private final String username;
+    private Long id;
+    private String token;
+    private String username;
     private Integer currentScore;
     private List<Answer> currentAnswers;
     private boolean hasAnswered;
     private boolean hasVoted;
 
-    public Player(Long id, String username) {
+    public Player(Long id, String username, String token) {
         this.id = id;
+        this.token = token;
         this.username = username;
         this.currentScore = 0;
         this.currentAnswers = new ArrayList<>();
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-
-    public String getUsername() {
-        return username;
     }
 
     public Integer getCurrentScore() {
@@ -64,5 +56,29 @@ public class Player {
 
     public void setHasVoted(boolean hasVoted) {
         this.hasVoted = hasVoted;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }
