@@ -56,6 +56,17 @@ public class LobbyWebsocketController {
         this.updatePlayerList(lobbyId, players);
     }
 
+    @MessageMapping("/lobbies/{lobbyId}/kick/{usernameToKick}")
+    public void kickPlayer(@DestinationVariable String lobbyId,
+                           @DestinationVariable String usernameToKick,
+                           @Payload UserTokenDTO hostTokenDTO) {
+        User host = DTOMapper.INSTANCE.convertUserTokenDTOtoEntity(hostTokenDTO);
+
+        List<Player> updatedPlayers = lobbyService.kickPlayer(lobbyId, usernameToKick, host);
+
+        this.updatePlayerList(lobbyId, updatedPlayers);
+    }
+
     /** Server to client(s) communication **/
     public void updatePlayerList(String lobbyId, List<Player> players) {
         System.out.println("Sending updated player list to clients");

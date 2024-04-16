@@ -4,6 +4,7 @@ import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.entity.Player;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.exceptions.LobbyFullException;
+import ch.uzh.ifi.hase.soprafs24.exceptions.UnauthorizedException;
 import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -37,7 +38,7 @@ public class LobbyService {
     public Lobby createLobby(User hostToken) {
         // fetch host from DB and initialize player object
         User host = userRepository.findByToken(hostToken.getToken());
-        Player hostPlayer = new Player(host.getId(), host.getUsername());
+        Player hostPlayer = new Player(host.getId(), host.getUsername(), host.getToken());
         // create new lobby, store to lobby list
         Lobby newLobby = new Lobby(hostPlayer);
         this.lobbies.put(newLobby.getId(), newLobby);
@@ -63,7 +64,7 @@ public class LobbyService {
         User user = userRepository.findByToken(userToAdd.getToken());
 
         // create new player object from user and add to the lobby
-        Player player = new Player(user.getId(), user.getUsername());
+        Player player = new Player(user.getId(), user.getUsername(), user.getToken());
 
         try {
             lobby.addPlayer(player);
@@ -76,33 +77,31 @@ public class LobbyService {
     }
 
     public List<Player> removePlayer(String lobbyId, User userToRemove) {
-        Lobby lobby = getLobbyById(lobbyId);
 
-        if (lobby != null) {
-            lobby.removePlayer(userToRemove.getUsername());
-        } else {
-            throw new IllegalArgumentException("Lobby not found");
+        Lobby lobby = getLobbyById(lobbyId);
+        Player removedPlayer = lobby.removePlayer(userToRemove.getToken());
+
+        if (removedPlayer == null) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "The player you tried to remove from the lobby was not found."
+            );
         }
 
         return lobby.getPlayers();
     }
-    public void leaveLobby(String lobbyId, User user) {
-        Lobby lobby = lobbies.get(lobbyId);
-        if (lobby == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby not found.");
+
+    public List<Player> kickPlayer(String lobbyId, String hostToken, User userToRemove) {
+        Lobby lobby = getLobbyById(lobbyId);
+
+        try {
+            lobby.kickPlayer(hostToken, userToRemove.getUsername());
+        }
+        catch (UnauthorizedException e) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, String.format("%s", e.getMessage()));
         }
 
-        // Check if the user is part of the lobby
-        boolean isPlayerInLobby = lobby.getPlayers().stream()
-                .anyMatch(player -> player.getId().equals(user.getId()));
-        if (!isPlayerInLobby) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is not part of this lobby.");
-        }
-
-        // Remove player from the lobby
-        lobby.removePlayer(user.getUsername());
-
-        // If player is host close the lobby/game
+        return lobby.getPlayers();
     }
 
 
