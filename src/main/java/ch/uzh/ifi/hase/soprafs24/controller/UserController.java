@@ -58,10 +58,10 @@ public class UserController {
     @PutMapping("/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody
-    public UserAuthenticationDTO updateUser(@PathVariable Long userId, @RequestBody UserPutDTO userPutDTO) {
+    public UserGetDTO updateUser(@PathVariable Long userId, @RequestBody UserPutDTO userPutDTO) {
         User userInput = DTOMapper.INSTANCE.convertUserPutDTOtoEntity(userPutDTO);
         User updatedUser = userService.updateUser(userInput, userId);
-        return DTOMapper.INSTANCE.convertEntityToUserAuthenticationDTO(updatedUser);
+        return DTOMapper.INSTANCE.convertEntityToUserGetDTO(updatedUser);
     }
 
     @GetMapping("/users/{userId}")
@@ -89,26 +89,5 @@ public class UserController {
         User user = userService.logout(userInput.getToken());
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
     }
-    @PostMapping("/leaveLobby/{lobbyId}") //not too sure if this is how we defined the endpoint in m2
-    public ResponseEntity<LeaveLobbyResponseDTO> leaveLobby(UserAuthenticationDTO userAuthenticationDTO, @PathVariable String lobbyId) {
-        User userInput = DTOMapper.INSTANCE.convertUserAuthenticationDTOtoEntity(userAuthenticationDTO);
-
-        try {
-            userService.userLeaveLobby(userInput.getId(), lobbyId);
-            return ResponseEntity.ok(new LeaveLobbyResponseDTO("User successfully left the lobby."));
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new LeaveLobbyResponseDTO("Error: " + e.getMessage()));
-        }
-    }
-    @PostMapping("/lobbies/join/{lobbyId}")
-    public ResponseEntity joinLobby(@RequestBody UserTokenDTO userTokenDTO, @PathVariable String lobbyId) throws ResponseStatusException {
-            //User userInput = DTOMapper.INSTANCE.convertUserTokenDTOtoEntity(userTokenDTO);
-
-        userService.joinLobby(lobbyId, userTokenDTO);
-        return ResponseEntity.ok("User successfully joined the lobby.");
-    }
-
-
 }
 
