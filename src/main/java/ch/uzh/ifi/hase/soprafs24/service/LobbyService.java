@@ -56,6 +56,18 @@ public class LobbyService {
         }
     }
 
+    // throws 404 if lobbyId is invalid, else do nothing.
+    public void checkLobbyId(String lobbyId) {
+        Lobby lobby = this.lobbies.get(lobbyId);
+
+        if (lobby == null) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "The lobby you are trying to join does not exist."
+            );
+        }
+    }
+
     public List<Player> addPlayer(String lobbyId, User userToAdd) {
         // retrieve lobby from Service hashmap
         Lobby lobby = lobbies.get(lobbyId);
