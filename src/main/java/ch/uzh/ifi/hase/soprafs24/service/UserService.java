@@ -135,4 +135,11 @@ public class UserService {
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "The user with the provided ID doesn't exist.")
         );
     }
+    public User findUserByName(String username) {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found with username: " + username);
+        }
+        return user;
+    }
 }

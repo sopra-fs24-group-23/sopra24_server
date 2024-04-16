@@ -29,7 +29,10 @@ public class LobbyWebsocketController {
     private SimpMessagingTemplate msgTemplate;
 
     private final LobbyService lobbyService;
-    private UserService userService;  // Autowiring the userService
+
+    @Autowired
+    private  UserService userService;  // Autowiring the userService
+
 
 
     public LobbyWebsocketController(LobbyService lobbyService) {
@@ -61,10 +64,15 @@ public class LobbyWebsocketController {
                            @DestinationVariable String usernameToKick,
                            @Payload UserTokenDTO hostTokenDTO) {
         User host = DTOMapper.INSTANCE.convertUserTokenDTOtoEntity(hostTokenDTO);
+        User userToKick = userService.findUserByName(usernameToKick);
 
-        List<Player> updatedPlayers = lobbyService.kickPlayer(lobbyId, usernameToKick, host);
+        List<Player> updatedPlayers = lobbyService.kickPlayer(lobbyId, host.getToken(),userToKick);
 
         this.updatePlayerList(lobbyId, updatedPlayers);
+        msgTemplate.convertAndSend(
+                String.format("/topic/queue/kick"),
+                "redirect"  // The client will look for this message
+        );
     }
 
     /** Server to client(s) communication **/
