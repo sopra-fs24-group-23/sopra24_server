@@ -23,7 +23,6 @@ public class Lobby {
         this.isLobbyFull = false;
         // initialize player list and add host directly
         this.players = new HashMap<String, Player>();
-        this.players.put(host.getUsername(), host);
     }
 
     public List<Player> getPlayers() {
