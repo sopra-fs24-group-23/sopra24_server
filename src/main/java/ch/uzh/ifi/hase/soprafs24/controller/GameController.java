@@ -1,7 +1,10 @@
 package ch.uzh.ifi.hase.soprafs24.controller;
 
+import java.util.List;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
+import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,7 +18,9 @@ import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
 import ch.uzh.ifi.hase.soprafs24.service.GameService;
 import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
+import ch.uzh.ifi.hase.soprafs24.entity.Player;
 import ch.uzh.ifi.hase.soprafs24.entity.Game;
+import ch.uzh.ifi.hase.soprafs24.entity.GameSettings;
 
 @RestController
 public class GameController {
@@ -28,6 +33,15 @@ public class GameController {
         this.gameService = gameService;
     }
 
+    @MessageMapping("/games/{lobbyId}/start")
+    public void startGame(@DestinationVariable String lobbyId) {
+        // Retrieve game settings and players from the lobby
+        Lobby lobby = lobbyService.getLobbyById(lobbyId);
+        GameSettings settings = lobby.getSettings();
+        List<Player> players = lobby.getPlayers();
+        // Start the game
+        gameService.runGame(lobbyId, settings, players);
+    }
 /*
    @PostMapping("/games")
    @ResponseStatus(HttpStatus.CREATED)
