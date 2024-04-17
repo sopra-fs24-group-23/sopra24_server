@@ -1,7 +1,10 @@
 package ch.uzh.ifi.hase.soprafs24.entity;
 
 import ch.uzh.ifi.hase.soprafs24.categories.Category;
+import ch.uzh.ifi.hase.soprafs24.categories.City;
+import ch.uzh.ifi.hase.soprafs24.categories.Country;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GameSettings {
@@ -19,6 +22,10 @@ public class GameSettings {
         this.scoreboardDuration = 30;
         this.inputDuration = 60;
         this.maxPlayers = 4;
+        // setting standard categories
+        this.categories = new ArrayList<>();
+        this.categories.add(new City());
+        this.categories.add(new Country());
     }
 
     public Integer getMaxRounds() {

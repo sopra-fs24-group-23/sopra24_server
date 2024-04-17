@@ -10,7 +10,7 @@ import org.json.JSONObject;
 public class CityAPI extends APIManager {
 
     public CityAPI(String apiKey, String baseUrl) {
-        setApiKey(apiKey);
+        setApiKey(apiKey); // TODO: apiKey must be in GitHub
         setBaseUrl("https://wft-geo-db.p.rapidapi.com");
     }
 
