@@ -1,7 +1,6 @@
 package ch.uzh.ifi.hase.soprafs24.controller;
 
 import ch.uzh.ifi.hase.soprafs24.entity.GameSettings;
-import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.entity.Player;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.*;
@@ -9,15 +8,11 @@ import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
 import ch.uzh.ifi.hase.soprafs24.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +24,6 @@ public class LobbyWebsocketController {
     private SimpMessagingTemplate msgTemplate;
 
     private final LobbyService lobbyService;
-    private UserService userService;  // Autowiring the userService
-
 
     public LobbyWebsocketController(LobbyService lobbyService) {
         this.lobbyService = lobbyService;
@@ -44,6 +37,9 @@ public class LobbyWebsocketController {
         List<Player> players = lobbyService.addPlayer(lobbyId, userToAdd);
         // update clients with new player-list
         this.updatePlayerList(lobbyId, players);
+        // update clients with current settings
+        GameSettings settings = lobbyService.getLobbyById(lobbyId).getSettings();
+        this.updateSettings(lobbyId, settings);
     }
 
     @MessageMapping("/lobbies/{lobbyId}/leave")
@@ -72,7 +68,7 @@ public class LobbyWebsocketController {
     public void updatePlayerList(String lobbyId, List<Player> players) {
         System.out.println("Sending updated player list to clients");
         // convert player list to DTO list
-        List<PlayerGetDTO> playerGetDTOS = new ArrayList<PlayerGetDTO>();
+        List<PlayerGetDTO> playerGetDTOS = new ArrayList<>();
         for (Player player : players) {
             playerGetDTOS.add(DTOMapper.INSTANCE.convertEntityToPlayerGetDTO(player));
         }
