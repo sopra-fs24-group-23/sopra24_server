@@ -6,7 +6,6 @@ import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.*;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
-import ch.uzh.ifi.hase.soprafs24.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
@@ -58,8 +57,11 @@ public class LobbyWebsocketController {
                            @Payload UserTokenDTO hostTokenDTO) {
         User host = DTOMapper.INSTANCE.convertUserTokenDTOtoEntity(hostTokenDTO);
 
-        List<Player> updatedPlayers = lobbyService.kickPlayer(lobbyId, usernameToKick, host);
+        List<Player> updatedPlayers = lobbyService.kickPlayer(lobbyId, host, usernameToKick);
 
+        // updated kicked client to redirect
+        this.sendKickMessage(lobbyId, usernameToKick);
+        // update remaining clients with new playerlist
         this.updatePlayerList(lobbyId, updatedPlayers);
     }
     //somechange
@@ -85,6 +87,13 @@ public class LobbyWebsocketController {
         msgTemplate.convertAndSend(
                 String.format("/topic/lobbies/%s/settings", lobbyId),
                 gameSettingsDTO
+        );
+    }
+
+    public void sendKickMessage(String lobbyId, String usernameToKick) {
+        msgTemplate.convertAndSend(
+                String.format("/queue/lobbies/%s/kick/%s", lobbyId, usernameToKick),
+                "player kicked"
         );
     }
 

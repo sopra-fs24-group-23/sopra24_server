@@ -103,11 +103,11 @@ public class LobbyService {
         return lobby.getPlayers();
     }
 
-    public List<Player> kickPlayer(String lobbyId, String hostToken, User userToRemove) {
+    public List<Player> kickPlayer(String lobbyId, User host, String usernameToKick) {
         Lobby lobby = getLobbyById(lobbyId);
 
         try {
-            lobby.kickPlayer(hostToken, userToRemove.getUsername());
+            lobby.kickPlayer(host.getToken(), usernameToKick);
         }
         catch (UnauthorizedException e) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, String.format("%s", e.getMessage()));
