@@ -69,10 +69,10 @@ public class CountryAPI extends APIManager {
         String apiKey = "7f9f1b12c5msh0ee2d0b9a2cbbb7p158dc9jsn62d752680b9e";
         String baseUrl = "https://referential.p.rapidapi.com";
 
-        CountryAPI countryAPI = new CountryAPI(apiKey, baseUrl);
-        String answer = "china"; // Example country name
-        String result = countryAPI.performRequest(answer); // Pass the country name
+       // CountryAPI countryAPI = new CountryAPI(apiKey, baseUrl);
+       // String answer = "china"; // Example country name
+      //  String result = countryAPI.performRequest(answer); // Pass the country name
 
-        System.out.println("Is " + answer + " a country? " + result);
+      //  System.out.println("Is " + answer + " a country? " + result);
     }
 }

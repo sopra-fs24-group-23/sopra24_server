@@ -64,7 +64,6 @@ public class LobbyWebsocketController {
         // update remaining clients with new playerlist
         this.updatePlayerList(lobbyId, updatedPlayers);
     }
-    //somechange
 
     /** Server to client(s) communication **/
     public void updatePlayerList(String lobbyId, List<Player> players) {

@@ -59,10 +59,10 @@ public class CityAPI extends APIManager {
 
     public static void main(String[] args) {
         String apiKey = "7f9f1b12c5msh0ee2d0b9a2cbbb7p158dc9jsn62d752680b9e";
-        CityAPI cityAPI = new CityAPI(apiKey, "");
+       // CityAPI cityAPI = new CityAPI(apiKey, "");
         String cityName = "lucerne"; // Example city name
-        String result = cityAPI.performRequest(cityName); // Pass the city name
+       // String result = cityAPI.performRequest(cityName); // Pass the city name
 
-        System.out.println("Is " + cityName + " a city? " + result);
+       // System.out.println("Is " + cityName + " a city? " + result);
     }
 }

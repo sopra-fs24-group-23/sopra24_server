@@ -3,6 +3,8 @@ package ch.uzh.ifi.hase.soprafs24.entity;
 import ch.uzh.ifi.hase.soprafs24.categories.Category;
 import ch.uzh.ifi.hase.soprafs24.categories.City;
 import ch.uzh.ifi.hase.soprafs24.categories.Country;
+import ch.uzh.ifi.hase.soprafs24.categories.MoviesSeries;
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,6 +28,8 @@ public class GameSettings {
         this.categories = new ArrayList<>();
         this.categories.add(new City());
         this.categories.add(new Country());
+        this.categories.add(new MoviesSeries());
+
     }
 
     public Integer getMaxRounds() {
