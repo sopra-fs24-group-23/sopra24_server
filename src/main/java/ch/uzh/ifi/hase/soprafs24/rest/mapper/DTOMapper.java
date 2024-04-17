@@ -1,9 +1,14 @@
 package ch.uzh.ifi.hase.soprafs24.rest.mapper;
 
+import ch.uzh.ifi.hase.soprafs24.categories.CategoryFactory;
 import ch.uzh.ifi.hase.soprafs24.entity.*;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.*;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
+import ch.uzh.ifi.hase.soprafs24.categories.Category;
+import java.util.stream.Collectors;
+
+import java.util.List;
 
 /**
  * DTOMapper
@@ -62,7 +67,7 @@ public interface DTOMapper {
     @Mapping(source = "id", target = "id")
     LobbyIdDTO convertEntityToLobbyIdDTO(Lobby lobby);
 
-    //@Mapping (source = "categories", target = "categories")
+    @Mapping (source = "categories", target = "categories", qualifiedByName = "mapStringsToCategories")
     @Mapping (source = "maxRounds", target = "maxRounds")
     @Mapping (source = "votingDuration", target = "votingDuration")
     @Mapping (source = "inputDuration", target = "inputDuration")
@@ -70,10 +75,31 @@ public interface DTOMapper {
     @Mapping (source = "maxPlayers", target = "maxPlayers")
     GameSettings convertGameSettingsDTOToGameSettings(GameSettingsDTO gameSettingsDTO);
 
+    @Mapping (source = "categories", target = "categories", qualifiedByName = "mapCategoriesToStrings")
     @Mapping (source = "maxRounds", target = "maxRounds")
     @Mapping (source = "votingDuration", target = "votingDuration")
     @Mapping (source = "inputDuration", target = "inputDuration")
     @Mapping (source = "scoreboardDuration", target = "scoreboardDuration")
     @Mapping (source = "maxPlayers", target = "maxPlayers")
     GameSettingsDTO convertGameSettingsToGameSettingsDTO(GameSettings gameSettings);
+
+    @Named("mapStringsToCategories")
+    default List<Category> mapStringsToCategories(List<String> categories) {
+        if (categories == null) {
+            return null;
+        }
+        return categories.stream()
+                .map(CategoryFactory::createCategory)
+                .collect(Collectors.toList());
+    }
+
+    @Named("mapCategoriesToStrings")
+    default List<String> mapCategoriesToStrings(List<Category> categories) {
+        if (categories == null) {
+            return null;
+        }
+        return categories.stream()
+                .map(Category::getName)
+                .collect(Collectors.toList());
+    }
 }
