@@ -19,7 +19,7 @@ public class MoviesSeriesAPI extends APIManager {
         // Remove all non-alphanumeric characters (except spaces) and convert to lower case
         return input.replaceAll("[^a-zA-Z0-9\\s]", "").replaceAll("\\s+", "").toLowerCase();
     }
-
+//test
     public String performRequest(String query) {
         try {
             String normalizedQuery = normalize(query);
