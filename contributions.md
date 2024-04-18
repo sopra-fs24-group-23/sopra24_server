@@ -54,6 +54,7 @@
 -  11.4 - 17-4, Nilaksan,[https://github.com/sopra-fs24-group-23/sopra24_server/issues/3](https://github.com/sopra-fs24-group-23/sopra24_server/issues/3)
 -  11.4 - 17-4, Nilaksan,[https://github.com/sopra-fs24-group-23/sopra24_client/issues/20](https://github.com/sopra-fs24-group-23/sopra24_client/issues/20)
 -  11.4 - 17-4, Nilaksan,[https://github.com/sopra-fs24-group-23/sopra24_client/issues/46](https://github.com/sopra-fs24-group-23/sopra24_client/issues/46)
+- 11.4 - 17-4, Nilaksan,[https://github.com/sopra-fs24-group-23/sopra24_client/issues/35](https://github.com/sopra-fs24-group-23/sopra24_client/issues/35)
 -  - 28.3 - 3.4, Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/](https://github.com/sopra-fs24-group-23/sopra24_client/issues/)
 - 28.3 - 3.4, Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/](https://github.com/sopra-fs24-group-23/sopra24_client/issues/)
 - 28.3 - 3.4, Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/](https://github.com/sopra-fs24-group-23/sopra24_client/issues/)
