@@ -1,9 +1,9 @@
 ### Contributions
 
 ## Week 1
-- 28.3 - 3.4, Jonas, https://github.com/sopra-fs24-group-23/server/issues/101
-- 28.3 - 3.4, Jonas, https://github.com/sopra-fs24-group-23/server/issues/97
-- 28.3 - 3.4, Jonas, https://github.com/sopra-fs24-group-23/server/issues/82
+- 28.3 - 3.4, Jonas, sopra-fs24-group-23/sopra24_server/issues/101
+- 28.3 - 3.4, Jonas, sopra-fs24-group-23/sopra24_server/issues/97
+- 28.3 - 3.4, Jonas, sopra-fs24-group-23/sopra24_server/issues/82
 - 28.3 - 3.4, Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/10](https://github.com/sopra-fs24-group-23/sopra24_client/issues/10)
 - 28.3 - 3.4, Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/49](https://github.com/sopra-fs24-group-23/sopra24_client/issues/49)
 - 28.3 - 3.4, Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/50](https://github.com/sopra-fs24-group-23/sopra24_client/issues/50)
