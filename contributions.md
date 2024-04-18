@@ -27,9 +27,9 @@
 - 28.3 - 3.4, Nilaksan, [https://github.com/sopra-fs24-group-23/sopra24_server/issues/1](https://github.com/sopra-fs24-group-23/sopra24_server/issues/1)
 
 ## Week 2
-- 4.4 - 10.4, Jonas, https://github.com/sopra-fs24-group-23/server/issues/128
-- 4.4 - 10.4, Jonas, https://github.com/sopra-fs24-group-23/server/issues/126, changed App-Engine environment to support Websockets
-- 4.4 - 10.4, Jonas, https://github.com/sopra-fs24-group-23/server/issues/125, implemented WebSocketConfig
+- 4.4 - 10.4, Jonas, sopra-fs24-group-23/sopra24_server/issues/128
+- 4.4 - 10.4, Jonas, sopra-fs24-group-23/sopra24_server/issues/126, changed App-Engine environment to support Websockets
+- 4.4 - 10.4, Jonas, sopra-fs24-group-23/sopra24_server/issues/125, implemented WebSocketConfig
 - 28.3 - 3.4, Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/9](https://github.com/sopra-fs24-group-23/sopra24_client/issues/9)
 - 28.3 - 3.4, Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/30](https://github.com/sopra-fs24-group-23/sopra24_client/issues/30)
 - 28.3 - 3.4, Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/61](https://github.com/sopra-fs24-group-23/sopra24_client/issues/61)
