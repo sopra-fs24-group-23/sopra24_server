@@ -72,4 +72,12 @@ public class GameSettings {
     public void setInputDuration(Integer inputDuration) {
         this.inputDuration = inputDuration;
     }
+
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
+    }
 }
