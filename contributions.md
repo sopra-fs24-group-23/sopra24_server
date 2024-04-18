@@ -59,3 +59,5 @@
 - 28.3 - 3.4, Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/](https://github.com/sopra-fs24-group-23/sopra24_client/issues/)
 - 11.4 - 17.4, Jonas, sopra-fs24-group-23/sopra24_server/issues/133
 - 11.4 - 17.4, Jonas, sopra-fs24-group-23/sopra24_server/issues/90
+- 11.4 - 17.4, Jonas, sopra-fs24-group-23/sopra24_server/issues/128
+- 11.4 - 17.4, Jonas, sopra-fs24-group-23/sopra24_server/issues/94
