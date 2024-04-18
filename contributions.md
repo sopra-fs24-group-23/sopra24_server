@@ -43,6 +43,10 @@
 ## Week 3
 - 11.4 - 17.4, Franziska, [https://github.com/orgs/sopra-fs24-group-23/projects/3/views/1?pane=issue&itemId=56847602](https://github.com/orgs/sopra-fs24-group-23/projects/3/views/1?pane=issue&itemId=56847602)
 - 11.4 - 17-4, Franziska, [https://github.com/orgs/sopra-fs24-group-23/projects/3/views/1?pane=issue&itemId=56942873](https://github.com/orgs/sopra-fs24-group-23/projects/3/views/1?pane=issue&itemId=56942873)
+- 11.4 -17.4, Franziska, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/42](https://github.com/sopra-fs24-group-23/sopra24_client/issues/42)
+- 11.4 - 17.4, Franziska, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/31](https://github.com/sopra-fs24-group-23/sopra24_client/issues/31)
+- 11.4 - 17.4, Franziska, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/73](https://github.com/sopra-fs24-group-23/sopra24_client/issues/73)
+- 11.4 - 17.4, Franziska, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/74](https://github.com/sopra-fs24-group-23/sopra24_client/issues/74)
 -  11.4 - 17-4, Nilaksan,[https://github.com/sopra-fs24-group-23/sopra24_client/issues/44](https://github.com/sopra-fs24-group-23/sopra24_client/issues/44)
 -  11.4 - 17-4, Nilaksan,[https://github.com/sopra-fs24-group-23/sopra24_server/issues/14](https://github.com/sopra-fs24-group-23/sopra24_server/issues/14)
 -  11.4 - 17-4, Nilaksan,[https://github.com/sopra-fs24-group-23/sopra24_server/issues/64](https://github.com/sopra-fs24-group-23/sopra24_server/issues/64)
