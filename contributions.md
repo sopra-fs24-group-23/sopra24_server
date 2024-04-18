@@ -30,9 +30,9 @@
 - 4.4 - 10.4, Jonas, sopra-fs24-group-23/sopra24_server/issues/128
 - 4.4 - 10.4, Jonas, sopra-fs24-group-23/sopra24_server/issues/126, changed App-Engine environment to support Websockets
 - 4.4 - 10.4, Jonas, sopra-fs24-group-23/sopra24_server/issues/125, implemented WebSocketConfig
-- 28.3 - 3.4, Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/9](https://github.com/sopra-fs24-group-23/sopra24_client/issues/9)
-- 28.3 - 3.4, Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/30](https://github.com/sopra-fs24-group-23/sopra24_client/issues/30)
-- 28.3 - 3.4, Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/61](https://github.com/sopra-fs24-group-23/sopra24_client/issues/61)
+- 4.4 - 10.4, Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/9](https://github.com/sopra-fs24-group-23/sopra24_client/issues/9)
+- 4.4 - 10.4, Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/30](https://github.com/sopra-fs24-group-23/sopra24_client/issues/30)
+- 4.4 - 10.4, Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/61](https://github.com/sopra-fs24-group-23/sopra24_client/issues/61)
 - 4.4 - 10.4, Franziska, [https://github.com/sopra-fs24-group-23/sopra24_server/issues/116](https://github.com/sopra-fs24-group-23/sopra24_server/issues/116)
 - 4.4 - 10.4, Franziska, [https://github.com/sopra-fs24-group-23/sopra24_server/issues/115](https://github.com/sopra-fs24-group-23/sopra24_server/issues/115)
 - 4.4 - 10.4, Franziska, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/61](https://github.com/sopra-fs24-group-23/sopra24_client/issues/61)
@@ -55,9 +55,10 @@
 -  11.4 - 17-4, Nilaksan,[https://github.com/sopra-fs24-group-23/sopra24_client/issues/20](https://github.com/sopra-fs24-group-23/sopra24_client/issues/20)
 -  11.4 - 17-4, Nilaksan,[https://github.com/sopra-fs24-group-23/sopra24_client/issues/46](https://github.com/sopra-fs24-group-23/sopra24_client/issues/46)
 - 11.4 - 17-4, Nilaksan,[https://github.com/sopra-fs24-group-23/sopra24_client/issues/35](https://github.com/sopra-fs24-group-23/sopra24_client/issues/35)
--  - 28.3 - 3.4, Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/](https://github.com/sopra-fs24-group-23/sopra24_client/issues/)
-- 28.3 - 3.4, Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/](https://github.com/sopra-fs24-group-23/sopra24_client/issues/)
-- 28.3 - 3.4, Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/](https://github.com/sopra-fs24-group-23/sopra24_client/issues/)
+- 11.4 - 17.4, Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/48](https://github.com/sopra-fs24-group-23/sopra24_client/issues/48)
+- 11.4 - 17.4, Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/42](https://github.com/sopra-fs24-group-23/sopra24_client/issues/42)
+- 11.4 - 17.4, Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/43](https://github.com/sopra-fs24-group-23/sopra24_client/issues/43)
+- 11.4 - 17.4, Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/41](https://github.com/sopra-fs24-group-23/sopra24_client/issues/41)
 - 11.4 - 17.4, Jonas, sopra-fs24-group-23/sopra24_server/issues/133
 - 11.4 - 17.4, Jonas, sopra-fs24-group-23/sopra24_server/issues/90
 - 11.4 - 17.4, Jonas, sopra-fs24-group-23/sopra24_server/issues/128
