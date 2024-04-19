@@ -2,8 +2,6 @@ package ch.uzh.ifi.hase.soprafs24.entity;
 
 import ch.uzh.ifi.hase.soprafs24.categories.Category;
 
-import javax.persistence.*;
-
 public class Answer {
     private final Category category;
     private final String answer;
@@ -20,7 +18,8 @@ public class Answer {
 
     public int calculateScore() {
         int score = 0;
-        // if the answer is a non-doubted joker
+
+        // only check answer if it is not a non-doubted joker
         if (this.isJoker && !this.isDoubted) {
             this.isCorrect = true;
         }
@@ -28,8 +27,14 @@ public class Answer {
             this.isCorrect = category.validateAnswer(this.answer);
         }
 
+        // set score according to uniqueness
         if (isCorrect) {
             score = isDuplicate ? 5 : 10;
+        }
+
+        // award extra points if wrongfully doubted
+        if(!this.isJoker && this.isDoubted) {
+            score += 5;
         }
 
         return score;
