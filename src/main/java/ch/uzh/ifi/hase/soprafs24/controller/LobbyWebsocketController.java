@@ -33,8 +33,8 @@ public class LobbyWebsocketController {
     @EventListener
     public void handleLobbyClose(LobbyClosedEvent lobbyClosedEvent) {
         msgTemplate.convertAndSend(
-                String.format("/topic/lobbies/{lobbyId}/close",
-                        "Lobby Closed.")
+                String.format("/topic/lobbies/%s/close", lobbyClosedEvent.getLobbyId()),
+                "Lobby Closed."
         );
     }
 
