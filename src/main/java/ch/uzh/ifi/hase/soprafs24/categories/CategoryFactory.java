@@ -9,6 +9,8 @@ public class CategoryFactory {
             case "City":
                 return new City();
             // Add more
+            case "Movie":
+                return new MoviesSeries();
             default:
                 throw new IllegalArgumentException("Invalid category name: " + categoryName);
         }
