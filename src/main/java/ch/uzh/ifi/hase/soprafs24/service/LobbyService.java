@@ -3,10 +3,12 @@ package ch.uzh.ifi.hase.soprafs24.service;
 import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.entity.Player;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
+import ch.uzh.ifi.hase.soprafs24.events.LobbyClosedEvent;
 import ch.uzh.ifi.hase.soprafs24.exceptions.LobbyFullException;
 import ch.uzh.ifi.hase.soprafs24.exceptions.UnauthorizedException;
 import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -22,11 +24,16 @@ public class LobbyService {
     private final UserRepository userRepository;
     private HashMap<String, Lobby> lobbies;
 
+    private final ApplicationEventPublisher eventPublisher;
+
     public LobbyService(
-            @Qualifier("userRepository") UserRepository userRepository) {
+            @Qualifier("userRepository") UserRepository userRepository,
+            ApplicationEventPublisher eventPublisher) {
+        this.eventPublisher = eventPublisher;
         this.userRepository = userRepository;
         this.lobbies = new HashMap<String, Lobby>();
     }
+
     public Lobby getLobbyById(String lobbyId) {
         Lobby lobby = lobbies.get(lobbyId);
         if (lobby == null) {
@@ -91,13 +98,24 @@ public class LobbyService {
     public List<Player> removePlayer(String lobbyId, User userToRemove) {
 
         Lobby lobby = getLobbyById(lobbyId);
-        Player removedPlayer = lobby.removePlayer(userToRemove.getToken());
+        Player host = lobby.getHost();
 
-        if (removedPlayer == null) {
-            throw new ResponseStatusException(
-                    HttpStatus.NOT_FOUND,
-                    "The player you tried to remove from the lobby was not found."
-            );
+        // if the leaving player is the host: delete lobby
+        if (userToRemove.getToken().equals(host.getToken())){
+            this.deleteLobby(lobbyId, userToRemove);
+            eventPublisher.publishEvent(new LobbyClosedEvent(this, lobbyId));
+        }
+
+        // if the leaving player is not the host: just remove them
+        else {
+            Player removedPlayer = lobby.removePlayer(userToRemove.getToken());
+
+            if (removedPlayer == null) {
+                throw new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "The player you tried to remove from the lobby was not found."
+                );
+            }
         }
 
         return lobby.getPlayers();

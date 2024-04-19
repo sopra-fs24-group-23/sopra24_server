@@ -1,19 +1,19 @@
 package ch.uzh.ifi.hase.soprafs24.controller;
 
 import ch.uzh.ifi.hase.soprafs24.entity.GameSettings;
-import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.entity.Player;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
+import ch.uzh.ifi.hase.soprafs24.events.LobbyClosedEvent;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.*;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
-import ch.uzh.ifi.hase.soprafs24.service.GameService; // Import the GameService class
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +28,14 @@ public class LobbyWebsocketController {
 
     public LobbyWebsocketController(LobbyService lobbyService) {
         this.lobbyService = lobbyService;
+    }
+
+    @EventListener
+    public void handleLobbyClose(LobbyClosedEvent lobbyClosedEvent) {
+        msgTemplate.convertAndSend(
+                String.format("/topic/lobbies/{lobbyId}/close",
+                        "Lobby Closed.")
+        );
     }
 
     @MessageMapping("/lobbies/{lobbyId}/join")
