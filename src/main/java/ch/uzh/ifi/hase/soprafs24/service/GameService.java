@@ -25,6 +25,11 @@ public class GameService {
         game.setPlayerHasAnswered(true);
     }
 
+    public GameState getGameState(String gameId) {
+        Game game = games.get(gameId);
+        return game.getState();
+    }
+
     /*  1. inform players round started
      *   2. set Phase to "scoreboard"
      *   3. wait for scoreboardDuration
@@ -98,6 +103,7 @@ public class GameService {
         }
     }
 
+    /* Class-Private Helper Methods*/
     private void updateClients(String gameId, GameState gameState) {
         eventPublisher.publishEvent(
                 new GameStateChangeEvent(

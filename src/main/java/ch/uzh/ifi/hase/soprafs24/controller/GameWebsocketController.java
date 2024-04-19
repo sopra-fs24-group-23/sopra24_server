@@ -40,6 +40,11 @@ public class GameWebsocketController {
         gameService.closeInputs(gameId);
     }
 
+    @MessageMapping("/games/{gameId}/state")
+    public void updateClients(@DestinationVariable  String gameId) {
+        GameState gameState = gameService.getGameState(gameId);
+        updateGameState(gameId, gameState);
+    }
 
     /** Server to client(s) communication **/
     private void updateGameState(String lobbyId, GameState gameState) {
