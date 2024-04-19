@@ -23,7 +23,6 @@ public class LobbyService {
 
     private final UserRepository userRepository;
     private HashMap<String, Lobby> lobbies;
-
     private final ApplicationEventPublisher eventPublisher;
 
     public LobbyService(
@@ -37,7 +36,7 @@ public class LobbyService {
     public Lobby getLobbyById(String lobbyId) {
         Lobby lobby = lobbies.get(lobbyId);
         if (lobby == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The lobby you tried to update was not found.");
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "No lobby with the provided ID was found.");
         }
         return lobbies.get(lobbyId);
     }
@@ -132,6 +131,11 @@ public class LobbyService {
         }
 
         return lobby.getPlayers();
+    }
+
+    public Player getHost(String lobbyId) {
+        Lobby lobby = getLobbyById(lobbyId);
+        return lobby.getHost();
     }
 
 

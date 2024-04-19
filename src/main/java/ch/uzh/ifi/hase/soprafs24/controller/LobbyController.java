@@ -1,8 +1,10 @@
 package ch.uzh.ifi.hase.soprafs24.controller;
 
 import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
+import ch.uzh.ifi.hase.soprafs24.entity.Player;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyIdDTO;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.PlayerGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.UserTokenDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
@@ -40,5 +42,11 @@ public class LobbyController {
         lobbyService.checkLobbyId(lobbyId);
     }
 
-
+    @GetMapping("/lobbies/{lobbyId}/host")
+    @ResponseStatus(HttpStatus.OK)
+    @ResponseBody
+    public PlayerGetDTO getHostName(@PathVariable String lobbyId) {
+        Player host = lobbyService.getHost(lobbyId);
+        return DTOMapper.INSTANCE.convertEntityToPlayerGetDTO(host);
+    }
 }
