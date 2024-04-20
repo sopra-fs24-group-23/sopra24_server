@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs24.entity;
 
 import ch.uzh.ifi.hase.soprafs24.exceptions.LobbyFullException;
+import ch.uzh.ifi.hase.soprafs24.exceptions.UnauthorizedException;
 
 import java.util.*;
 
@@ -22,10 +23,6 @@ public class Lobby {
         this.isLobbyFull = false;
         // initialize player list and add host directly
         this.players = new HashMap<String, Player>();
-        this.players.put(host.getUsername(), host);
-    }
-
-    public void startGame() { // removed parameters here (see UML); can be got from attributes
     }
 
     public List<Player> getPlayers() {
@@ -35,7 +32,7 @@ public class Lobby {
     public void addPlayer(Player player) throws LobbyFullException {
         // if lobby is not full - add player
         if (!isLobbyFull & !isGameRunning) {
-            this.players.put(player.getUsername(), player);
+            this.players.put(player.getToken(), player);
             // if this player took the last spot, set lobby full
             if (this.players.size() == this.settings.getMaxPlayers()) {
                 this.setIsLobbyFull(true);
@@ -47,8 +44,23 @@ public class Lobby {
         }
     }
 
-    public void removePlayer(String username) {
-        this.players.remove(username);
+    public Player removePlayer(String token) {
+        return this.players.remove(token);
+    }
+
+    public void kickPlayer(String hostToken, String usernameToKick) throws UnauthorizedException {
+        String keyToRemove = "";
+        if (this.host.getToken().equals(hostToken)) {
+            for (Map.Entry<String, Player> entry : players.entrySet()) {
+                if (entry.getValue().getUsername().equals(usernameToKick)) {
+                    keyToRemove = entry.getKey();
+                }
+            }
+            players.remove(keyToRemove);
+        }
+        else {
+            throw new UnauthorizedException("You tried to kick a player, but you are not the host of the lobby.");
+        }
     }
 
     public Player getHost() {

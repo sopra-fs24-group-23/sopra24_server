@@ -2,7 +2,9 @@ package ch.uzh.ifi.hase.soprafs24.service;
 
 import ch.uzh.ifi.hase.soprafs24.entity.Player;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
+import ch.uzh.ifi.hase.soprafs24.exceptions.LobbyFullException;
 import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.UserTokenDTO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -55,13 +57,13 @@ public class UserService {
         User persistedUser = findById(userId);
 
         // Check if the username is empty
-        if (userInput.getUsername() == null || userInput.getUsername().trim().isEmpty()){
+        if (userInput.getUsername() == null || userInput.getUsername().trim().isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The username cannot be empty. Please try again.");
         }
 
         // Check if username is already
         User userByUsername = userRepository.findByUsername(userInput.getUsername());
-        if(userByUsername != null && !userByUsername.getId().equals(userId)) {
+        if (userByUsername != null && !userByUsername.getId().equals(userId)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "This username is already taken. Please choose a different username.");
         }
 
@@ -71,12 +73,13 @@ public class UserService {
         userRepository.saveAndFlush(persistedUser);
         return persistedUser;
     }
-    public User loginUser(String username, String password){
+
+    public User loginUser(String username, String password) {
         User persistedUser = userRepository.findByUsername(username);
         checkIfUserExists(persistedUser);
 
-        if (!persistedUser.getPassword().equals(password)){
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Incorrect password.");
+        if (!persistedUser.getPassword().equals(password)) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Incorrect password.");
         }
         persistedUser.setToken(UUID.randomUUID().toString()); // set new session token
         userRepository.saveAndFlush(persistedUser);
@@ -84,11 +87,11 @@ public class UserService {
         return persistedUser;
     }
 
-    public User logout(String token){
+    public User logout(String token) {
         User persistedUser = userRepository.findByToken(token);
         System.out.println("token:" + token);
 
-        if (persistedUser == null){
+        if (persistedUser == null) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User you were trying to log-out does not exist.");
         }
 
@@ -126,9 +129,17 @@ public class UserService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The requested user was not found.");
         }
     }
-    public User findById(Long userId){
+
+    public User findById(Long userId) {
         return this.userRepository.findById(userId).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND,"The user with the provided ID doesn't exist.")
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "The user with the provided ID doesn't exist.")
         );
+    }
+    public User findUserByName(String username) {
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found with username: " + username);
+        }
+        return user;
     }
 }

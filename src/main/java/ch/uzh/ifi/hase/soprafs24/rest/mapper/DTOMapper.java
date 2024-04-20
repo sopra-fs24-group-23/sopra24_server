@@ -1,12 +1,14 @@
 package ch.uzh.ifi.hase.soprafs24.rest.mapper;
 
-import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
-import ch.uzh.ifi.hase.soprafs24.entity.Player;
-import ch.uzh.ifi.hase.soprafs24.entity.User;
-import ch.uzh.ifi.hase.soprafs24.entity.Game;
+import ch.uzh.ifi.hase.soprafs24.categories.CategoryFactory;
+import ch.uzh.ifi.hase.soprafs24.entity.*;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.*;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
+import ch.uzh.ifi.hase.soprafs24.categories.Category;
+import java.util.stream.Collectors;
+
+import java.util.List;
 
 /**
  * DTOMapper
@@ -54,15 +56,47 @@ public interface DTOMapper {
     @Mapping(source = "username", target = "username")
     @Mapping(source = "currentScore", target = "currentScore")
     @Mapping(source = "currentAnswers", target = "currentAnswers")
+    @Mapping(source = "hasAnswered", target = "hasAnswered")
+    @Mapping(source = "hasVoted", target = "hasVoted")
+    @Mapping(source = "isHost", target = "isHost")
     PlayerGetDTO convertEntityToPlayerGetDTO(Player player);
-
-    @Mapping(source = "isLobbyFull", target = "isLobbyFull")
-    @Mapping(source = "isGameRunning", target = "isGameRunning")
-    LobbyStateDTO convertEntityToLobbyStateDTO(Lobby lobby);
 
     @Mapping(source = "id", target = "id")
     LobbyIdDTO convertEntityToLobbyIdDTO(Lobby lobby);
 
-    @Mapping(source = "gameId", target = "gameId")
-    GameDTO convertEntityToGameDTO(Game game);
+    @Mapping (source = "categories", target = "categories", qualifiedByName = "mapStringsToCategories")
+    @Mapping (source = "maxRounds", target = "maxRounds")
+    @Mapping (source = "votingDuration", target = "votingDuration")
+    @Mapping (source = "inputDuration", target = "inputDuration")
+    @Mapping (source = "scoreboardDuration", target = "scoreboardDuration")
+    @Mapping (source = "maxPlayers", target = "maxPlayers")
+    GameSettings convertGameSettingsDTOToGameSettings(GameSettingsDTO gameSettingsDTO);
+
+    @Mapping (source = "categories", target = "categories", qualifiedByName = "mapCategoriesToStrings")
+    @Mapping (source = "maxRounds", target = "maxRounds")
+    @Mapping (source = "votingDuration", target = "votingDuration")
+    @Mapping (source = "inputDuration", target = "inputDuration")
+    @Mapping (source = "scoreboardDuration", target = "scoreboardDuration")
+    @Mapping (source = "maxPlayers", target = "maxPlayers")
+    GameSettingsDTO convertGameSettingsToGameSettingsDTO(GameSettings gameSettings);
+
+    @Named("mapStringsToCategories")
+    default List<Category> mapStringsToCategories(List<String> categories) {
+        if (categories == null) {
+            return null;
+        }
+        return categories.stream()
+                .map(CategoryFactory::createCategory)
+                .collect(Collectors.toList());
+    }
+
+    @Named("mapCategoriesToStrings")
+    default List<String> mapCategoriesToStrings(List<Category> categories) {
+        if (categories == null) {
+            return null;
+        }
+        return categories.stream()
+                .map(Category::getName)
+                .collect(Collectors.toList());
+    }
 }

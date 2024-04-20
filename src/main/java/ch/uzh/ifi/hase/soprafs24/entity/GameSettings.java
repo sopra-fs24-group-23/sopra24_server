@@ -1,15 +1,19 @@
 package ch.uzh.ifi.hase.soprafs24.entity;
 
 import ch.uzh.ifi.hase.soprafs24.categories.Category;
+import ch.uzh.ifi.hase.soprafs24.categories.City;
+import ch.uzh.ifi.hase.soprafs24.categories.Country;
+import ch.uzh.ifi.hase.soprafs24.categories.MoviesSeries;
 
+
+import java.util.ArrayList;
 import java.util.List;
 
 public class GameSettings {
     private List<Category> categories;
     private Integer maxRounds;
     private Integer votingDuration;
-
-    private Integer maxRoundsDuration;
+    private Integer inputDuration;
     private Integer scoreboardDuration;
     private Integer maxPlayers;
 
@@ -18,8 +22,14 @@ public class GameSettings {
         this.maxRounds = 5;
         this.votingDuration = 30;
         this.scoreboardDuration = 30;
-        this.maxRoundsDuration = 500;
+        this.inputDuration = 60;
         this.maxPlayers = 4;
+        // setting standard categories
+        this.categories = new ArrayList<>();
+        this.categories.add(new City());
+        this.categories.add(new Country());
+        this.categories.add(new MoviesSeries());
+
     }
 
     public Integer getMaxRounds() {
@@ -55,11 +65,19 @@ public class GameSettings {
         this.scoreboardDuration = scoreboardDuration;
     }
 
-    public Integer getMaxRoundsDuration() {
-        return maxRoundsDuration;
+    public Integer getInputDuration() {
+        return inputDuration;
     }
 
-    public void setMaxRoundsDuration(Integer maxRoundsDuration) {
-        this.maxRoundsDuration = maxRoundsDuration;
+    public void setInputDuration(Integer inputDuration) {
+        this.inputDuration = inputDuration;
+    }
+
+    public List<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<Category> categories) {
+        this.categories = categories;
     }
 }

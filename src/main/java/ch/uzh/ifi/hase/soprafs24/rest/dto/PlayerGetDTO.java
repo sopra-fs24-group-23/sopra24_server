@@ -10,6 +10,9 @@ public class PlayerGetDTO {
     private String username;
     private Integer currentScore;
     private List<Answer> currentAnswers;
+    private boolean hasAnswered;
+    private boolean hasVoted;
+    private boolean isHost;
 
     public Long getId() {
     return id;
@@ -41,5 +44,29 @@ public class PlayerGetDTO {
 
     public void setCurrentAnswers(List<Answer> currentAnswers) {
         this.currentAnswers = currentAnswers;
+    }
+
+    public boolean isHasAnswered() {
+        return hasAnswered;
+    }
+
+    public void setHasAnswered(boolean hasAnswered) {
+        this.hasAnswered = hasAnswered;
+    }
+
+    public boolean isHasVoted() {
+        return hasVoted;
+    }
+
+    public void setHasVoted(boolean hasVoted) {
+        this.hasVoted = hasVoted;
+    }
+
+    public boolean getIsHost() {
+        return isHost;
+    }
+
+    public void setIsHost(boolean host) {
+        isHost = host;
     }
 }
