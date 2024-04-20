@@ -38,6 +38,12 @@ public class LobbyWebsocketController {
         );
     }
 
+    @MessageMapping("/lobbies/{lobbyId}/delete")
+    public void deleteLobby(@DestinationVariable String lobbyId, @Payload UserTokenDTO userTokenDTO) {
+        User hostToken = DTOMapper.INSTANCE.convertUserTokenDTOtoEntity(userTokenDTO);
+        lobbyService.deleteLobby(lobbyId, hostToken);
+    }
+
     @MessageMapping("/lobbies/{lobbyId}/join")
     public void addPlayer(@DestinationVariable String lobbyId, @Payload UserTokenDTO userTokenDTO) {
         // convert tokenDTO to user
