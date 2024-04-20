@@ -15,7 +15,7 @@ public class Game {
     private Integer currentRoundNumber;
     private GamePhase currentPhase;
     private String currentLetter;
-    private boolean playerHasAnswered;
+    private boolean playerHasAnswered = false;
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
 
@@ -174,6 +174,10 @@ public class Game {
 
     public void setPlayerHasAnswered(boolean input) {
         this.playerHasAnswered = input;
+    }
+
+    public boolean getPlayerHasAnswered() {
+        return this.playerHasAnswered;
     }
 
 }

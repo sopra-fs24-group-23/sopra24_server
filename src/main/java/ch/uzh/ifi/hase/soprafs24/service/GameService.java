@@ -23,6 +23,8 @@ public class GameService {
     public void closeInputs(String gameId) {
         Game game = games.get(gameId);
         game.setPlayerHasAnswered(true);
+        game.setPhase(GamePhase.AWAITING_ANSWERS); // Add this line
+        updateClients(gameId, game.getState()); // Inform clients about the phase change
     }
 
     public GameState getGameState(String gameId) {
