@@ -45,6 +45,7 @@ public class LobbyService {
         // fetch host from DB and initialize player object
         User host = userRepository.findByToken(hostToken.getToken());
         Player hostPlayer = new Player(host.getId(), host.getUsername(), host.getToken());
+        hostPlayer.setIsHost(true);
         // create new lobby, store to lobby list
         Lobby newLobby = new Lobby(hostPlayer);
         this.lobbies.put(newLobby.getId(), newLobby);
@@ -85,6 +86,7 @@ public class LobbyService {
         Player player = new Player(user.getId(), user.getUsername(), user.getToken());
 
         try {
+            if (lobby.getHost().getToken().equals(player.getToken())) {player.setIsHost(true);}
             lobby.addPlayer(player);
         }
         catch (LobbyFullException e) {

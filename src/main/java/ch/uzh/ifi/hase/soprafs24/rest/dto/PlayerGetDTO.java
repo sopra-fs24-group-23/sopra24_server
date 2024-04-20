@@ -12,6 +12,7 @@ public class PlayerGetDTO {
     private List<Answer> currentAnswers;
     private boolean hasAnswered;
     private boolean hasVoted;
+    private boolean isHost;
 
     public Long getId() {
     return id;
@@ -59,5 +60,13 @@ public class PlayerGetDTO {
 
     public void setHasVoted(boolean hasVoted) {
         this.hasVoted = hasVoted;
+    }
+
+    public boolean getIsHost() {
+        return isHost;
+    }
+
+    public void setIsHost(boolean host) {
+        isHost = host;
     }
 }

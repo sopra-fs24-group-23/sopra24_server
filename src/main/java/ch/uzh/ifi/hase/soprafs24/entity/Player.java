@@ -17,6 +17,7 @@ public class Player {
     private List<Answer> currentAnswers;
     private boolean hasAnswered;
     private boolean hasVoted;
+    private boolean isHost;
 
     public Player(Long id, String username, String token) {
         this.id = id;
@@ -80,5 +81,13 @@ public class Player {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public boolean getIsHost() {
+        return isHost;
+    }
+
+    public void setIsHost(boolean host) {
+        isHost = host;
     }
 }

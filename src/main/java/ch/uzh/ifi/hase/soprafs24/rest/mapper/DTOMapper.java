@@ -58,11 +58,8 @@ public interface DTOMapper {
     @Mapping(source = "currentAnswers", target = "currentAnswers")
     @Mapping(source = "hasAnswered", target = "hasAnswered")
     @Mapping(source = "hasVoted", target = "hasVoted")
+    @Mapping(source = "isHost", target = "isHost")
     PlayerGetDTO convertEntityToPlayerGetDTO(Player player);
-
-    @Mapping(source = "isLobbyFull", target = "isLobbyFull")
-    @Mapping(source = "isGameRunning", target = "isGameRunning")
-    LobbyStateDTO convertEntityToLobbyStateDTO(Lobby lobby);
 
     @Mapping(source = "id", target = "id")
     LobbyIdDTO convertEntityToLobbyIdDTO(Lobby lobby);
