@@ -60,6 +60,7 @@ public class LobbyService {
         if (host.getToken().equals(userToken.getToken())) {
             // delete lobby
             lobbies.remove(lobbyId);
+            eventPublisher.publishEvent(new LobbyClosedEvent(this, lobbyId));
         }
     }
 
@@ -104,7 +105,6 @@ public class LobbyService {
         // if the leaving player is the host: delete lobby
         if (userToRemove.getToken().equals(host.getToken())){
             this.deleteLobby(lobbyId, userToRemove);
-            eventPublisher.publishEvent(new LobbyClosedEvent(this, lobbyId));
         }
 
         // if the leaving player is not the host: just remove them

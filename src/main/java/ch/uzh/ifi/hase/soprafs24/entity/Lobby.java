@@ -49,12 +49,14 @@ public class Lobby {
     }
 
     public void kickPlayer(String hostToken, String usernameToKick) throws UnauthorizedException {
+        String keyToRemove = "";
         if (this.host.getToken().equals(hostToken)) {
             for (Map.Entry<String, Player> entry : players.entrySet()) {
                 if (entry.getValue().getUsername().equals(usernameToKick)) {
-                    players.remove(entry.getKey());
+                    keyToRemove = entry.getKey();
                 }
             }
+            players.remove(keyToRemove);
         }
         else {
             throw new UnauthorizedException("You tried to kick a player, but you are not the host of the lobby.");
