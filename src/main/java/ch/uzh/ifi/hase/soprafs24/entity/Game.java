@@ -28,6 +28,10 @@ public class Game {
         this.playerHasAnswered = false;
     }
 
+    public GameSettings getSettings() {
+        return this.settings;
+    }
+
     public boolean initializeRound() {
         if (currentRoundNumber < settings.getMaxRounds()) {
             currentRoundNumber++;

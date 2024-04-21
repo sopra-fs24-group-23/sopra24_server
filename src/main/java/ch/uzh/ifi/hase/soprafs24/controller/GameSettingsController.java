@@ -1,6 +1,8 @@
 package ch.uzh.ifi.hase.soprafs24.controller;
 
 import ch.uzh.ifi.hase.soprafs24.entity.GameSettings;
+import ch.uzh.ifi.hase.soprafs24.service.GameService;
+import ch.uzh.ifi.hase.soprafs24.entity.GameState;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.GameSettingsDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs24.service.GameSettingsService;
@@ -19,12 +21,20 @@ import org.springframework.web.bind.annotation.RestController;
 public class GameSettingsController {
 
     private final GameSettingsService gameSettingsService;
+    private final GameService gameService;
 
     @Autowired
     private SimpMessagingTemplate msgTemplate;
 
-    public GameSettingsController(GameSettingsService gameSettingsService) {
+    public GameSettingsController(GameSettingsService gameSettingsService, GameService gameService) {
         this.gameSettingsService = gameSettingsService;
+        this.gameService = gameService;
+    }
+
+    @MessageMapping("/games/{lobbyId}/settings")
+    public void informClients(@DestinationVariable  String lobbyId) {
+        GameSettings settings = gameService.getSettings(lobbyId);
+        this.sendSettings(lobbyId, settings);
     }
 
     @MessageMapping("/lobbies/{lobbyId}/settings")

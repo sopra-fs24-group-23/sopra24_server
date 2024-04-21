@@ -21,6 +21,13 @@ public class GameService {
         this.eventPublisher = eventPublisher;
     }
 
+    public GameSettings getSettings(String gameId){
+        // Retrieve game from the games map
+        Game game = this.games.get(gameId);
+        // Return the settings of the game
+        return game.getSettings();
+    }
+
     public void closeInputs(String lobbyId, Map<String, List<Answer>> answers) { // Adjust parameter type if necessary
         Game game = games.get(lobbyId);
         game.handleAnswers(answers);
