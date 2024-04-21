@@ -8,7 +8,8 @@ public class Celebrity implements Category {
 
     @Override
     public boolean validateAnswer(String answer) {
-        return fetchResultsFromApi(answer).equalsIgnoreCase("True");
+        return fetchResultsFromApi(answer).equals("True");
+
     }
 
     @Override

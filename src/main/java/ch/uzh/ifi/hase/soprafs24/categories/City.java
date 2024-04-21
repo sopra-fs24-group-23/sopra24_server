@@ -7,7 +7,8 @@ public class City implements Category {
     private static final String BASE_URL = "https://wft-geo-db.p.rapidapi.com";
     @Override
     public boolean validateAnswer(String answer) {
-        return fetchResultsFromApi(answer).equals("true");
+        return fetchResultsFromApi(answer).equals("True");
+
     }
     @Override
     public String fetchResultsFromApi(String cityName) {
