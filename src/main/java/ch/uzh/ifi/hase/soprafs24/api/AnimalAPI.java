@@ -51,10 +51,11 @@ public class AnimalAPI {
             e.printStackTrace();
             return "False";
         }
-    }public static void main(String[] args) {
-        AnimalAPI animalAPI = new AnimalAPI("7f9f1b12c5msh0ee2d0b9a2cbbb7p158dc9jsn62d752680b9e", "https://animals-by-api-ninjas.p.rapidapi.com/v1/");
-        String input = "horse"; // Example animal name to test
-        String result = animalAPI.performRequest(input);
-        System.out.println("Result: " + result);
     }
+   // public static void main(String[] args) {
+       // AnimalAPI animalAPI = new AnimalAPI("7f9f1b12c5msh0ee2d0b9a2cbbb7p158dc9jsn62d752680b9e", "https://animals-by-api-ninjas.p.rapidapi.com/v1/");
+        //String input = "horse"; // Example animal name to test
+        //String result = animalAPI.performRequest(input);
+        //System.out.println("Result: " + result);
+    //}
 }

@@ -71,10 +71,10 @@ public class CelebrityAPI {
         return "False"; // Return "false" if the request failed
     }
 
-    public static void main(String[] args) {
-        CelebrityAPI celebrityAPI = new CelebrityAPI("7f9f1b12c5msh0ee2d0b9a2cbbb7p158dc9jsn62d752680b9e", "https://celebrity-by-api-ninjas.p.rapidapi.com/v1/");
-        String input = "Ronaldo"; // Example celebrity name
-        String result = celebrityAPI.performRequest(input);
-        System.out.println("Result: " + result);
-    }
+    //public static void main(String[] args) {
+        //CelebrityAPI celebrityAPI = new CelebrityAPI("7f9f1b12c5msh0ee2d0b9a2cbbb7p158dc9jsn62d752680b9e", "https://celebrity-by-api-ninjas.p.rapidapi.com/v1/");
+        //String input = "Ronaldo"; // Example celebrity name
+       // String result = celebrityAPI.performRequest(input);
+        //System.out.println("Result: " + result);
+    //}
 }
