@@ -44,17 +44,17 @@ public class CityAPI extends APIManager {
                     JSONObject city = cities.getJSONObject(i);
                     // Check for an exact match on the "name" or "city" field
                     if (city.optString("name").equalsIgnoreCase(cityName) || city.optString("city").equalsIgnoreCase(cityName)) {
-                        return "true";
+                        return "True";
                     }
                 }
-                return "false";
+                return "False";
             } else {
                 System.out.println("GET request not worked");
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "false";
+        return "False";
     }
 
     public static void main(String[] args) {

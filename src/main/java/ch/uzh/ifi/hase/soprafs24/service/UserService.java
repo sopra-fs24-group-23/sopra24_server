@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
@@ -101,6 +103,33 @@ public class UserService {
 
         return persistedUser;
     }
+
+    public List<User> getGamesPlayedRanking(Long range) {
+        List<User> users = userRepository.findAll();
+
+        // sort by games played
+        users.sort((u1, u2) -> u2.getGamesPlayed().compareTo(u1.getGamesPlayed()));
+
+        return users.subList(0, Math.min(users.size(), range.intValue()));
+    }
+
+    public List<User> getTotalScoreRanking(Long range) {
+        List<User> users = userRepository.findAll();
+
+        users.sort((u1, u2) -> u2.getTotalScore().compareTo(u1.getTotalScore()));
+
+        return users.subList(0, Math.min(users.size(), range.intValue()));
+    }
+
+    public List<User> getGamesWonRanking(Long range) {
+        List<User> users = userRepository.findAll();
+
+        users.sort((u1, u2) -> u2.getGamesWon().compareTo(u1.getGamesWon()));
+
+        return users.subList(0, Math.min(users.size(), range.intValue()));
+    }
+
+
 
     /**
      * This is a helper method that will check the uniqueness criteria of the
