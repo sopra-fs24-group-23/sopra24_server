@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs24.controller;
 
 import ch.uzh.ifi.hase.soprafs24.constant.GamePhase;
+import ch.uzh.ifi.hase.soprafs24.entity.Answer;
 import ch.uzh.ifi.hase.soprafs24.entity.GameState;
 import ch.uzh.ifi.hase.soprafs24.entity.Player;
 import ch.uzh.ifi.hase.soprafs24.events.GameStateChangeEvent;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 public class GameWebsocketController {
@@ -36,8 +38,8 @@ public class GameWebsocketController {
     }
 
     @MessageMapping("/games/{gameId}/closeInputs")
-    public void closeInputs(@DestinationVariable String gameId) {
-        gameService.closeInputs(gameId);
+    public void closeInputs(@DestinationVariable String gameId, Map<String, List<Answer>> answers) {
+        gameService.closeInputs(gameId, answers);
     }
 
     @MessageMapping("/games/{gameId}/state")
