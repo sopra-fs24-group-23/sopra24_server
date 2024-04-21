@@ -51,17 +51,17 @@ public class CountryAPI extends APIManager {
                     JSONObject country = countries.getJSONObject(i);
                     String countryValue = country.optString("value");
                     if (countryValue.toLowerCase().contains(answer.toLowerCase())) {
-                        return "correct";
+                        return "True";
                     }
                 }
-                return "false";
+                return "False";
             } else {
                 System.out.println("GET request not worked");
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "false"; // Return "false" or an appropriate error message if an exception occurs
+        return "False"; // Return "false" or an appropriate error message if an exception occurs
     }
 
     public static void main(String[] args) {
