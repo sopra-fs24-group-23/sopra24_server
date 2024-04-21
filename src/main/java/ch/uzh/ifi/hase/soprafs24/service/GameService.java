@@ -21,14 +21,14 @@ public class GameService {
         this.eventPublisher = eventPublisher;
     }
 
-    public void closeInputs(String gameId, Map<String, List<Answer>> answers) { // Adjust parameter type if necessary
-        Game game = games.get(gameId);
+    public void closeInputs(String lobbyId, Map<String, List<Answer>> answers) { // Adjust parameter type if necessary
+        Game game = games.get(lobbyId);
         game.handleAnswers(answers);
         game.setPlayerHasAnswered(true); // Ensure this line is present to reflect player action
         if (!game.isInputPhaseClosed()) {
             game.setInputPhaseClosed(true);
             game.setPhase(GamePhase.AWAITING_ANSWERS);
-            updateClients(gameId, game.getState());
+            updateClients(lobbyId, game.getState());
         }
     }
 

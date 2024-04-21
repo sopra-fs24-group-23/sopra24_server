@@ -37,9 +37,9 @@ public class GameWebsocketController {
         this.updateGameState(gameStateChangeEvent.getGameId(), gameStateChangeEvent.getGameState());
     }
 
-    @MessageMapping("/games/{gameId}/closeInputs")
-    public void closeInputs(@DestinationVariable String gameId, Map<String, List<Answer>> answers) {
-        gameService.closeInputs(gameId, answers);
+    @MessageMapping("/games/{lobbyId}/closeInputs")
+    public void closeInputs(@DestinationVariable String lobbyId, Map<String, List<Answer>> answers) {
+        gameService.closeInputs(lobbyId, answers);
     }
 
     @MessageMapping("/games/{gameId}/state")

@@ -3,14 +3,14 @@ package ch.uzh.ifi.hase.soprafs24.entity;
 import ch.uzh.ifi.hase.soprafs24.categories.Category;
 
 public class Answer {
-    private final Category category;
+    private final String category;
     private final String answer;
     private Boolean isDuplicate;
     private Boolean isJoker;
     private Boolean isDoubted;
     private Boolean isCorrect;
 
-    public Answer(Category category, String answer) {
+    public Answer(String category, String answer) {
         this.category = category;
         this.answer = answer;
     }
@@ -24,7 +24,7 @@ public class Answer {
             this.isCorrect = true;
         }
         else {
-            this.isCorrect = category.validateAnswer(this.answer);
+            //this.isCorrect = category.validateAnswer(this.answer);
         }
 
         // set score according to uniqueness
@@ -72,7 +72,7 @@ public class Answer {
         isCorrect = correct;
     }
 
-    public Category getCategory() {
+    public String getCategory() {
         return category;
     }
 
