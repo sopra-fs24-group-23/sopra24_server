@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.*;
+import java.util.Map;
 
 public class Game {
 
@@ -16,6 +17,7 @@ public class Game {
     private GamePhase currentPhase;
     private String currentLetter;
     private boolean playerHasAnswered = false;
+    private boolean inputPhaseClosed = false;
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
 
@@ -136,6 +138,28 @@ public class Game {
         return future;
     }
 
+    public void handleAnswers(Map<String, List<Answer>> answers) {
+        for (Map.Entry<String, List<Answer>> entry : answers.entrySet()) {
+            String playerId = entry.getKey();
+            List<Answer> playerAnswers = entry.getValue();
+            // Find player by ID and set their answers
+            for (Player player : players) {
+                if (player.getId().equals(playerId)) {
+                    player.setCurrentAnswers(playerAnswers);
+                    player.setHasAnswered(true);
+                    break;
+                }
+            }
+        }
+        // Check if all players have answered to move to the next phase
+        boolean allAnswered = players.stream().allMatch(Player::getHasAnswered);
+        if (allAnswered) {
+            setPhase(GamePhase.VOTING);
+            // Inform clients about the phase change
+            //updateClients(/* gameId, gameState */);
+        }
+    }
+
 
     /* HELPER METHODS */
 
@@ -178,6 +202,14 @@ public class Game {
 
     public boolean getPlayerHasAnswered() {
         return this.playerHasAnswered;
+    }
+
+    public boolean isInputPhaseClosed() {
+        return inputPhaseClosed;
+    }
+
+    public void setInputPhaseClosed(boolean inputPhaseClosed) {
+        this.inputPhaseClosed = inputPhaseClosed;
     }
 
 }

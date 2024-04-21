@@ -72,4 +72,8 @@ public class Answer {
         isCorrect = correct;
     }
 
+    public Category getCategory() {
+        return category;
+    }
+
 }
