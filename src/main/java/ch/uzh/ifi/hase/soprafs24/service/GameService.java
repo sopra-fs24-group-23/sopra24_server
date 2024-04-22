@@ -10,11 +10,12 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 @Transactional
 public class GameService {
-    private HashMap<String, Game> games = new HashMap<>();
+    private ConcurrentHashMap<String, Game> games = new ConcurrentHashMap<>();
     private final ApplicationEventPublisher eventPublisher;
 
     public GameService(ApplicationEventPublisher eventPublisher) {
@@ -30,13 +31,14 @@ public class GameService {
 
     public void closeInputs(String lobbyId, Map<String, List<Answer>> answers) { // Adjust parameter type if necessary
         Game game = games.get(lobbyId);
-        game.handleAnswers(answers);
+
+        // game.handleAnswers(answers);
         game.setPlayerHasAnswered(true); // Ensure this line is present to reflect player action
-        if (!game.isInputPhaseClosed()) {
-            game.setInputPhaseClosed(true);
-            game.setPhase(GamePhase.AWAITING_ANSWERS);
-            updateClients(lobbyId, game.getState());
-        }
+       // if (!game.isInputPhaseClosed()) {
+         //   game.setInputPhaseClosed(true);
+           // game.setPhase(GamePhase.AWAITING_ANSWERS);
+            //updateClients(lobbyId, game.getState());
+        //}
     }
     public void setAnswers(String lobbyId, Map<String, List<Answer>> answers) { // Adjust parameter type if necessary
         Game game = games.get(lobbyId);
@@ -88,9 +90,9 @@ public class GameService {
             ).join();
         }
 
-        if (!game.initializeRound()) {
-            handleEndGame(gameId, game);
-        }
+       // if (!game.initializeRound()) {
+         //   handleEndGame(gameId, game);
+        //}
     }
 
     /* GamePhase specific helpers */
@@ -130,11 +132,11 @@ public class GameService {
         game.waitScoreboard();
     }
 
-    private void handleEndGame(String gameId, Game game) {
-        System.out.println("ENDED PHASE BEING HANDLED");
-        setPhaseAndUpdate(GamePhase.ENDED, gameId, game);
-        games.remove(gameId);
-    }
+  //  private void handleEndGame(String gameId, Game game) {
+    //    System.out.println("ENDED PHASE BEING HANDLED");
+      //  setPhaseAndUpdate(GamePhase.ENDED, gameId, game);
+        //games.remove(gameId);
+    //}
 
 
 
