@@ -182,7 +182,7 @@ public class Game {
     }
     private String generateRandomLetter() {
         Random random = new Random();
-        return ("A" + random.nextInt(26));
+        return String.valueOf((char) ('A' + random.nextInt(26)));
     }
 
     /* GETTERS / SETTERS */
