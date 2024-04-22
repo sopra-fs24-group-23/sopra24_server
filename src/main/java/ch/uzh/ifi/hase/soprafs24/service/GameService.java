@@ -3,13 +3,13 @@ package ch.uzh.ifi.hase.soprafs24.service;
 import ch.uzh.ifi.hase.soprafs24.constant.GamePhase;
 import ch.uzh.ifi.hase.soprafs24.entity.*;
 import ch.uzh.ifi.hase.soprafs24.events.GameStateChangeEvent;
-import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 @Service
 @Transactional
@@ -57,67 +57,85 @@ public class GameService {
      *   9. calculate scores, end round
      *   10. call game.startNextRound()
      * */
+
     public void runGame(String gameId, GameSettings settings, List<Player> players) {
         Game game = new Game(settings, players);
         this.games.put(gameId, game);
+        startGameLoop(gameId, game);
+    }
 
+    public void startGameLoop(String gameId, Game game) {
         while (game.initializeRound()) {
-            // inform clients that round has started
-            updateClients(gameId, game.getState());
-            // wait for scoreboardDuration
-            game.waitScoreboard().thenRun(() -> {
-                // change phase to INPUT
-                game.setPhase(GamePhase.INPUT);
-                // inform clients to open inputs
-                updateClients(gameId, game.getState());
-                // wait for inputDuration OR until all players have answered
-                game.waitInput().thenRun(() -> {
-                    // change phase to AWAITING_ANSWERS
-                    game.setPhase(GamePhase.AWAITING_ANSWERS);
-                    // inform clients to send answers
-                    updateClients(gameId, game.getState());
-                    // wait for all answers to arrive
-                    game.waitForAnswers().thenRun(() -> {
-                        // change phase to VOTING
-                        game.setPhase(GamePhase.VOTING);
-                        // inform clients that voting has started
-                        updateClients(gameId, game.getState());
-                        // wait for voting duration
-                        game.waitVoting().thenRun(() -> {
-                            // change phase to AWAITING_VOTES
-                            game.setPhase(GamePhase.AWAITING_VOTES);
-                            // inform clients to send votes
-                            updateClients(gameId, game.getState());
-                            // wait for all votes to arrive
-                            game.waitForVotes().thenRun(() -> {
-                                // make async calls to calculate score
-                                game.calculateScores().thenRun(() -> {
-                                    // change phase to VOTING_RESULTS
-                                    game.setPhase(GamePhase.VOTING_RESULTS);
-                                    // inform clients to display voting results
-                                    updateClients(gameId, game.getState());
-                                    // delay round-end to display voting results
-                                    game.waitScoreboard();
-                                });
-                            });
-                        });
-                    });
-                });
-            });
+            handleScoreboardPhase(gameId, game).thenRun(
+                () -> handleInputPhase(gameId, game).thenRun(
+                    () -> handleAwaitAnswersPhase(gameId, game).thenRun(
+                        () -> handleVotingPhase(gameId, game).thenRun(
+                            () -> handleAwaitVotesPhase(gameId, game).thenRun(
+                                () -> handleVotingResultsPhase(gameId, game)
+                            )
+                        )
+                    )
+                )
+            ).join();
         }
 
-        // if max number of rounds has been reached
-        if(!game.initializeRound()) {
-            // change phase to ENDED
-            game.setPhase(GamePhase.ENDED);
-            // inform clients with final state
-            updateClients(gameId, game.getState());
-            // delete game
-            games.remove(gameId);
+        if (!game.initializeRound()) {
+            handleEndGame(gameId, game);
         }
     }
 
-    /* Class-Private Helper Methods*/
+    /* GamePhase specific helpers */
+    private CompletableFuture<Void> handleScoreboardPhase(String gameId, Game game) {
+        System.out.println("SCOREBOARD PHASE BEING HANDLED");
+        updateClients(gameId, game.getState());
+        return game.waitScoreboard();
+    }
+
+    private CompletableFuture<Void> handleInputPhase(String gameId, Game game) {
+        System.out.println("INPUT PHASE BEING HANDLED");
+        setPhaseAndUpdate(GamePhase.INPUT, gameId, game);
+        return game.waitInput();
+    }
+
+    private CompletableFuture<Void> handleAwaitAnswersPhase(String gameId, Game game) {
+        System.out.println("AWAITING_ANSWERS PHASE BEING HANDLED");
+        setPhaseAndUpdate(GamePhase.AWAITING_ANSWERS, gameId, game);
+        return game.waitForAnswers();
+    }
+
+    private CompletableFuture<Void> handleVotingPhase(String gameId, Game game) {
+        System.out.println("VOTING PHASE BEING HANDLED");
+        setPhaseAndUpdate(GamePhase.VOTING, gameId, game);
+        return game.waitVoting();
+    }
+
+    private CompletableFuture<Void> handleAwaitVotesPhase(String gameId, Game game) {
+        System.out.println("AWAITING_VOTES PHASE BEING HANDLED");
+        setPhaseAndUpdate(GamePhase.AWAITING_VOTES, gameId, game);
+        return game.waitForVotes();
+    }
+
+    private void handleVotingResultsPhase(String gameId, Game game) {
+        System.out.println("VOTING_RESULTS PHASE BEING HANDLED");
+        setPhaseAndUpdate(GamePhase.VOTING_RESULTS, gameId, game);
+        game.waitScoreboard();
+    }
+
+    private void handleEndGame(String gameId, Game game) {
+        System.out.println("ENDED PHASE BEING HANDLED");
+        setPhaseAndUpdate(GamePhase.ENDED, gameId, game);
+        games.remove(gameId);
+    }
+
+
+
+    /* General Helper Methods*/
+
+    private void setPhaseAndUpdate(GamePhase gamePhase, String gameId, Game game) {
+        game.setPhase(gamePhase);
+        updateClients(gameId, game.getState());
+    }
+
     private void updateClients(String gameId, GameState gameState) {
         eventPublisher.publishEvent(
                 new GameStateChangeEvent(
@@ -127,5 +145,7 @@ public class GameService {
                 )
         );
     }
+
+
 
 }
