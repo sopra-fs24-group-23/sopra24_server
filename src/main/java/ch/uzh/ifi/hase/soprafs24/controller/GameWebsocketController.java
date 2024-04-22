@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
@@ -38,8 +39,13 @@ public class GameWebsocketController {
     }
 
     @MessageMapping("/games/{lobbyId}/closeInputs")
-    public void closeInputs(@DestinationVariable String lobbyId, Map<String, List<Answer>> answers) {
-        gameService.closeInputs(lobbyId, answers);
+    public void closeInputs(@DestinationVariable String lobbyId) {
+        gameService.closeInputs(lobbyId);
+    }
+
+    @MessageMapping("/games/{lobbyId}/answers")
+    public void receiveAnswers(@DestinationVariable String lobbyId, @Payload List<Answer> answers) {
+        System.out.printf("Received answers from lobby %s", lobbyId);
     }
     @MessageMapping("/games/{lobbyId}/setAnswers")
     public void setAnswers(@DestinationVariable String lobbyId, Map<String, List<Answer>> answers) {

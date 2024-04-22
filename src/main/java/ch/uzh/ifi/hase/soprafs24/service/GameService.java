@@ -4,9 +4,9 @@ import ch.uzh.ifi.hase.soprafs24.constant.GamePhase;
 import ch.uzh.ifi.hase.soprafs24.entity.*;
 import ch.uzh.ifi.hase.soprafs24.events.GameStateChangeEvent;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -29,16 +29,9 @@ public class GameService {
         return game.getSettings();
     }
 
-    public void closeInputs(String lobbyId, Map<String, List<Answer>> answers) { // Adjust parameter type if necessary
+    public void closeInputs(String lobbyId) {
         Game game = games.get(lobbyId);
-
-        // game.handleAnswers(answers);
-        game.setPlayerHasAnswered(true); // Ensure this line is present to reflect player action
-       // if (!game.isInputPhaseClosed()) {
-         //   game.setInputPhaseClosed(true);
-           // game.setPhase(GamePhase.AWAITING_ANSWERS);
-            //updateClients(lobbyId, game.getState());
-        //}
+        game.setPlayerHasAnswered(true);
     }
     public void setAnswers(String lobbyId, Map<String, List<Answer>> answers) { // Adjust parameter type if necessary
         Game game = games.get(lobbyId);
@@ -72,27 +65,29 @@ public class GameService {
     public void runGame(String gameId, GameSettings settings, List<Player> players) {
         Game game = new Game(settings, players);
         this.games.put(gameId, game);
+        game.initializeRound();
         startGameLoop(gameId, game);
     }
 
+    /* Game loop functions */
+    @Async
     public void startGameLoop(String gameId, Game game) {
-        while (game.initializeRound()) {
-            handleScoreboardPhase(gameId, game).thenRun(
-                () -> handleInputPhase(gameId, game).thenRun(
-                    () -> handleAwaitAnswersPhase(gameId, game).thenRun(
-                        () -> handleVotingPhase(gameId, game).thenRun(
-                            () -> handleAwaitVotesPhase(gameId, game).thenRun(
-                                () -> handleVotingResultsPhase(gameId, game)
-                            )
-                        )
-                    )
-                )
-            ).join();
-        }
+        handleScoreboardPhase(gameId, game)
+                .thenCompose(v -> handleInputPhase(gameId, game))
+                .thenCompose(v -> handleAwaitAnswersPhase(gameId, game))
+                .thenCompose(v -> handleVotingPhase(gameId, game))
+                .thenCompose(v -> handleAwaitVotesPhase(gameId, game))
+                .thenCompose(v -> handleVotingResultsPhase(gameId, game))
+                .thenRun(() -> endGameLoop(gameId, game));
+    }
 
-       // if (!game.initializeRound()) {
-         //   handleEndGame(gameId, game);
-        //}
+    public void endGameLoop(String gameId, Game game) {
+        if(game.initializeRound()) {
+            startGameLoop(gameId, game);
+        }
+        else {
+            handleEndGame(gameId, game);
+        }
     }
 
     /* GamePhase specific helpers */
@@ -126,17 +121,17 @@ public class GameService {
         return game.waitForVotes();
     }
 
-    private void handleVotingResultsPhase(String gameId, Game game) {
+    private CompletableFuture<Void> handleVotingResultsPhase(String gameId, Game game) {
         System.out.println("VOTING_RESULTS PHASE BEING HANDLED");
         setPhaseAndUpdate(GamePhase.VOTING_RESULTS, gameId, game);
-        game.waitScoreboard();
+        return game.waitScoreboard();
     }
 
-  //  private void handleEndGame(String gameId, Game game) {
-    //    System.out.println("ENDED PHASE BEING HANDLED");
-      //  setPhaseAndUpdate(GamePhase.ENDED, gameId, game);
-        //games.remove(gameId);
-    //}
+    private void handleEndGame(String gameId, Game game) {
+        System.out.println("ENDED PHASE BEING HANDLED");
+        setPhaseAndUpdate(GamePhase.ENDED, gameId, game);
+        games.remove(gameId);
+    }
 
 
 
