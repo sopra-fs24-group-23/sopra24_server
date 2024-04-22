@@ -41,6 +41,11 @@ public class GameWebsocketController {
     public void closeInputs(@DestinationVariable String lobbyId, Map<String, List<Answer>> answers) {
         gameService.closeInputs(lobbyId, answers);
     }
+    @MessageMapping("/games/{lobbyId}/setAnswers")
+    public void setAnswers(@DestinationVariable String lobbyId, Map<String, List<Answer>> answers) {
+        gameService.setAnswers(lobbyId, answers);
+    }
+
 
     @MessageMapping("/games/{gameId}/state")
     public void updateClients(@DestinationVariable  String gameId) {
