@@ -16,7 +16,7 @@ public class Game {
     private Integer currentRoundNumber;
     private GamePhase currentPhase;
     private String currentLetter;
-    private boolean playerHasAnswered = false;
+    private volatile boolean playerHasAnswered = false;
     private boolean inputPhaseClosed = false;
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 

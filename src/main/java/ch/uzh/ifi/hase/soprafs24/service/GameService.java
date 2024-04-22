@@ -30,13 +30,13 @@ public class GameService {
 
     public void closeInputs(String lobbyId, Map<String, List<Answer>> answers) { // Adjust parameter type if necessary
         Game game = games.get(lobbyId);
-        game.setPhase(GamePhase.AWAITING_ANSWERS);
-        game.setPlayerHasAnswered(true);
-        updateClients(lobbyId, game.getState());
-        //if (!game.isInputPhaseClosed()) {
-          //  game.setInputPhaseClosed(true);
-            //updateClients(lobbyId, game.getState());
-        //}
+        game.handleAnswers(answers);
+        game.setPlayerHasAnswered(true); // Ensure this line is present to reflect player action
+        if (!game.isInputPhaseClosed()) {
+            game.setInputPhaseClosed(true);
+            game.setPhase(GamePhase.AWAITING_ANSWERS);
+            updateClients(lobbyId, game.getState());
+        }
     }
     public void setAnswers(String lobbyId, Map<String, List<Answer>> answers) { // Adjust parameter type if necessary
         Game game = games.get(lobbyId);
