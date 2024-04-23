@@ -64,6 +64,9 @@ public class Game {
                 if (answerSet.contains(answer.getAnswer())) {
                     answer.setIsUnique(false);
                 }
+                else {
+                    answer.setIsUnique(true);
+                }
                 // add score
                 player.setCurrentScore(
                         player.getCurrentScore() + answer.calculateScore(this.currentLetter)
@@ -212,20 +215,13 @@ public class Game {
                     if (a.getCategory().equals(vote.getCategory())) {
                         a.setDoubted(true);
                     }
+                    else {
+                        a.setDoubted(false);
+                    }
                 }
             }
             else {
                 throw new PlayerNotFoundException("A vote referenced a non-existent player");
-            }
-        }
-    }
-
-    private void checkUniqueness() {
-        for (Player player : players) {
-            for (Answer answer : player.getCurrentAnswers()) {
-               if (answerSet.contains(answer.getAnswer())) {
-                   answer.setIsUnique(false);
-               }
             }
         }
     }
