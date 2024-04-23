@@ -142,29 +142,6 @@ public class Game {
         return future;
     }
 
-    public void handleAnswers(Map<String, List<Answer>> answers) {
-        for (Map.Entry<String, List<Answer>> entry : answers.entrySet()) {
-            String playerId = entry.getKey();
-            List<Answer> playerAnswers = entry.getValue();
-            // Find player by ID and set their answers
-            for (Player player : players) {
-                if (player.getId().equals(playerId)) {
-                    player.setCurrentAnswers(playerAnswers);
-                    player.setHasAnswered(true);
-                    break;
-                }
-            }
-        }
-        // Check if all players have answered to move to the next phase
-        boolean allAnswered = players.stream().allMatch(Player::getHasAnswered);
-        if (allAnswered) {
-            setPhase(GamePhase.VOTING);
-            // Inform clients about the phase change
-            //updateClients(/* gameId, gameState */);
-        }
-    }
-
-
     /* HELPER METHODS */
 
     /** Generate a random uppercase letter **/
@@ -194,6 +171,17 @@ public class Game {
                 players,
                 currentRoundNumber
         );
+    }
+
+    public void setPlayerAnswers(String username, List<Answer> answers) {
+        System.out.printf("Setting answers for %s \n", username);
+        answers.forEach((answer) -> System.out.println(answer.toString()));
+        for (Player p : players) {
+            if (p.getUsername().equals(username)) {
+                p.setHasAnswered(true);
+                p.setCurrentAnswers(answers);
+            }
+        }
     }
 
     public void setPhase(GamePhase phase) {

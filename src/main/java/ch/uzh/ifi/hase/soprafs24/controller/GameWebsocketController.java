@@ -43,15 +43,15 @@ public class GameWebsocketController {
         gameService.closeInputs(lobbyId);
     }
 
-    @MessageMapping("/games/{lobbyId}/answers")
-    public void receiveAnswers(@DestinationVariable String lobbyId, @Payload List<Answer> answers) {
-        System.out.printf("Received answers from lobby %s", lobbyId);
-    }
-    @MessageMapping("/games/{lobbyId}/setAnswers")
-    public void setAnswers(@DestinationVariable String lobbyId, Map<String, List<Answer>> answers) {
-        gameService.setAnswers(lobbyId, answers);
-    }
+    @MessageMapping("/games/{lobbyId}/answers/{username}")
+    public void receiveAnswers(@DestinationVariable String lobbyId,
+                               @DestinationVariable String username,
+                               @Payload List<Answer> answers
 
+    ) {
+        System.out.printf("Received answers from player %s", username);
+        gameService.setAnswers(lobbyId, username, answers);
+    }
 
     @MessageMapping("/games/{gameId}/state")
     public void updateClients(@DestinationVariable  String gameId) {

@@ -33,14 +33,9 @@ public class GameService {
         Game game = games.get(lobbyId);
         game.setPlayerHasAnswered(true);
     }
-    public void setAnswers(String lobbyId, Map<String, List<Answer>> answers) { // Adjust parameter type if necessary
+    public void setAnswers(String lobbyId, String username, List<Answer> answers) { // Adjust parameter type if necessary
         Game game = games.get(lobbyId);
-        game.handleAnswers(answers);
-        game.setPlayerHasAnswered(true);
-        if (game.getPlayerHasAnswered()){
-            game.setInputPhaseClosed(true);
-        }
-
+        game.setPlayerAnswers(username, answers);
     }
 
     public GameState getGameState(String gameId) {

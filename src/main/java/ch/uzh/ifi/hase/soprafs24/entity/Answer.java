@@ -5,7 +5,7 @@ import ch.uzh.ifi.hase.soprafs24.categories.Category;
 public class Answer {
     private final String category;
     private final String answer;
-    private Boolean isDuplicate;
+    private Boolean isUnique;
     private Boolean isJoker;
     private Boolean isDoubted;
     private Boolean isCorrect;
@@ -29,7 +29,7 @@ public class Answer {
 
         // set score according to uniqueness
         if (isCorrect) {
-            score = isDuplicate ? 5 : 10;
+            score = isUnique ? 5 : 10;
         }
 
         // award extra points if wrongfully doubted
@@ -40,12 +40,12 @@ public class Answer {
         return score;
     };
 
-    public Boolean getDuplicate() {
-        return isDuplicate;
+    public Boolean getIsUnique() {
+        return isUnique;
     }
 
-    public void setDuplicate(Boolean duplicate) {
-        isDuplicate = duplicate;
+    public void setIsUnique(Boolean duplicate) {
+        isUnique = duplicate;
     }
 
     public Boolean getJoker() {
@@ -76,4 +76,15 @@ public class Answer {
         return category;
     }
 
+    @Override
+    public String toString() {
+        return "Answer{" +
+                "category='" + category + '\'' +
+                ", answer='" + answer + '\'' +
+                ", isDoubted=" + isDoubted +
+                ", isJoker=" + isJoker +
+                ", isUnique=" + isUnique +
+                ", isCorrect=" + isCorrect +
+                '}';
+    }
 }
