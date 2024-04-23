@@ -1,6 +1,5 @@
 package ch.uzh.ifi.hase.soprafs24.controller;
 
-import ch.uzh.ifi.hase.soprafs24.constant.GamePhase;
 import ch.uzh.ifi.hase.soprafs24.entity.Answer;
 import ch.uzh.ifi.hase.soprafs24.entity.GameState;
 import ch.uzh.ifi.hase.soprafs24.entity.Player;
@@ -19,7 +18,6 @@ import org.springframework.stereotype.Controller;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Controller
 public class GameWebsocketController {
@@ -49,6 +47,7 @@ public class GameWebsocketController {
                                @Payload List<Answer> answers
 
     ) {
+        // the category string is converted to an instance in the ANSWER class
         System.out.printf("Received answers from player %s", username);
         gameService.setAnswers(lobbyId, username, answers);
     }

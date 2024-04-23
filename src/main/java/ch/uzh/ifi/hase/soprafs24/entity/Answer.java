@@ -1,6 +1,10 @@
 package ch.uzh.ifi.hase.soprafs24.entity;
 
 import ch.uzh.ifi.hase.soprafs24.categories.Category;
+import ch.uzh.ifi.hase.soprafs24.categories.CategoryFactory;
+
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 public class Answer {
     private final String category;
@@ -14,9 +18,22 @@ public class Answer {
         this.category = category;
         this.answer = answer;
     }
-    // TODO: add mechanism to punish wrongful doubting
 
     public int calculateScore() {
+        try {
+            this.isCorrect = checkAnswer();
+        }
+        catch (ExecutionException e ) {
+            System.out.printf(
+                    "There was an execution-exception trying to fetch results for answer %s category %s \n",
+                    answer, category);
+        }
+        catch (InterruptedException e) {
+            System.out.printf(
+                    "There was an interrupted-exception trying to fetch results for answer %s category %s \n",
+                    answer, category);
+        }
+
         int score = 0;
 
         // only check answer if it is not a non-doubted joker
@@ -39,6 +56,18 @@ public class Answer {
 
         return score;
     };
+
+    public boolean checkAnswer() throws ExecutionException, InterruptedException {
+        Category answerCategory = CategoryFactory.createCategory(this.category);
+
+        // Perform the API call asynchronously
+        CompletableFuture<Boolean> future = CompletableFuture.supplyAsync(() -> {
+            return answerCategory.validateAnswer(this.answer);
+        });
+
+        // Wait for the result before returning
+        return future.get();
+    }
 
     public Boolean getIsUnique() {
         return isUnique;
@@ -74,6 +103,10 @@ public class Answer {
 
     public String getCategory() {
         return category;
+    }
+
+    public String getAnswer() {
+        return answer;
     }
 
     @Override
