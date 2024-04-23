@@ -3,6 +3,7 @@ package ch.uzh.ifi.hase.soprafs24.controller;
 import ch.uzh.ifi.hase.soprafs24.entity.Answer;
 import ch.uzh.ifi.hase.soprafs24.entity.GameState;
 import ch.uzh.ifi.hase.soprafs24.entity.Player;
+import ch.uzh.ifi.hase.soprafs24.entity.Vote;
 import ch.uzh.ifi.hase.soprafs24.events.GameStateChangeEvent;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.GameStateDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.PlayerGetDTO;
@@ -58,6 +59,13 @@ public class GameWebsocketController {
         GameState gameState = gameService.getGameState(gameId);
         updateGameState(gameId, gameState);
     }
+
+    @MessageMapping("/games/{lobbyId}/doubt")
+    public void receivedDoubt(@DestinationVariable String lobbyId,
+                              @Payload List<Vote> votes) {
+        gameService.doubtAnswers(lobbyId, votes);
+    }
+
 
     /** Server to client(s) communication **/
     private void updateGameState(String lobbyId, GameState gameState) {
