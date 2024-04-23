@@ -4,6 +4,8 @@ package ch.uzh.ifi.hase.soprafs24.categories;
 public class CategoryFactory {
     public static Category createCategory(String categoryName) {
         switch (categoryName) {
+            case "Animal":
+                return new Animal();
             case "Country":
                 return new Country();
             case "City":
