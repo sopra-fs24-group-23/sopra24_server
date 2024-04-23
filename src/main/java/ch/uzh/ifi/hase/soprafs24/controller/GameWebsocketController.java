@@ -52,6 +52,14 @@ public class GameWebsocketController {
         gameService.setAnswers(lobbyId, answers);
     }
 
+    @MessageMapping("/games/{lobbyId}/getAnswers")
+    public void getAnswers(@DestinationVariable String lobbyId) {
+        Map<String, List<Answer>> answers = gameService.getAnswers(lobbyId);
+        msgTemplate.convertAndSend(
+                String.format("/topic/games/%s/answers", lobbyId),
+                answers
+        );
+    }
 
     @MessageMapping("/games/{gameId}/state")
     public void updateClients(@DestinationVariable  String gameId) {

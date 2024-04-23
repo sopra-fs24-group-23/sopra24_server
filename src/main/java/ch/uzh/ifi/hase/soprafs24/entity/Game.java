@@ -3,11 +3,8 @@ package ch.uzh.ifi.hase.soprafs24.entity;
 import ch.uzh.ifi.hase.soprafs24.constant.GamePhase;
 import org.springframework.scheduling.annotation.Async;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.*;
-import java.util.Map;
 
 public class Game {
 
@@ -194,6 +191,14 @@ public class Game {
                 players,
                 currentRoundNumber
         );
+    }
+
+    public Map<String, List<Answer>> getAnswers() {
+        Map<String, List<Answer>> answers = new HashMap<>();
+        for (Player player : players) {
+            answers.put(player.getId().toString() , player.getCurrentAnswers());
+        }
+        return answers;
     }
 
     public void setPhase(GamePhase phase) {

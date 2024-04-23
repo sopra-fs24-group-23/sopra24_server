@@ -40,7 +40,13 @@ public class GameService {
         if (game.getPlayerHasAnswered()){
             game.setInputPhaseClosed(true);
         }
+    }
 
+    public Map<String, List<Answer>> getAnswers(String gameId) {
+        // Retrieve game from the games map
+        Game game = this.games.get(gameId);
+        // Return the answers of the game
+        return game.getAnswers();
     }
 
     public GameState getGameState(String gameId) {
