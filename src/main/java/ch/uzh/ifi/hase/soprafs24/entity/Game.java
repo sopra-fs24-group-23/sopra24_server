@@ -14,6 +14,7 @@ public class Game {
     private Integer currentRoundNumber;
     private GamePhase currentPhase;
     private String currentLetter;
+    private Set<String> answerSet;
     private volatile boolean playerHasAnswered = false;
     private boolean inputPhaseClosed = false;
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
@@ -24,6 +25,7 @@ public class Game {
     public Game(GameSettings settings, List<Player> players) {
         this.settings = settings;
         this.players = players;
+        this.answerSet = new HashSet<>();
         this.currentRoundNumber = 0;
         this.playerHasAnswered = false;
     }
@@ -36,6 +38,7 @@ public class Game {
         if (currentRoundNumber < settings.getMaxRounds()) {
             currentRoundNumber++;
             playerHasAnswered = false;
+            answerSet = new HashSet<>();
             currentPhase = GamePhase.SCOREBOARD;
             currentLetter = generateRandomLetter();
 
@@ -57,11 +60,18 @@ public class Game {
 
         for (Player player : players) {
             for (Answer answer : player.getCurrentAnswers()) {
+                // check if answer is unique
+                if (answerSet.contains(answer.getAnswer())) {
+                    answer.setIsUnique(false);
+                }
+                // add score
                 player.setCurrentScore(
                         player.getCurrentScore() + answer.calculateScore()
                 );
             }
         }
+
+        future.complete(null);
         return future;
     }
 
@@ -174,8 +184,11 @@ public class Game {
     }
 
     public void setPlayerAnswers(String username, List<Answer> answers) {
+
         System.out.printf("Setting answers for %s \n", username);
-        answers.forEach((answer) -> System.out.println(answer.toString()));
+
+        answers.forEach((answer) -> answerSet.add(answer.getAnswer()));
+
         for (Player p : players) {
             if (p.getUsername().equals(username)) {
                 p.setHasAnswered(true);
@@ -202,6 +215,16 @@ public class Game {
             }
             else {
                 throw new PlayerNotFoundException("A vote referenced a non-existent player");
+            }
+        }
+    }
+
+    private void checkUniqueness() {
+        for (Player player : players) {
+            for (Answer answer : player.getCurrentAnswers()) {
+               if (answerSet.contains(answer.getAnswer())) {
+                   answer.setIsUnique(false);
+               }
             }
         }
     }
