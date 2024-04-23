@@ -3,11 +3,8 @@ package ch.uzh.ifi.hase.soprafs24.entity;
 import ch.uzh.ifi.hase.soprafs24.constant.GamePhase;
 import org.springframework.scheduling.annotation.Async;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.*;
-import java.util.Map;
 
 public class Game {
 
