@@ -36,8 +36,9 @@ public class GameWebsocketController {
         this.updateGameState(gameStateChangeEvent.getGameId(), gameStateChangeEvent.getGameState());
     }
 
-    @MessageMapping("/games/{lobbyId}/closeInputs")
+    @MessageMapping("/games/{lobbyId}/close-inputs")
     public void closeInputs(@DestinationVariable String lobbyId) {
+        System.out.println("Received closeInputs call");
         gameService.closeInputs(lobbyId);
     }
 
