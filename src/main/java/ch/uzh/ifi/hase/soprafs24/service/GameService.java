@@ -86,7 +86,7 @@ public class GameService {
                 .thenCompose(v -> handleAwaitAnswersPhase(gameId, game))
                 .thenCompose(v -> handleVotingPhase(gameId, game))
                 .thenCompose(v -> handleAwaitVotesPhase(gameId, game))
-                .thenCompose(v -> game.calculateScores())
+                .thenAccept(v -> game.calculateScores())
                 .thenCompose(v -> handleVotingResultsPhase(gameId, game))
                 .thenRun(() -> endGameLoop(gameId, game));
     }

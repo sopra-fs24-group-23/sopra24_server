@@ -47,10 +47,12 @@ public class GameWebsocketController {
     public void receiveAnswers(@DestinationVariable String lobbyId,
                                @DestinationVariable String username,
                                @Payload List<Answer> answers
-
     ) {
         // the category string is converted to an instance in the ANSWER class
-        System.out.printf("Received answers from player %s", username);
+        System.out.printf("Received answers from player %s: \n", username);
+        for (Answer answer : answers) {
+            System.out.printf("%s", answer.toString());
+        }
         gameService.setAnswers(lobbyId, username, answers);
     }
 

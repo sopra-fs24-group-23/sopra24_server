@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs24.entity;
 
 import ch.uzh.ifi.hase.soprafs24.categories.Category;
 import ch.uzh.ifi.hase.soprafs24.categories.CategoryFactory;
+import com.fasterxml.jackson.annotation.JsonSetter;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -81,6 +82,7 @@ public class Answer {
         return isUnique;
     }
 
+    @JsonSetter("isUnique")
     public void setIsUnique(Boolean duplicate) {
         isUnique = duplicate;
     }
@@ -89,23 +91,23 @@ public class Answer {
         return isJoker;
     }
 
-    public void setJoker(Boolean joker) {
+    public void setIsJoker(Boolean joker) {
         isJoker = joker;
     }
 
-    public Boolean getDoubted() {
+    public Boolean getIsDoubted() {
         return isDoubted;
     }
 
-    public void setDoubted(Boolean doubted) {
+    public void setIsDoubted(Boolean doubted) {
         isDoubted = doubted;
     }
 
-    public Boolean getCorrect() {
+    public Boolean getIsCorrect() {
         return isCorrect;
     }
 
-    public void setCorrect(Boolean correct) {
+    public void setIsCorrect(Boolean correct) {
         isCorrect = correct;
     }
 

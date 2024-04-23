@@ -57,7 +57,7 @@ public class Game {
     @Async
     public CompletableFuture<Void> calculateScores(){
         CompletableFuture<Void> future = new CompletableFuture<>();
-
+        System.out.println("calculateScores has been called.");
         for (Player player : players) {
             for (Answer answer : player.getCurrentAnswers()) {
                 // check if answer is unique
@@ -124,7 +124,7 @@ public class Game {
             }
 
         }, 0, 1, TimeUnit.SECONDS);
-
+        // TODO: cancel that schedule at some points please...
         return future;
     }
     @Async
@@ -207,16 +207,18 @@ public class Game {
             for (Player p : players) {
                 if (vote.getUsername().equals(p.getUsername())) {
                     player = p;
+                }
+                if (p.getUsername().equals(username)) {
                     p.setHasVoted(true);
                 }
             }
             if (player != null) {
                 for (Answer a : player.getCurrentAnswers()) {
                     if (a.getCategory().equals(vote.getCategory())) {
-                        a.setDoubted(true);
+                        a.setIsDoubted(true);
                     }
                     else {
-                        a.setDoubted(false);
+                        a.setIsDoubted(false);
                     }
                 }
             }
