@@ -3,9 +3,13 @@ package ch.uzh.ifi.hase.soprafs24.service;
 import ch.uzh.ifi.hase.soprafs24.constant.GamePhase;
 import ch.uzh.ifi.hase.soprafs24.entity.*;
 import ch.uzh.ifi.hase.soprafs24.events.GameStateChangeEvent;
+import ch.uzh.ifi.hase.soprafs24.exceptions.PlayerNotFoundException;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
+
 import javax.transaction.Transactional;
 import java.util.Map;
 import java.util.List;
@@ -41,6 +45,16 @@ public class GameService {
     public GameState getGameState(String gameId) {
         Game game = games.get(gameId);
         return game.getState();
+    }
+
+    public void doubtAnswers(String gameId, List<Vote> votes) {
+        Game game = games.get(gameId);
+        try {
+            game.doubtAnswers(votes);
+        }
+        catch (PlayerNotFoundException e) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("%s", e.getMessage()));
+        }
     }
 
     /*  1. inform players round started

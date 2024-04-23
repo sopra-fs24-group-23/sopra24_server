@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs24.entity;
 
 import ch.uzh.ifi.hase.soprafs24.constant.GamePhase;
+import ch.uzh.ifi.hase.soprafs24.exceptions.PlayerNotFoundException;
 import org.springframework.scheduling.annotation.Async;
 
 import java.util.*;
@@ -17,6 +18,8 @@ public class Game {
     private boolean inputPhaseClosed = false;
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
+    // to make finding users and answers easier and more efficient, we should probably introduce answer IDs, and
+    // change the player list to a map or similar.
 
     public Game(GameSettings settings, List<Player> players) {
         this.settings = settings;
@@ -177,6 +180,28 @@ public class Game {
             if (p.getUsername().equals(username)) {
                 p.setHasAnswered(true);
                 p.setCurrentAnswers(answers);
+            }
+        }
+    }
+
+    // this is pretty disgusting... wopsieee
+    public void doubtAnswers(List<Vote> votes) throws PlayerNotFoundException {
+        for (Vote vote : votes) {
+            Player player = null;
+            for (Player p : players) {
+                if (vote.getUsername().equals(p.getUsername())) {
+                    player = p;
+                }
+            }
+            if (player != null) {
+                for (Answer a : player.getCurrentAnswers()) {
+                    if (a.getCategory().equals(vote.getCategory())) {
+                        a.setDoubted(true);
+                    }
+                }
+            }
+            else {
+                throw new PlayerNotFoundException("A vote referenced a non-existent player");
             }
         }
     }
