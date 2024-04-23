@@ -86,11 +86,13 @@ public class GameService {
                 .thenCompose(v -> handleAwaitAnswersPhase(gameId, game))
                 .thenCompose(v -> handleVotingPhase(gameId, game))
                 .thenCompose(v -> handleAwaitVotesPhase(gameId, game))
+                .thenCompose(v -> game.calculateScores())
                 .thenCompose(v -> handleVotingResultsPhase(gameId, game))
                 .thenRun(() -> endGameLoop(gameId, game));
     }
 
     public void endGameLoop(String gameId, Game game) {
+
         if(game.initializeRound()) {
             startGameLoop(gameId, game);
         }
