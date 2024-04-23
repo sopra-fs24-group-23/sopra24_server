@@ -47,10 +47,10 @@ public class GameService {
         return game.getState();
     }
 
-    public void doubtAnswers(String gameId, List<Vote> votes) {
+    public void doubtAnswers(String gameId, String username, List<Vote> votes) {
         Game game = games.get(gameId);
         try {
-            game.doubtAnswers(votes);
+            game.doubtAnswers(username, votes);
         }
         catch (PlayerNotFoundException e) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("%s", e.getMessage()));

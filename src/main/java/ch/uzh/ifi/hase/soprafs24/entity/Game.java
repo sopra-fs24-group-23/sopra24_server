@@ -198,12 +198,13 @@ public class Game {
     }
 
     // this is pretty disgusting... wopsieee
-    public void doubtAnswers(List<Vote> votes) throws PlayerNotFoundException {
+    public void doubtAnswers(String username, List<Vote> votes) throws PlayerNotFoundException {
         for (Vote vote : votes) {
             Player player = null;
             for (Player p : players) {
                 if (vote.getUsername().equals(p.getUsername())) {
                     player = p;
+                    p.setHasVoted(true);
                 }
             }
             if (player != null) {

@@ -60,10 +60,11 @@ public class GameWebsocketController {
         updateGameState(gameId, gameState);
     }
 
-    @MessageMapping("/games/{lobbyId}/doubt")
+    @MessageMapping("/games/{lobbyId}/doubt/{username}")
     public void receivedDoubt(@DestinationVariable String lobbyId,
+                              @DestinationVariable String username,
                               @Payload List<Vote> votes) {
-        gameService.doubtAnswers(lobbyId, votes);
+        gameService.doubtAnswers(lobbyId, username, votes);
     }
 
 
