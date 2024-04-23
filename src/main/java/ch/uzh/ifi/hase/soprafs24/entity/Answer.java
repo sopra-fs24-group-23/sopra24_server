@@ -19,7 +19,14 @@ public class Answer {
         this.answer = answer;
     }
 
-    public int calculateScore() {
+    public int calculateScore(String currentLetter) {
+
+        // if answer starts with wrong letter, abort.
+        if (!answer.substring(0,1).toUpperCase().equals(currentLetter)) {
+            return 0;
+        }
+
+        // if answer starts with correct letter, make API call
         try {
             this.isCorrect = checkAnswer();
         }
@@ -34,6 +41,7 @@ public class Answer {
                     answer, category);
         }
 
+        // with all attributes set, calculate the score
         int score = 0;
 
         // only check answer if it is not a non-doubted joker

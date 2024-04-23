@@ -66,7 +66,7 @@ public class Game {
                 }
                 // add score
                 player.setCurrentScore(
-                        player.getCurrentScore() + answer.calculateScore()
+                        player.getCurrentScore() + answer.calculateScore(this.currentLetter)
                 );
             }
         }
