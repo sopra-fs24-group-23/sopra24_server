@@ -19,6 +19,6 @@ public class MoviesSeries implements Category {
 
     @Override
     public String getName() {
-        return "Movie";
+        return "Movie/Series";
     }
 }

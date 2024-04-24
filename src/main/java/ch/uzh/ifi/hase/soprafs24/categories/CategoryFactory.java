@@ -10,8 +10,7 @@ public class CategoryFactory {
                 return new Country();
             case "City":
                 return new City();
-            // Add more
-            case "Movie":
+            case "Movie/Series":
                 return new MoviesSeries();
             case "Celebrity":
                 return new Celebrity();
