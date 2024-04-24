@@ -14,7 +14,7 @@ public class Game {
     private Integer currentRoundNumber;
     private GamePhase currentPhase;
     private String currentLetter;
-    private Set<String> answerSet;
+    private HashMap<String, Integer> answerMap;
     private volatile boolean playerHasAnswered = false;
     private boolean inputPhaseClosed = false;
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
@@ -25,7 +25,7 @@ public class Game {
     public Game(GameSettings settings, List<Player> players) {
         this.settings = settings;
         this.players = players;
-        this.answerSet = new HashSet<>();
+        this.answerMap = new HashMap<>();
         this.currentRoundNumber = 0;
         this.playerHasAnswered = false;
     }
@@ -38,7 +38,7 @@ public class Game {
         if (currentRoundNumber < settings.getMaxRounds()) {
             currentRoundNumber++;
             playerHasAnswered = false;
-            answerSet = new HashSet<>();
+            answerMap.clear();
             currentPhase = GamePhase.SCOREBOARD;
             currentLetter = generateRandomLetter();
 
@@ -63,7 +63,7 @@ public class Game {
                     .thenApply((isCorrect) -> {
                         answer.setIsCorrect(isCorrect);
 
-                        if (answerSet.contains(answer.getAnswer())) {
+                        if (answerMap.get(answer.getAnswer()) > 1) {
                             answer.setIsUnique(false);
                         } else {
                             answer.setIsUnique(true);
@@ -196,7 +196,16 @@ public class Game {
 
         System.out.printf("Setting answers for %s \n", username);
 
-        answers.forEach((answer) -> answerSet.add(answer.getAnswer()));
+        answers.forEach((answer) -> {
+            Integer count = answerMap.get(answer.getAnswer());
+            if (count == null) {
+                answerMap.put(answer.getAnswer(), 1);
+            }
+            else {
+                count++;
+                answerMap.put(answer.getAnswer(), count);
+            }
+        });
 
         for (Player p : players) {
             if (p.getUsername().equals(username)) {

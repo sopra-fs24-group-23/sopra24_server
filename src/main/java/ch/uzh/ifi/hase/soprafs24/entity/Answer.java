@@ -24,7 +24,7 @@ public class Answer {
     public int calculateScore(String currentLetter) {
 
         // if answer starts with wrong letter, abort.
-        if (!answer.substring(0,1).toUpperCase().equals(currentLetter)) {
+        if (answer.isEmpty() || !answer.substring(0,1).toUpperCase().equals(currentLetter)) {
             return 0;
         }
 
