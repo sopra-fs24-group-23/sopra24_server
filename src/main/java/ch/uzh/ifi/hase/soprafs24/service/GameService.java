@@ -71,6 +71,7 @@ public class GameService {
      *   10. call game.startNextRound()
      * */
 
+    @Async
     public void runGame(String gameId, GameSettings settings, List<Player> players) {
         Game game = new Game(settings, players);
         this.games.put(gameId, game);
@@ -79,16 +80,19 @@ public class GameService {
     }
 
     /* Game loop functions */
-    @Async
     public void startGameLoop(String gameId, Game game) {
         handleScoreboardPhase(gameId, game)
                 .thenCompose(v -> handleInputPhase(gameId, game))
                 .thenCompose(v -> handleAwaitAnswersPhase(gameId, game))
                 .thenCompose(v -> handleVotingPhase(gameId, game))
                 .thenCompose(v -> handleAwaitVotesPhase(gameId, game))
-                .thenAccept(v -> game.calculateScores())
+                .thenCompose(v -> handleCalculateScores(game))
                 .thenCompose(v -> handleVotingResultsPhase(gameId, game))
-                .thenRun(() -> endGameLoop(gameId, game));
+                .thenRun(() -> endGameLoop(gameId, game))
+                .exceptionally(e -> {
+                    System.out.println("Error in game loop: " + e.getMessage());
+                    return null;
+                });
     }
 
     public void endGameLoop(String gameId, Game game) {
@@ -132,6 +136,10 @@ public class GameService {
         return game.waitForVotes();
     }
 
+    private CompletableFuture<Void> handleCalculateScores(Game game) {
+        System.out.println("CALCULATE SCORES BEING HANDLED");
+       return game.calculateScores();
+    }
     private CompletableFuture<Void> handleVotingResultsPhase(String gameId, Game game) {
         System.out.println("VOTING_RESULTS PHASE BEING HANDLED");
         setPhaseAndUpdate(GamePhase.VOTING_RESULTS, gameId, game);

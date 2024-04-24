@@ -1,4 +1,4 @@
-package ch.uzh.ifi.hase.soprafs24.websocket;
+package ch.uzh.ifi.hase.soprafs24.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;

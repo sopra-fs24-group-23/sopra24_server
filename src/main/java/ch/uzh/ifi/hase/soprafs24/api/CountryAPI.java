@@ -31,7 +31,6 @@ public class CountryAPI extends APIManager {
 
             // Check the response code
             int responseCode = connection.getResponseCode();
-            System.out.println("Response Code: " + responseCode);
 
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 // Read the response
@@ -46,7 +45,6 @@ public class CountryAPI extends APIManager {
 
                 // Parse the response to check if the country exists
                 JSONArray countries = new JSONArray(response.toString());
-                System.out.println(countries);
                 for (int i = 0; i < countries.length(); i++) {
                     JSONObject country = countries.getJSONObject(i);
                     String countryValue = country.optString("value");

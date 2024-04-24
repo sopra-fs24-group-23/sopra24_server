@@ -54,36 +54,40 @@ public class Game {
         return false;
     }
 
-    @Async
     public CompletableFuture<Void> calculateScores(){
-        CompletableFuture<Void> future = new CompletableFuture<>();
-        System.out.println("calculateScores has been called.");
+        List<CompletableFuture<Void>> scoreFutures = new ArrayList<>();
+
         for (Player player : players) {
             for (Answer answer : player.getCurrentAnswers()) {
-                // check if answer is unique
-                if (answerSet.contains(answer.getAnswer())) {
-                    answer.setIsUnique(false);
-                }
-                else {
-                    answer.setIsUnique(true);
-                }
-                // add score
-                player.setCurrentScore(
-                        player.getCurrentScore() + answer.calculateScore(this.currentLetter)
-                );
+                CompletableFuture<Void> checkFuture = answer.checkAnswer()
+                    .thenApply((isCorrect) -> {
+                        answer.setIsCorrect(isCorrect);
+
+                        if (answerSet.contains(answer.getAnswer())) {
+                            answer.setIsUnique(false);
+                        } else {
+                            answer.setIsUnique(true);
+                        }
+
+                        // Calculate and update the score
+                        int score = answer.calculateScore(this.currentLetter);
+                        player.setCurrentScore(player.getCurrentScore() + score);
+
+                        return null;
+                    });
+
+                scoreFutures.add(checkFuture);
             }
         }
 
-        future.complete(null);
-        return future;
+        System.out.println("calculateScores has finished called.");
+        return CompletableFuture.allOf(scoreFutures.toArray(new CompletableFuture[0]));
     }
 
-    @Async
     public CompletableFuture<Void> waitScoreboard() {
         return waitForDuration(settings.getScoreboardDuration().longValue());
     }
 
-    @Async
     public CompletableFuture<Void> waitInput() {
         CompletableFuture<Void> future = new CompletableFuture<>();
 
@@ -105,12 +109,13 @@ public class Game {
         return future;
     }
 
-    @Async
     public CompletableFuture<Void> waitForAnswers() {
         CompletableFuture<Void> future = new CompletableFuture<>();
 
+        ScheduledFuture<?>[] holder = new ScheduledFuture<?>[1];
+
         // schedule check every second; complete future if all answers received
-        ScheduledFuture<?> scheduledFuture = scheduler.scheduleAtFixedRate(() -> {
+        holder[0] = scheduler.scheduleAtFixedRate(() -> {
             boolean allAnswersReceived = true;
             for (Player player : players ) {
                 if (!player.getHasAnswered()) {
@@ -120,24 +125,25 @@ public class Game {
             }
 
             if (allAnswersReceived) {
+                holder[0].cancel(false);
                 future.complete(null);
             }
 
         }, 0, 1, TimeUnit.SECONDS);
-        // TODO: cancel that schedule at some points please...
         return future;
     }
-    @Async
+
     public CompletableFuture<Void> waitVoting() {
         return waitForDuration(settings.getVotingDuration().longValue());
     }
 
-    @Async
     public CompletableFuture<Void> waitForVotes() {
         CompletableFuture<Void> future = new CompletableFuture<>();
 
+        final ScheduledFuture<?>[] holder = new ScheduledFuture<?>[1];
+
         // schedule check every second; complete future if all votes received
-        ScheduledFuture<?> scheduledFuture = scheduler.scheduleAtFixedRate(() -> {
+        holder[0] = scheduler.scheduleAtFixedRate(() -> {
             boolean allVotesReceived = true;
             for (Player player : players ) {
                 if (!player.getHasVoted()) {
@@ -147,6 +153,7 @@ public class Game {
             }
 
             if (allVotesReceived) {
+                holder[0].cancel(false);
                 future.complete(null);
             }
 
@@ -159,7 +166,6 @@ public class Game {
 
     /** Generate a random uppercase letter **/
 
-    @Async
     public CompletableFuture<Void> waitForDuration(Long duration) {
         CompletableFuture<Void> future = new CompletableFuture<>();
 

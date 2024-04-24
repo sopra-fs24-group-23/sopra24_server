@@ -14,6 +14,7 @@ public class Answer {
     private Boolean isJoker;
     private Boolean isDoubted;
     private Boolean isCorrect;
+    private Boolean isChecked;
 
     public Answer(String category, String answer) {
         this.category = category;
@@ -25,21 +26,6 @@ public class Answer {
         // if answer starts with wrong letter, abort.
         if (!answer.substring(0,1).toUpperCase().equals(currentLetter)) {
             return 0;
-        }
-
-        // if answer starts with correct letter, make API call
-        try {
-            this.isCorrect = checkAnswer();
-        }
-        catch (ExecutionException e ) {
-            System.out.printf(
-                    "There was an execution-exception trying to fetch results for answer %s category %s \n",
-                    answer, category);
-        }
-        catch (InterruptedException e) {
-            System.out.printf(
-                    "There was an interrupted-exception trying to fetch results for answer %s category %s \n",
-                    answer, category);
         }
 
         // with all attributes set, calculate the score
@@ -66,16 +52,20 @@ public class Answer {
         return score;
     };
 
-    public boolean checkAnswer() throws ExecutionException, InterruptedException {
+    public CompletableFuture<Boolean> checkAnswer() {
         Category answerCategory = CategoryFactory.createCategory(this.category);
 
-        // Perform the API call asynchronously
-        CompletableFuture<Boolean> future = CompletableFuture.supplyAsync(() -> {
-            return answerCategory.validateAnswer(this.answer);
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                boolean result = answerCategory.validateAnswer(this.answer);
+                this.isChecked = true;
+                return result;
+            }
+            catch (Exception e) {
+                System.out.printf("There was an error while validating answers: %s \n", e.getMessage());
+                return false;
+            }
         });
-
-        // Wait for the result before returning
-        return future.get();
     }
 
     public Boolean getIsUnique() {
