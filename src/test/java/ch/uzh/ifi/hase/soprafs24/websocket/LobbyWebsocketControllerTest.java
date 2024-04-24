@@ -62,7 +62,6 @@ public class LobbyWebsocketControllerTest {
         );
     }
 
-
     @Test
     public void testAddPlayer() {
         Player host = new Player(1L, "dssdf", "eerferfe");
