@@ -34,6 +34,10 @@ public class Game {
         return this.settings;
     }
 
+    public List<Player> getPlayers() {
+        return this.players;
+    }
+
     public boolean initializeRound() {
         if (currentRoundNumber < settings.getMaxRounds()) {
             currentRoundNumber++;

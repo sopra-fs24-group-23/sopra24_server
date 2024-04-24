@@ -4,23 +4,30 @@ import ch.uzh.ifi.hase.soprafs24.constant.GamePhase;
 import ch.uzh.ifi.hase.soprafs24.entity.*;
 import ch.uzh.ifi.hase.soprafs24.events.GameStateChangeEvent;
 import ch.uzh.ifi.hase.soprafs24.exceptions.PlayerNotFoundException;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
 
 import javax.transaction.Transactional;
 import java.util.Map;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.Collections;
+import java.util.Comparator;
 
 @Service
 @Transactional
 public class GameService {
     private ConcurrentHashMap<String, Game> games = new ConcurrentHashMap<>();
     private final ApplicationEventPublisher eventPublisher;
+     @Autowired
+    private UserRepository userRepository;
 
     public GameService(ApplicationEventPublisher eventPublisher) {
         this.eventPublisher = eventPublisher;
@@ -148,6 +155,7 @@ public class GameService {
 
     private void handleEndGame(String gameId, Game game) {
         System.out.println("ENDED PHASE BEING HANDLED");
+        updateStatistics(game);
         setPhaseAndUpdate(GamePhase.ENDED, gameId, game);
         games.remove(gameId);
     }
@@ -155,6 +163,20 @@ public class GameService {
 
 
     /* General Helper Methods*/
+
+    public void updateStatistics(Game game) {
+        List<Player> players = game.getPlayers();
+        Player winner = Collections.max(players, Comparator.comparing(Player::getCurrentScore));
+        for (Player player : players) {
+            User user = userRepository.findByUsername(player.getUsername());
+            user.setGamesPlayed(user.getGamesPlayed() + 1);
+            user.setTotalScore(user.getTotalScore() + player.getCurrentScore());
+            if (player.equals(winner)) {
+                user.setGamesWon(user.getGamesWon() + 1);
+            }
+            userRepository.save(user);
+        }
+    }
 
     private void setPhaseAndUpdate(GamePhase gamePhase, String gameId, Game game) {
         game.setPhase(gamePhase);
