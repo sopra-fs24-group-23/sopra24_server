@@ -31,11 +31,12 @@ public class Lobby {
 
     public void addPlayer(Player player) throws LobbyFullException {
         // if lobby is not full - add player
-        if (!isLobbyFull & !isGameRunning) {
+        if (!isLobbyFull && !isGameRunning) {
             this.players.put(player.getToken(), player);
             // if this player took the last spot, set lobby full
-            if (this.players.size() == this.settings.getMaxPlayers()) {
-                this.setIsLobbyFull(true);
+            System.out.printf("MAXPLAYeRS IS: %d\n", settings.getMaxPlayers());
+            if (this.players.size() >= this.settings.getMaxPlayers()) {
+                this.isLobbyFull = true;
             }
         }
         // if lobby is full - throw exception
@@ -76,23 +77,10 @@ public class Lobby {
     }
 
     public void setSettings(GameSettings settings) {
+        if (players.size() >= settings.getMaxPlayers()) {
+            this.isLobbyFull = true;
+        }
         this.settings = settings;
-    }
-
-    public Boolean getIsGameRunning() {
-        return isGameRunning;
-    }
-
-    public void setIsGameRunning(Boolean gameRunning) {
-        isGameRunning = gameRunning;
-    }
-
-    public Boolean getIsLobbyFull() {
-        return isLobbyFull;
-    }
-
-    public void setIsLobbyFull(Boolean lobbyFull) {
-        isLobbyFull = lobbyFull;
     }
 
     public String getId() {
