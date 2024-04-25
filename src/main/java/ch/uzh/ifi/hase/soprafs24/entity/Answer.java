@@ -49,6 +49,9 @@ public class Answer {
                 if(isJoker && !isDoubted) {
                     return true;
                 }
+                else if (answer.isEmpty()) {
+                    return false;
+                }
                 else {
                     return answerCategory.validateAnswer(this.answer);
                 }
