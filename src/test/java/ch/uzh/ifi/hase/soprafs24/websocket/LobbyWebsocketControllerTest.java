@@ -84,7 +84,7 @@ public class LobbyWebsocketControllerTest {
                 any(GameSettingsDTO.class)
         );
     }
-
+//
 
     @Test
     public void testRemovePlayer() {
