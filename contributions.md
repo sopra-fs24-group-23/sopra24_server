@@ -102,6 +102,10 @@
 - 18.4 - 24.4, Franziska, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/36](https://github.com/sopra-fs24-group-23/sopra24_client/issues/36)
 - 18.4 - 24.4, Franziska, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/28](https://github.com/sopra-fs24-group-23/sopra24_client/issues/28)
 - 18.4 - 24.4, Franziska, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/14](https://github.com/sopra-fs24-group-23/sopra24_client/issues/14)
+- 18.4 - 24.4, Franziska, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/88](https://github.com/sopra-fs24-group-23/sopra24_client/issues/88)
+- 18.4 - 24.4, Franziska, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/15](https://github.com/sopra-fs24-group-23/sopra24_client/issues/15)
+- 18.4 - 24.4, Franziska, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/16](https://github.com/sopra-fs24-group-23/sopra24_client/issues/16)
+- 18.4 - 24.4, Franziska, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/11](https://github.com/sopra-fs24-group-23/sopra24_client/issues/11)
 
 ### Jonas
 - 18.4 - 24.4, Jonas, sopra-fs24-group-23/sopra24_server/issues/89
