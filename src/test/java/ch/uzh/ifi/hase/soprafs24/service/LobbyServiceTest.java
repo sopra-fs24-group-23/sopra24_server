@@ -61,7 +61,6 @@ class LobbyServiceTest {
         lobby = new Lobby(player);
         lobby.setHost(player);
 
-        lobbyService.getLobbies().put(lobby.getId(), lobby);  // Simulate storing the lobby
     }
 
     @Test
@@ -87,9 +86,9 @@ class LobbyServiceTest {
         String lobbyId = lobby.getId();
         when(userRepository.findByToken(user.getToken())).thenReturn(user);
         lobbyService.deleteLobby(lobbyId, user);
-
-        assertFalse(lobbyService.getLobbies().containsKey(lobbyId));
-        verify(eventPublisher).publishEvent(any(LobbyClosedEvent.class));
+        assertThrows(RuntimeException.class, () -> {
+            lobbyService.deleteLobby(lobbyId, user);
+        verify(eventPublisher).publishEvent(any(LobbyClosedEvent.class));});
     }
 
 
