@@ -14,7 +14,6 @@ public class Answer {
     private Boolean isJoker;
     private Boolean isDoubted;
     private Boolean isCorrect;
-    private Boolean isChecked;
 
     public Answer(String category, String answer) {
         this.category = category;
@@ -23,30 +22,19 @@ public class Answer {
 
     public int calculateScore(String currentLetter) {
 
+        int score = 0;
+
         // if answer starts with wrong letter, abort.
         if (answer.isEmpty() || !answer.substring(0,1).toUpperCase().equals(currentLetter)) {
             return 0;
         }
-
-        // with all attributes set, calculate the score
-        int score = 0;
-
-        // only check answer if it is not a non-doubted joker
-        if (this.isJoker && !this.isDoubted) {
-            this.isCorrect = true;
-        }
         else {
-            //this.isCorrect = category.validateAnswer(this.answer);
-        }
-
-        // set score according to uniqueness
-        if (isCorrect) {
-            score = isUnique ? 5 : 10;
-        }
-
-        // award extra points if wrongfully doubted
-        if(!this.isJoker && this.isDoubted) {
-            score += 5;
+            if (isCorrect) {
+                score = isUnique ? 5 : 10;
+            }
+            if(!this.isJoker && this.isDoubted) {
+                score += 5;
+            }
         }
 
         return score;
@@ -57,9 +45,16 @@ public class Answer {
 
         return CompletableFuture.supplyAsync(() -> {
             try {
-                boolean result = answerCategory.validateAnswer(this.answer);
-                this.isChecked = true;
-                return result;
+                // only check answer if not a non-doubted joker
+                if(isJoker && !isDoubted) {
+                    return true;
+                }
+                else if (answer.isEmpty()) {
+                    return false;
+                }
+                else {
+                    return answerCategory.validateAnswer(this.answer);
+                }
             }
             catch (Exception e) {
                 System.out.printf("There was an error while validating answers: %s \n", e.getMessage());
