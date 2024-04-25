@@ -1,8 +1,9 @@
 package ch.uzh.ifi.hase.soprafs24.controller;
 
-import ch.uzh.ifi.hase.soprafs24.constant.GamePhase;
+import ch.uzh.ifi.hase.soprafs24.entity.Answer;
 import ch.uzh.ifi.hase.soprafs24.entity.GameState;
 import ch.uzh.ifi.hase.soprafs24.entity.Player;
+import ch.uzh.ifi.hase.soprafs24.entity.Vote;
 import ch.uzh.ifi.hase.soprafs24.events.GameStateChangeEvent;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.GameStateDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.PlayerGetDTO;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
@@ -35,9 +37,23 @@ public class GameWebsocketController {
         this.updateGameState(gameStateChangeEvent.getGameId(), gameStateChangeEvent.getGameState());
     }
 
-    @MessageMapping("/games/{gameId}/closeInputs")
-    public void closeInputs(@DestinationVariable String gameId) {
-        gameService.closeInputs(gameId);
+    @MessageMapping("/games/{lobbyId}/close-inputs")
+    public void closeInputs(@DestinationVariable String lobbyId) {
+        System.out.println("Received closeInputs call");
+        gameService.closeInputs(lobbyId);
+    }
+
+    @MessageMapping("/games/{lobbyId}/answers/{username}")
+    public void receiveAnswers(@DestinationVariable String lobbyId,
+                               @DestinationVariable String username,
+                               @Payload List<Answer> answers
+    ) {
+        // the category string is converted to an instance in the ANSWER class
+        System.out.printf("Received answers from player %s: \n", username);
+        for (Answer answer : answers) {
+            System.out.printf("%s", answer.toString());
+        }
+        gameService.setAnswers(lobbyId, username, answers);
     }
 
     @MessageMapping("/games/{gameId}/state")
@@ -45,6 +61,14 @@ public class GameWebsocketController {
         GameState gameState = gameService.getGameState(gameId);
         updateGameState(gameId, gameState);
     }
+
+    @MessageMapping("/games/{lobbyId}/doubt/{username}")
+    public void receivedDoubt(@DestinationVariable String lobbyId,
+                              @DestinationVariable String username,
+                              @Payload List<Vote> votes) {
+        gameService.doubtAnswers(lobbyId, username, votes);
+    }
+
 
     /** Server to client(s) communication **/
     private void updateGameState(String lobbyId, GameState gameState) {

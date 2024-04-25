@@ -8,7 +8,7 @@ public class MoviesSeries implements Category {
 
     @Override
     public boolean validateAnswer(String answer) {
-        return fetchResultsFromApi(answer).equals("Yes");
+        return fetchResultsFromApi(answer).equals("True");
     }
 
     @Override
@@ -19,6 +19,6 @@ public class MoviesSeries implements Category {
 
     @Override
     public String getName() {
-        return "Movie";
+        return "Movie/Series";
     }
 }

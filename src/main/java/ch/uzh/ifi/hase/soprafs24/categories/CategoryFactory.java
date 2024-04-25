@@ -4,13 +4,16 @@ package ch.uzh.ifi.hase.soprafs24.categories;
 public class CategoryFactory {
     public static Category createCategory(String categoryName) {
         switch (categoryName) {
+            case "Animal":
+                return new Animal();
             case "Country":
                 return new Country();
             case "City":
                 return new City();
-            // Add more
-            case "Movie":
+            case "Movie/Series":
                 return new MoviesSeries();
+            case "Celebrity":
+                return new Celebrity();
             default:
                 throw new IllegalArgumentException("Invalid category name: " + categoryName);
         }

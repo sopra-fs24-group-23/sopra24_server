@@ -1,75 +1,118 @@
 package ch.uzh.ifi.hase.soprafs24.entity;
 
 import ch.uzh.ifi.hase.soprafs24.categories.Category;
+import ch.uzh.ifi.hase.soprafs24.categories.CategoryFactory;
+import com.fasterxml.jackson.annotation.JsonSetter;
+
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 public class Answer {
-    private final Category category;
+    private final String category;
     private final String answer;
-    private Boolean isDuplicate;
+    private Boolean isUnique;
     private Boolean isJoker;
     private Boolean isDoubted;
     private Boolean isCorrect;
 
-    public Answer(Category category, String answer) {
+    public Answer(String category, String answer) {
         this.category = category;
         this.answer = answer;
     }
-    // TODO: add mechanism to punish wrongful doubting
 
-    public int calculateScore() {
+    public int calculateScore(String currentLetter) {
+
         int score = 0;
 
-        // only check answer if it is not a non-doubted joker
-        if (this.isJoker && !this.isDoubted) {
-            this.isCorrect = true;
+        // if answer starts with wrong letter, abort.
+        if (answer.isEmpty() || !answer.substring(0,1).toUpperCase().equals(currentLetter)) {
+            return 0;
         }
         else {
-            this.isCorrect = category.validateAnswer(this.answer);
-        }
-
-        // set score according to uniqueness
-        if (isCorrect) {
-            score = isDuplicate ? 5 : 10;
-        }
-
-        // award extra points if wrongfully doubted
-        if(!this.isJoker && this.isDoubted) {
-            score += 5;
+            if (isCorrect) {
+                score = isUnique ? 5 : 10;
+            }
+            if(!this.isJoker && this.isDoubted) {
+                score += 5;
+            }
         }
 
         return score;
     };
 
-    public Boolean getDuplicate() {
-        return isDuplicate;
+    public CompletableFuture<Boolean> checkAnswer() {
+        Category answerCategory = CategoryFactory.createCategory(this.category);
+
+        return CompletableFuture.supplyAsync(() -> {
+            try {
+                // only check answer if not a non-doubted joker
+                if(isJoker && !isDoubted) {
+                    return true;
+                }
+                else if (answer.isEmpty()) {
+                    return false;
+                }
+                else {
+                    return answerCategory.validateAnswer(this.answer);
+                }
+            }
+            catch (Exception e) {
+                System.out.printf("There was an error while validating answers: %s \n", e.getMessage());
+                return false;
+            }
+        });
     }
 
-    public void setDuplicate(Boolean duplicate) {
-        isDuplicate = duplicate;
+    public Boolean getIsUnique() {
+        return isUnique;
+    }
+
+    @JsonSetter("isUnique")
+    public void setIsUnique(Boolean duplicate) {
+        isUnique = duplicate;
     }
 
     public Boolean getJoker() {
         return isJoker;
     }
 
-    public void setJoker(Boolean joker) {
+    public void setIsJoker(Boolean joker) {
         isJoker = joker;
     }
 
-    public Boolean getDoubted() {
+    public Boolean getIsDoubted() {
         return isDoubted;
     }
 
-    public void setDoubted(Boolean doubted) {
+    public void setIsDoubted(Boolean doubted) {
         isDoubted = doubted;
     }
 
-    public Boolean getCorrect() {
+    public Boolean getIsCorrect() {
         return isCorrect;
     }
 
-    public void setCorrect(Boolean correct) {
+    public void setIsCorrect(Boolean correct) {
         isCorrect = correct;
     }
 
+    public String getCategory() {
+        return category;
+    }
+
+    public String getAnswer() {
+        return answer;
+    }
+
+    @Override
+    public String toString() {
+        return "Answer{" +
+                "category='" + category + '\'' +
+                ", answer='" + answer + '\'' +
+                ", isDoubted=" + isDoubted +
+                ", isJoker=" + isJoker +
+                ", isUnique=" + isUnique +
+                ", isCorrect=" + isCorrect +
+                '}';
+    }
 }

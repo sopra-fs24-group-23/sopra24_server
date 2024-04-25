@@ -1,11 +1,10 @@
 package ch.uzh.ifi.hase.soprafs24.entity;
 
 import ch.uzh.ifi.hase.soprafs24.constant.GamePhase;
+import ch.uzh.ifi.hase.soprafs24.exceptions.PlayerNotFoundException;
 import org.springframework.scheduling.annotation.Async;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.concurrent.*;
 
 public class Game {
@@ -15,21 +14,35 @@ public class Game {
     private Integer currentRoundNumber;
     private GamePhase currentPhase;
     private String currentLetter;
-    private boolean playerHasAnswered;
+    private HashMap<String, Integer> answerMap;
+    private volatile boolean playerHasAnswered = false;
+    private boolean inputPhaseClosed = false;
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
+    // to make finding users and answers easier and more efficient, we should probably introduce answer IDs, and
+    // change the player list to a map or similar.
 
     public Game(GameSettings settings, List<Player> players) {
         this.settings = settings;
         this.players = players;
+        this.answerMap = new HashMap<>();
         this.currentRoundNumber = 0;
         this.playerHasAnswered = false;
+    }
+
+    public GameSettings getSettings() {
+        return this.settings;
+    }
+
+    public List<Player> getPlayers() {
+        return this.players;
     }
 
     public boolean initializeRound() {
         if (currentRoundNumber < settings.getMaxRounds()) {
             currentRoundNumber++;
             playerHasAnswered = false;
+            answerMap.clear();
             currentPhase = GamePhase.SCOREBOARD;
             currentLetter = generateRandomLetter();
 
@@ -45,26 +58,40 @@ public class Game {
         return false;
     }
 
-    @Async
     public CompletableFuture<Void> calculateScores(){
-        CompletableFuture<Void> future = new CompletableFuture<>();
+        List<CompletableFuture<Void>> scoreFutures = new ArrayList<>();
 
         for (Player player : players) {
             for (Answer answer : player.getCurrentAnswers()) {
-                player.setCurrentScore(
-                        player.getCurrentScore() + answer.calculateScore()
-                );
+                CompletableFuture<Void> checkFuture = answer.checkAnswer()
+                    .thenApply((isCorrect) -> {
+                        answer.setIsCorrect(isCorrect);
+
+                        if (answerMap.get(answer.getAnswer()) > 1) {
+                            answer.setIsUnique(false);
+                        } else {
+                            answer.setIsUnique(true);
+                        }
+
+                        // Calculate and update the score
+                        int score = answer.calculateScore(this.currentLetter);
+                        player.setCurrentScore(player.getCurrentScore() + score);
+
+                        return null;
+                    });
+
+                scoreFutures.add(checkFuture);
             }
         }
-        return future;
+
+        System.out.println("calculateScores has finished called.");
+        return CompletableFuture.allOf(scoreFutures.toArray(new CompletableFuture[0]));
     }
 
-    @Async
     public CompletableFuture<Void> waitScoreboard() {
         return waitForDuration(settings.getScoreboardDuration().longValue());
     }
 
-    @Async
     public CompletableFuture<Void> waitInput() {
         CompletableFuture<Void> future = new CompletableFuture<>();
 
@@ -86,12 +113,13 @@ public class Game {
         return future;
     }
 
-    @Async
     public CompletableFuture<Void> waitForAnswers() {
         CompletableFuture<Void> future = new CompletableFuture<>();
 
+        ScheduledFuture<?>[] holder = new ScheduledFuture<?>[1];
+
         // schedule check every second; complete future if all answers received
-        ScheduledFuture<?> scheduledFuture = scheduler.scheduleAtFixedRate(() -> {
+        holder[0] = scheduler.scheduleAtFixedRate(() -> {
             boolean allAnswersReceived = true;
             for (Player player : players ) {
                 if (!player.getHasAnswered()) {
@@ -101,24 +129,25 @@ public class Game {
             }
 
             if (allAnswersReceived) {
+                holder[0].cancel(false);
                 future.complete(null);
             }
 
         }, 0, 1, TimeUnit.SECONDS);
-
         return future;
     }
-    @Async
+
     public CompletableFuture<Void> waitVoting() {
         return waitForDuration(settings.getVotingDuration().longValue());
     }
 
-    @Async
     public CompletableFuture<Void> waitForVotes() {
         CompletableFuture<Void> future = new CompletableFuture<>();
 
+        final ScheduledFuture<?>[] holder = new ScheduledFuture<?>[1];
+
         // schedule check every second; complete future if all votes received
-        ScheduledFuture<?> scheduledFuture = scheduler.scheduleAtFixedRate(() -> {
+        holder[0] = scheduler.scheduleAtFixedRate(() -> {
             boolean allVotesReceived = true;
             for (Player player : players ) {
                 if (!player.getHasVoted()) {
@@ -128,6 +157,7 @@ public class Game {
             }
 
             if (allVotesReceived) {
+                holder[0].cancel(false);
                 future.complete(null);
             }
 
@@ -136,12 +166,10 @@ public class Game {
         return future;
     }
 
-
     /* HELPER METHODS */
 
     /** Generate a random uppercase letter **/
 
-    @Async
     public CompletableFuture<Void> waitForDuration(Long duration) {
         CompletableFuture<Void> future = new CompletableFuture<>();
 
@@ -154,7 +182,7 @@ public class Game {
     }
     private String generateRandomLetter() {
         Random random = new Random();
-        return ("A" + random.nextInt(26));
+        return String.valueOf((char) ('A' + random.nextInt(26)));
     }
 
     /* GETTERS / SETTERS */
@@ -168,12 +196,67 @@ public class Game {
         );
     }
 
+    public void setPlayerAnswers(String username, List<Answer> answers) {
+
+        System.out.printf("Setting answers for %s \n", username);
+
+        answers.forEach((answer) -> {
+            Integer count = answerMap.get(answer.getAnswer());
+            if (count == null) {
+                answerMap.put(answer.getAnswer(), 1);
+            }
+            else {
+                count++;
+                answerMap.put(answer.getAnswer(), count);
+            }
+        });
+
+        for (Player p : players) {
+            if (p.getUsername().equals(username)) {
+                p.setHasAnswered(true);
+                p.setCurrentAnswers(answers);
+            }
+        }
+    }
+
+    // this is pretty disgusting... wopsieee
+    public void doubtAnswers(String username, List<Vote> votes) throws PlayerNotFoundException {
+        for (Vote vote : votes) {
+            for (Player p : players) {
+                if (p.getUsername().equals(vote.getUsername())) {
+                    for (Answer a : p.getCurrentAnswers()) {
+                        if (a.getCategory().equals(vote.getCategory())) {
+                            a.setIsDoubted(true);
+                        }
+                    }
+                }
+            }
+        }
+        for (Player p : players) {
+            if (p.getUsername().equals(username)) {
+                p.setHasVoted(true);
+            }
+        }
+    }
+
     public void setPhase(GamePhase phase) {
         this.currentPhase = phase;
     }
 
     public void setPlayerHasAnswered(boolean input) {
         this.playerHasAnswered = input;
+    }
+
+    public boolean getPlayerHasAnswered() {
+        return this.playerHasAnswered;
+    }
+
+    public boolean isInputPhaseClosed() {
+        return inputPhaseClosed;
+    }
+
+    public void setInputPhaseClosed(boolean inputPhaseClosed) {
+        this.inputPhaseClosed = inputPhaseClosed;
     }
 
 }

@@ -14,7 +14,7 @@ public class Player {
     private String token;
     private String username;
     private Integer currentScore;
-    private List<Answer> currentAnswers;
+    private List<Answer> currentAnswers = new ArrayList<>();
     private boolean hasAnswered;
     private boolean hasVoted;
     private boolean isHost;
