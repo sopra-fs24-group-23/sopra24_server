@@ -87,6 +87,7 @@
 - 11.4 - 17.4, Jonas, sopra-fs24-group-23/sopra24_server/issues/18
 - 11.4 - 17.4, Jonas, sopra-fs24-group-23/sopra24_server/issues/61
 - 11.4 - 17.4, Jonas, sopra-fs24-group-23/sopra24_server/issues/92
+- 11.4 - 16.4, Jonas, sopra-fs24-group-23/sopra24_client/issues/5
 
 ## Week 4 | 18.4. - 24.4.
 ### Nilaksan
