@@ -8,7 +8,7 @@ import java.util.*;
 public class Lobby {
 
     private String id;
-    private HashMap<String, Player> players;
+    private final HashMap<String, Player> players;
     private Player host;
     private GameSettings settings;
     private Boolean isGameRunning;
@@ -79,6 +79,9 @@ public class Lobby {
     public void setSettings(GameSettings settings) {
         if (players.size() >= settings.getMaxPlayers()) {
             this.isLobbyFull = true;
+        }
+        else {
+            this.isLobbyFull = false;
         }
         this.settings = settings;
     }
