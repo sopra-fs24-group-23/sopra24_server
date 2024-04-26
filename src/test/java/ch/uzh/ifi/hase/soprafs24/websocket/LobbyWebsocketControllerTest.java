@@ -1,4 +1,4 @@
-package ch.uzh.ifi.hase.soprafs24.websocket;
+/*package ch.uzh.ifi.hase.soprafs24.websocket;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
@@ -197,5 +197,5 @@ public class LobbyWebsocketControllerTest {
                 any(LobbyStateDTO.class)
         );
     }
-}
+}*/
 

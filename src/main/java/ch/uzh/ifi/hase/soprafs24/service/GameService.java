@@ -111,6 +111,13 @@ public class GameService {
             handleEndGame(gameId, game);
         }
     }
+    public Game getGameById(String gameId) {
+        Game game = games.get(gameId);
+        if (game == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found with ID: " + gameId);
+        }
+        return game;
+    }
 
     /* GamePhase specific helpers */
     private CompletableFuture<Void> handleScoreboardPhase(String gameId, Game game) {
