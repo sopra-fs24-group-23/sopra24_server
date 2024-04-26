@@ -54,7 +54,3 @@ public class GameSettingsController {
         );
     }
 }
-
-
-// messagemapping
-// eventlistener

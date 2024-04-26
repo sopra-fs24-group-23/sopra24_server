@@ -221,30 +221,20 @@ public class Game {
 
     // this is pretty disgusting... wopsieee
     public void doubtAnswers(String username, List<Vote> votes) throws PlayerNotFoundException {
+        for (Vote vote : votes) {
+            for (Player p : players) {
+                if (p.getUsername().equals(vote.getUsername())) {
+                    for (Answer a : p.getCurrentAnswers()) {
+                        if (a.getCategory().equals(vote.getCategory())) {
+                            a.setIsDoubted(true);
+                        }
+                    }
+                }
+            }
+        }
         for (Player p : players) {
             if (p.getUsername().equals(username)) {
                 p.setHasVoted(true);
-            }
-        }
-        for (Vote vote : votes) {
-            Player player = null;
-            for (Player p : players) {
-                if (vote.getUsername().equals(p.getUsername())) {
-                    player = p;
-                }
-            }
-            if (player != null) {
-                for (Answer a : player.getCurrentAnswers()) {
-                    if (a.getCategory().equals(vote.getCategory())) {
-                        a.setIsDoubted(true);
-                    }
-                    else {
-                        a.setIsDoubted(false);
-                    }
-                }
-            }
-            else {
-                throw new PlayerNotFoundException("A vote referenced a non-existent player");
             }
         }
     }
