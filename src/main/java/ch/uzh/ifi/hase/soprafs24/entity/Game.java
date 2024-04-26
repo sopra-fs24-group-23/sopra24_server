@@ -14,6 +14,11 @@ public class Game {
     private final GameSettings settings;
     private Integer currentRoundNumber;
     private GamePhase currentPhase;
+
+    public void setCurrentLetter(String currentLetter) {
+        this.currentLetter = currentLetter;
+    }
+
     private String currentLetter;
     private final HashMap<String, Integer> answerMap;
     private volatile boolean playerHasAnswered;
