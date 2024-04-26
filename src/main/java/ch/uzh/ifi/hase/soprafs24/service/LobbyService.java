@@ -56,7 +56,11 @@ public class LobbyService {
 
     public void deleteLobby(String lobbyId, User userToken) {
         Lobby lobby = this.lobbies.get(lobbyId);
+        if (lobbies.get(lobbyId) == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby not found");
+        }
         User host = userRepository.findByUsername(lobby.getHost().getUsername());
+
 
         // if request was made by host
         if (host.getToken().equals(userToken.getToken())) {
