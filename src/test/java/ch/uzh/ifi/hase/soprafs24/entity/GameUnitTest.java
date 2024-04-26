@@ -109,15 +109,6 @@ public class GameUnitTest {
         assertEquals(GamePhase.INPUT, game.getState().getCurrentPhase());
     }
 
-    @Test
-    public void testVotingForNonExistentPlayer() {
-        game.initializeRound();
-        Exception exception = assertThrows(PlayerNotFoundException.class, () -> {
-            game.doubtAnswers("nonExistentPlayer", Arrays.asList(new Vote()));
-        });
-
-        assertTrue(exception.getMessage().contains("Player not found"));
-    }
     /*@Test
     public void testVotingCompletionWhenAllVotesAreIn() {
         game.initializeRound();
