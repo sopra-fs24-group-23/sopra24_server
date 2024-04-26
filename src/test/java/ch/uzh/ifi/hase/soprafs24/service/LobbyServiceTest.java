@@ -9,6 +9,7 @@ import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.events.LobbyClosedEvent;
 import ch.uzh.ifi.hase.soprafs24.exceptions.UnauthorizedException;
 import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.UserTokenDTO;
 import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
 import com.sun.xml.bind.v2.util.QNameMap;
 import org.junit.jupiter.api.BeforeEach;
@@ -16,6 +17,7 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -70,7 +72,7 @@ class LobbyServiceTest {
 
     @Test
     void getLobbyById_NonExistingId_ThrowsException() {
-        assertThrows(ResponseStatusException.class, () -> lobbyService.getLobbyById("nonExistingId"));
+        assertThrows(ResponseStatusException.class, () -> lobbyService.getLobbyById("No lobby with the provided ID was found."));
     }
 
     @Test
@@ -83,7 +85,19 @@ class LobbyServiceTest {
 
     @Test
     void deleteLobby_ByHost_DeletesLobby() {
+        user = new User();
+        user.setUsername("user1");
+        user.setToken("ceffcvf");
+        System.out.println("username:" + user.getUsername() + " " + "token" + user.getToken());
+        user.setToken("defaultToken");
+        Player player = new Player(user.getId(),user.getUsername(),user.getToken());
+
+
+        lobby = lobbyService.createLobby(user) ;
+        player.setIsHost(true);
+        lobby.setHost(player);
         String lobbyId = lobby.getId();
+
         when(userRepository.findByToken(user.getToken())).thenReturn(user);
         lobbyService.deleteLobby(lobbyId, user);
         assertThrows(RuntimeException.class, () -> {
@@ -95,8 +109,8 @@ class LobbyServiceTest {
     @Test
     void deleteLobby_NotByHost_ThrowsException() {
         User nonHostUser = new User();
-        assertThrows(NullPointerException.class, () -> lobbyService.deleteLobby(lobby.getId(), nonHostUser));
-    } //Todo check why throwing NullPointer in LobbyService
+        assertThrows(ResponseStatusException.class, () -> lobbyService.deleteLobby(lobby.getId(), nonHostUser));
+    }
 
     //Todo Additional tests for addPlayer, removePlayer, and kickPlayer would be similar
 }

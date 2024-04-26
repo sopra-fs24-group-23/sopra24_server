@@ -24,9 +24,9 @@ public class GameUnitTest {
     public void setup() {
         settings = new GameSettings();
         settings.setMaxRounds(5);
-        settings.setInputDuration(60); // duration for input in seconds
-        settings.setVotingDuration(30); // duration for voting in seconds
-        settings.setScoreboardDuration(15); // duration for scoreboard display in seconds
+        settings.setInputDuration(2); // duration for input in seconds
+        settings.setVotingDuration(2); // duration for voting in seconds
+        settings.setScoreboardDuration(2); // duration for scoreboard display in seconds
 
         players = new ArrayList<>();
         players.add(new Player(1L, "player1", "token1"));
