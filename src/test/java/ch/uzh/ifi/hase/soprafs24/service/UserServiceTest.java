@@ -163,5 +163,4 @@ public class UserServiceTest {
         assertEquals(10, rankedUsers.get(0).getGamesPlayed());
     }
 
-
 }

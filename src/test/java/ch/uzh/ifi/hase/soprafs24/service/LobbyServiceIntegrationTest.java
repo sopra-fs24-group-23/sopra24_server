@@ -1,66 +1,56 @@
 package ch.uzh.ifi.hase.soprafs24.service;
 
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
-import static org.junit.jupiter.api.Assertions.*;
-
 import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
-import ch.uzh.ifi.hase.soprafs24.entity.Player;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.context.web.WebAppConfiguration;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+@WebAppConfiguration
 @SpringBootTest
-@AutoConfigureMockMvc
-@ActiveProfiles("test")
-@ExtendWith(SpringExtension.class)
 public class LobbyServiceIntegrationTest {
-
-    @Autowired
-    private LobbyService lobbyService;
-
-
+    @Qualifier("userRepository")
     @Autowired
     private UserRepository userRepository;
 
     @Autowired
-    private MockMvc mockMvc;
-
-    private User user;
-    private Lobby lobby;
+    private LobbyService lobbyService;
 
     @BeforeEach
-    public void setUp() {
-        // Clean up the database or setup initial state
+    public void setup() {
         userRepository.deleteAll();
-
-        // Setup user and lobby
-        user = new User();
-        user.setPassword("fefre");
-        user.setId(1L);
-        user.setUsername("user1");
-        user = userRepository.save(user);
-        Player player = new Player(user.getId(), user.getUsername(), user.getToken());
-        player.setIsHost(true);
-        lobby = lobbyService.createLobby(user);
     }
 
     @Test
-    public void testGetLobbyById() {
+    public void createLobby_validInputs_success() {
+        User user = new User();
+        user.setToken("ABCD");
+        user.setId(1L);
+        user.setUsername("TestUser");
+        user.setPassword("TestPassword");
+        user.setTotalScore(10);
+        user.setGamesPlayed(1);
+        user.setGamesWon(1);
 
-        Lobby foundLobby = lobbyService.getLobbyById(lobby.getId());
-        assertNotNull(foundLobby);
-        assertEquals(foundLobby.getId(), lobby.getId());
+        userRepository.saveAndFlush(user);
+
+        User userToken = new User();
+        userToken.setToken("ABCD");
+
+        Lobby newLobby = lobbyService.createLobby(userToken);
+
+        // lobby host is equal userRepo user
+        assertEquals(user.getUsername(), newLobby.getHost().getUsername());
+        assertEquals(user.getId(), newLobby.getHost().getId());
+        assertEquals(user.getToken(), newLobby.getHost().getToken());
+
+        assertEquals(1, lobbyService.getLobbies().size());
     }
-
 
 }
