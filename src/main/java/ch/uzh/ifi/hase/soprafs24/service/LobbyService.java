@@ -153,5 +153,9 @@ public class LobbyService {
         return lobby.getHost();
     }
 
+    /* Getter for testing */
+    public HashMap<String, Lobby> getLobbies() {
+        return this.lobbies;
+    }
 
 }
