@@ -1,14 +1,12 @@
 package ch.uzh.ifi.hase.soprafs24.controller;
 
-import ch.uzh.ifi.hase.soprafs24.entity.Answer;
-import ch.uzh.ifi.hase.soprafs24.entity.GameState;
-import ch.uzh.ifi.hase.soprafs24.entity.Player;
-import ch.uzh.ifi.hase.soprafs24.entity.Vote;
+import ch.uzh.ifi.hase.soprafs24.entity.*;
 import ch.uzh.ifi.hase.soprafs24.events.GameStateChangeEvent;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.GameStateDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.PlayerGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs24.service.GameService;
+import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.event.EventListener;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
@@ -28,13 +26,26 @@ public class GameWebsocketController {
 
     private final GameService gameService;
 
-    public GameWebsocketController(GameService gameService) {
+    private final LobbyService lobbyService;
+
+    public GameWebsocketController(GameService gameService, LobbyService lobbyService) {
         this.gameService = gameService;
+        this.lobbyService = lobbyService;
     }
 
     @EventListener
     public void handleGameStateChange(GameStateChangeEvent gameStateChangeEvent) {
         this.updateGameState(gameStateChangeEvent.getGameId(), gameStateChangeEvent.getGameState());
+    }
+
+    @MessageMapping("/games/{lobbyId}/start")
+    public void startGame(@DestinationVariable String lobbyId) {
+        // Retrieve game settings and players from the lobby
+        Lobby lobby = lobbyService.getLobbyById(lobbyId);
+        GameSettings settings = lobby.getSettings();
+        List<Player> players = lobby.getPlayers();
+        // Start the game
+        gameService.runGame(lobbyId, settings, players);
     }
 
     @MessageMapping("/games/{lobbyId}/close-inputs")
