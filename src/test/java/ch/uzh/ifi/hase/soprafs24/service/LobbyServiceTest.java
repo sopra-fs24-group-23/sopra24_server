@@ -109,7 +109,7 @@ class LobbyServiceTest {
         lobby.setHost(player);
         String lobbyId = lobby.getId();
 
-        when(userRepository.findByToken(user.getToken())).thenReturn(user);
+        when(userRepository.findByUsername(user.getUsername())).thenReturn(user);
         lobbyService.deleteLobby(lobbyId, user);
         assertThrows(RuntimeException.class, () -> {
             lobbyService.deleteLobby(lobbyId, user);
