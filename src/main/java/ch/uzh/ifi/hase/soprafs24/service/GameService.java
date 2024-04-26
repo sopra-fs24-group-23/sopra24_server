@@ -26,7 +26,7 @@ import java.util.Comparator;
 public class GameService {
     private ConcurrentHashMap<String, Game> games = new ConcurrentHashMap<>();
     private final ApplicationEventPublisher eventPublisher;
-     @Autowired
+    @Autowired
     private UserRepository userRepository;
 
     public GameService(ApplicationEventPublisher eventPublisher) {
@@ -111,6 +111,7 @@ public class GameService {
             handleEndGame(gameId, game);
         }
     }
+
     public Game getGameById(String gameId) {
         Game game = games.get(gameId);
         if (game == null) {
@@ -167,10 +168,7 @@ public class GameService {
         games.remove(gameId);
     }
 
-
-
     /* General Helper Methods*/
-
     public void updateStatistics(Game game) {
         List<Player> players = game.getPlayers();
         Player winner = Collections.max(players, Comparator.comparing(Player::getCurrentScore));
@@ -199,7 +197,4 @@ public class GameService {
                 )
         );
     }
-
-
-
 }
