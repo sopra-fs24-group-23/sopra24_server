@@ -2,20 +2,19 @@ package ch.uzh.ifi.hase.soprafs24.entity;
 
 import ch.uzh.ifi.hase.soprafs24.constant.GamePhase;
 import ch.uzh.ifi.hase.soprafs24.exceptions.PlayerNotFoundException;
-import org.springframework.scheduling.annotation.Async;
 
 import java.util.*;
 import java.util.concurrent.*;
 
 public class Game {
 
-    private List<Player> players;
-    private GameSettings settings;
+    private final List<Player> players;
+    private final GameSettings settings;
     private Integer currentRoundNumber;
     private GamePhase currentPhase;
     private String currentLetter;
-    private HashMap<String, Integer> answerMap;
-    private volatile boolean playerHasAnswered = false;
+    private final HashMap<String, Integer> answerMap;
+    private volatile boolean playerHasAnswered;
     private boolean inputPhaseClosed = false;
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
@@ -63,18 +62,14 @@ public class Game {
 
         for (Player player : players) {
             for (Answer answer : player.getCurrentAnswers()) {
-                CompletableFuture<Void> checkFuture = answer.checkAnswer()
+                CompletableFuture<Void> checkFuture = answer.checkAnswer(this.currentLetter)
                     .thenApply((isCorrect) -> {
                         answer.setIsCorrect(isCorrect);
 
-                        if (answerMap.get(answer.getAnswer()) > 1) {
-                            answer.setIsUnique(false);
-                        } else {
-                            answer.setIsUnique(true);
-                        }
+                        answer.setIsUnique(answerMap.get(answer.getAnswer()) <= 1);
 
                         // Calculate and update the score
-                        int score = answer.calculateScore(this.currentLetter);
+                        int score = answer.calculateScore();
                         player.setCurrentScore(player.getCurrentScore() + score);
 
                         return null;

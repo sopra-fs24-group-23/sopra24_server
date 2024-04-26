@@ -50,7 +50,6 @@ public class GameWebsocketController {
 
     @MessageMapping("/games/{lobbyId}/close-inputs")
     public void closeInputs(@DestinationVariable String lobbyId) {
-        System.out.println("Received closeInputs call");
         gameService.closeInputs(lobbyId);
     }
 
@@ -60,10 +59,6 @@ public class GameWebsocketController {
                                @Payload List<Answer> answers
     ) {
         // the category string is converted to an instance in the ANSWER class
-        System.out.printf("Received answers from player %s: \n", username);
-        for (Answer answer : answers) {
-            System.out.printf("%s", answer.toString());
-        }
         gameService.setAnswers(lobbyId, username, answers);
     }
 
@@ -85,7 +80,7 @@ public class GameWebsocketController {
     private void updateGameState(String lobbyId, GameState gameState) {
         GameStateDTO gameStateDTO = new GameStateDTO();
         // convert Players
-        List<PlayerGetDTO> playerGetDTOS = new ArrayList<PlayerGetDTO>();
+        List<PlayerGetDTO> playerGetDTOS = new ArrayList<>();
         for (Player player : gameState.getPlayers()) {
             playerGetDTOS.add(DTOMapper.INSTANCE.convertEntityToPlayerGetDTO(player));
         }
