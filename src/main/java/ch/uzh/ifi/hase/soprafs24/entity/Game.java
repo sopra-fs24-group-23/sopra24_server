@@ -1,5 +1,7 @@
 package ch.uzh.ifi.hase.soprafs24.entity;
 
+import ch.uzh.ifi.hase.soprafs24.categories.Category;
+import ch.uzh.ifi.hase.soprafs24.categories.CategoryFactory;
 import ch.uzh.ifi.hase.soprafs24.constant.GamePhase;
 import ch.uzh.ifi.hase.soprafs24.exceptions.PlayerNotFoundException;
 
@@ -62,7 +64,10 @@ public class Game {
 
         for (Player player : players) {
             for (Answer answer : player.getCurrentAnswers()) {
-                CompletableFuture<Void> checkFuture = answer.checkAnswer(this.currentLetter)
+
+                Category answerCategory = CategoryFactory.createCategory(answer.getCategory());
+
+                CompletableFuture<Void> checkFuture = answer.checkAnswer(answerCategory, this.currentLetter)
                     .thenApply((isCorrect) -> {
                         answer.setIsCorrect(isCorrect);
 
