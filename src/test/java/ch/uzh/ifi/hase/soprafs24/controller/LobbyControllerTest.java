@@ -22,7 +22,6 @@ public class LobbyControllerTest {
 
     @Mock
     private LobbyService lobbyService;
-
     @InjectMocks
     private LobbyController lobbyController;
 
