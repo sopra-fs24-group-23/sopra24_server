@@ -42,6 +42,13 @@ public class LobbyController {
         lobbyService.checkLobbyId(lobbyId);
     }
 
+    @PostMapping("/lobbies/{lobbyId}/join")
+    @ResponseStatus(HttpStatus.OK)
+    public void addPlayer(@PathVariable String lobbyId, @RequestBody UserTokenDTO userTokenDTO) {
+        User userToAdd = DTOMapper.INSTANCE.convertUserTokenDTOtoEntity(userTokenDTO);
+        lobbyService.addPlayer(lobbyId, userToAdd);
+    }
+
     @GetMapping("/lobbies/{lobbyId}/host")
     @ResponseStatus(HttpStatus.OK)
     @ResponseBody

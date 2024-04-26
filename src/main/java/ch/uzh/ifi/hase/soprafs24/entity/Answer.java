@@ -5,7 +5,6 @@ import ch.uzh.ifi.hase.soprafs24.categories.CategoryFactory;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 
 public class Answer {
     private final String category;
@@ -20,36 +19,28 @@ public class Answer {
         this.answer = answer;
     }
 
-    public int calculateScore(String currentLetter) {
-
+    public int calculateScore() {
         int score = 0;
 
-        // if answer starts with wrong letter, abort.
-        if (answer.isEmpty() || !answer.substring(0,1).toUpperCase().equals(currentLetter)) {
-            return 0;
+        if (isCorrect) {
+            score = isUnique ? 10 : 5;
         }
-        else {
-            if (isCorrect) {
-                score = isUnique ? 5 : 10;
-            }
-            if(!this.isJoker && this.isDoubted) {
-                score += 5;
-            }
+
+        if(!this.isJoker && this.isDoubted) {
+            score += 5;
         }
 
         return score;
-    };
+    }
 
-    public CompletableFuture<Boolean> checkAnswer() {
-        Category answerCategory = CategoryFactory.createCategory(this.category);
-
+    public CompletableFuture<Boolean> checkAnswer(Category answerCategory, String currentLetter) {
         return CompletableFuture.supplyAsync(() -> {
             try {
                 // only check answer if not a non-doubted joker
                 if(isJoker && !isDoubted) {
                     return true;
                 }
-                else if (answer.isEmpty()) {
+                else if (answer.isEmpty() || !answer.substring(0,1).toUpperCase().equals(currentLetter)) {
                     return false;
                 }
                 else {

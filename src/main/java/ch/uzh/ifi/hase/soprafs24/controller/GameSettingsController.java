@@ -2,19 +2,14 @@ package ch.uzh.ifi.hase.soprafs24.controller;
 
 import ch.uzh.ifi.hase.soprafs24.entity.GameSettings;
 import ch.uzh.ifi.hase.soprafs24.service.GameService;
-import ch.uzh.ifi.hase.soprafs24.entity.GameState;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.GameSettingsDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs24.service.GameSettingsService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -24,7 +19,7 @@ public class GameSettingsController {
     private final GameService gameService;
 
     @Autowired
-    private SimpMessagingTemplate msgTemplate;
+    private SimpMessagingTemplate messagingTemplate;
 
     public GameSettingsController(GameSettingsService gameSettingsService, GameService gameService) {
         this.gameSettingsService = gameSettingsService;
@@ -32,7 +27,7 @@ public class GameSettingsController {
     }
 
     @MessageMapping("/games/{lobbyId}/settings")
-    public void informClients(@DestinationVariable  String lobbyId) {
+    public void informClients(@DestinationVariable String lobbyId) {
         GameSettings settings = gameService.getSettings(lobbyId);
         this.sendSettings(lobbyId, settings);
     }
@@ -48,13 +43,14 @@ public class GameSettingsController {
     private void sendSettings(String lobbyId, GameSettings settings) {
         GameSettingsDTO gameSettingsDTO = DTOMapper.INSTANCE.convertGameSettingsToGameSettingsDTO(settings);
 
-        msgTemplate.convertAndSend(
+        messagingTemplate.convertAndSend(
                 String.format("/topic/lobbies/%s/settings", lobbyId),
                 gameSettingsDTO
         );
     }
+
+    /* Setter for testability */
+    public void setMessagingTemplate(SimpMessagingTemplate messagingTemplate) {
+        this.messagingTemplate = messagingTemplate;
+    }
 }
-
-
-// messagemapping
-// eventlistener

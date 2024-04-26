@@ -1,21 +1,27 @@
 package ch.uzh.ifi.hase.soprafs24.entity;
 
+import ch.uzh.ifi.hase.soprafs24.categories.Category;
+import ch.uzh.ifi.hase.soprafs24.categories.CategoryFactory;
 import ch.uzh.ifi.hase.soprafs24.constant.GamePhase;
 import ch.uzh.ifi.hase.soprafs24.exceptions.PlayerNotFoundException;
-import org.springframework.scheduling.annotation.Async;
 
 import java.util.*;
 import java.util.concurrent.*;
 
 public class Game {
 
-    private List<Player> players;
-    private GameSettings settings;
+    private final List<Player> players;
+    private final GameSettings settings;
     private Integer currentRoundNumber;
     private GamePhase currentPhase;
+
+    public void setCurrentLetter(String currentLetter) {
+        this.currentLetter = currentLetter;
+    }
+
     private String currentLetter;
-    private HashMap<String, Integer> answerMap;
-    private volatile boolean playerHasAnswered = false;
+    private final HashMap<String, Integer> answerMap;
+    private volatile boolean playerHasAnswered;
     private boolean inputPhaseClosed = false;
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
 
@@ -63,18 +69,17 @@ public class Game {
 
         for (Player player : players) {
             for (Answer answer : player.getCurrentAnswers()) {
-                CompletableFuture<Void> checkFuture = answer.checkAnswer()
+
+                Category answerCategory = CategoryFactory.createCategory(answer.getCategory());
+
+                CompletableFuture<Void> checkFuture = answer.checkAnswer(answerCategory, this.currentLetter)
                     .thenApply((isCorrect) -> {
                         answer.setIsCorrect(isCorrect);
 
-                        if (answerMap.get(answer.getAnswer()) > 1) {
-                            answer.setIsUnique(false);
-                        } else {
-                            answer.setIsUnique(true);
-                        }
+                        answer.setIsUnique(answerMap.get(answer.getAnswer()) <= 1);
 
                         // Calculate and update the score
-                        int score = answer.calculateScore(this.currentLetter);
+                        int score = answer.calculateScore();
                         player.setCurrentScore(player.getCurrentScore() + score);
 
                         return null;
@@ -221,6 +226,7 @@ public class Game {
 
     // this is pretty disgusting... wopsieee
     public void doubtAnswers(String username, List<Vote> votes) throws PlayerNotFoundException {
+        boolean playerExists = false;
         for (Vote vote : votes) {
             for (Player p : players) {
                 if (p.getUsername().equals(vote.getUsername())) {
@@ -229,8 +235,12 @@ public class Game {
                             a.setIsDoubted(true);
                         }
                     }
+                    playerExists = true;
                 }
             }
+        }
+        if (!playerExists) {
+            throw new PlayerNotFoundException("Player not found");
         }
         for (Player p : players) {
             if (p.getUsername().equals(username)) {

@@ -4,6 +4,8 @@ import ch.uzh.ifi.hase.soprafs24.entity.GameSettings;
 import ch.uzh.ifi.hase.soprafs24.entity.Player;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.events.LobbyClosedEvent;
+import ch.uzh.ifi.hase.soprafs24.events.PlayerListUpdateEvent;
+import ch.uzh.ifi.hase.soprafs24.events.SettingsUpdateEvent;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.*;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
@@ -23,7 +25,6 @@ public class LobbyWebsocketController {
 
     @Autowired
     private SimpMessagingTemplate msgTemplate;
-
     private final LobbyService lobbyService;
 
     public LobbyWebsocketController(LobbyService lobbyService) {
@@ -38,23 +39,25 @@ public class LobbyWebsocketController {
         );
     }
 
+    @EventListener
+    public void handlePlayerListUpdateEvent(PlayerListUpdateEvent playerListUpdateEvent) {
+        this.updatePlayerList(playerListUpdateEvent.getLobbyId(), playerListUpdateEvent.getPlayerList());
+    }
+
+    @EventListener
+    public void handleSettingsUpdateEvent(SettingsUpdateEvent settingsUpdateEvent) {
+        this.updateSettings(settingsUpdateEvent.getLobbyId(), settingsUpdateEvent.getSettings());
+    }
+
     @MessageMapping("/lobbies/{lobbyId}/delete")
     public void deleteLobby(@DestinationVariable String lobbyId, @Payload UserTokenDTO userTokenDTO) {
         User hostToken = DTOMapper.INSTANCE.convertUserTokenDTOtoEntity(userTokenDTO);
         lobbyService.deleteLobby(lobbyId, hostToken);
     }
 
-    @MessageMapping("/lobbies/{lobbyId}/join")
-    public void addPlayer(@DestinationVariable String lobbyId, @Payload UserTokenDTO userTokenDTO) {
-        // convert tokenDTO to user
-        User userToAdd = DTOMapper.INSTANCE.convertUserTokenDTOtoEntity(userTokenDTO);
-        // add user to lobby as a player
-        List<Player> players = lobbyService.addPlayer(lobbyId, userToAdd);
-        // update clients with new player-list
-        this.updatePlayerList(lobbyId, players);
-        // update clients with current settings
-        GameSettings settings = lobbyService.getLobbyById(lobbyId).getSettings();
-        this.updateSettings(lobbyId, settings);
+    @MessageMapping("/lobbies/{lobbyId}/update")
+    public void updateClients(@DestinationVariable String lobbyId) {
+        lobbyService.updateClients(lobbyId);
     }
 
     @MessageMapping("/lobbies/{lobbyId}/leave")
@@ -109,17 +112,6 @@ public class LobbyWebsocketController {
         msgTemplate.convertAndSend(
                 String.format("/queue/lobbies/%s/kick/%s", lobbyId, usernameToKick),
                 "player kicked"
-        );
-    }
-
-    public void updateLobbyState(String lobbyId, Boolean isGameRunning, Boolean isLobbyFull) {
-        LobbyStateDTO lobbyStateDTO = new LobbyStateDTO();
-        lobbyStateDTO.setIsGameRunning(isGameRunning);
-        lobbyStateDTO.setIsLobbyFull(isLobbyFull);
-
-        msgTemplate.convertAndSend(
-                String.format("/topic/lobbies/%s/settings", lobbyId),
-                lobbyStateDTO
         );
     }
 }

@@ -1,6 +1,6 @@
 package ch.uzh.ifi.hase.soprafs24.entity;
 
-import ch.uzh.ifi.hase.soprafs24.exceptions.LobbyFullException;
+import ch.uzh.ifi.hase.soprafs24.exceptions.LobbyLockedException;
 import ch.uzh.ifi.hase.soprafs24.exceptions.UnauthorizedException;
 
 import java.util.*;
@@ -8,7 +8,7 @@ import java.util.*;
 public class Lobby {
 
     private String id;
-    private HashMap<String, Player> players;
+    private final HashMap<String, Player> players;
     private Player host;
     private GameSettings settings;
     private Boolean isGameRunning;
@@ -23,24 +23,25 @@ public class Lobby {
         this.isLobbyFull = false;
         // initialize player list and add host directly
         this.players = new HashMap<String, Player>();
+        this.players.put(host.getToken(), host);
     }
 
     public List<Player> getPlayers() {
         return new ArrayList<>(this.players.values());
     }
 
-    public void addPlayer(Player player) throws LobbyFullException {
+    public void addPlayer(Player player) throws LobbyLockedException {
         // if lobby is not full - add player
-        if (!isLobbyFull & !isGameRunning) {
+        if (!isLobbyFull && !isGameRunning) {
             this.players.put(player.getToken(), player);
             // if this player took the last spot, set lobby full
-            if (this.players.size() == this.settings.getMaxPlayers()) {
-                this.setIsLobbyFull(true);
+            if (this.players.size() >= this.settings.getMaxPlayers()) {
+                this.isLobbyFull = true;
             }
         }
-        // if lobby is full - throw exception
+        // if lobby is full or running - throw exception
         else {
-            throw new LobbyFullException("Sorry, the lobby you are trying to join is full.");
+            throw new LobbyLockedException("Sorry, the lobby you are trying to join is full.");
         }
     }
 
@@ -76,23 +77,13 @@ public class Lobby {
     }
 
     public void setSettings(GameSettings settings) {
+        if (players.size() >= settings.getMaxPlayers()) {
+            this.isLobbyFull = true;
+        }
+        else {
+            this.isLobbyFull = false;
+        }
         this.settings = settings;
-    }
-
-    public Boolean getIsGameRunning() {
-        return isGameRunning;
-    }
-
-    public void setIsGameRunning(Boolean gameRunning) {
-        isGameRunning = gameRunning;
-    }
-
-    public Boolean getIsLobbyFull() {
-        return isLobbyFull;
-    }
-
-    public void setIsLobbyFull(Boolean lobbyFull) {
-        isLobbyFull = lobbyFull;
     }
 
     public String getId() {

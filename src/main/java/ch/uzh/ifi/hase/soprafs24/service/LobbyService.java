@@ -4,7 +4,9 @@ import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.entity.Player;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.events.LobbyClosedEvent;
-import ch.uzh.ifi.hase.soprafs24.exceptions.LobbyFullException;
+import ch.uzh.ifi.hase.soprafs24.events.PlayerListUpdateEvent;
+import ch.uzh.ifi.hase.soprafs24.events.SettingsUpdateEvent;
+import ch.uzh.ifi.hase.soprafs24.exceptions.LobbyLockedException;
 import ch.uzh.ifi.hase.soprafs24.exceptions.UnauthorizedException;
 import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -54,7 +56,11 @@ public class LobbyService {
 
     public void deleteLobby(String lobbyId, User userToken) {
         Lobby lobby = this.lobbies.get(lobbyId);
+        if (lobbies.get(lobbyId) == null){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Lobby not found");
+        }
         User host = userRepository.findByUsername(lobby.getHost().getUsername());
+
 
         // if request was made by host
         if (host.getToken().equals(userToken.getToken())) {
@@ -62,6 +68,12 @@ public class LobbyService {
             lobbies.remove(lobbyId);
             eventPublisher.publishEvent(new LobbyClosedEvent(this, lobbyId));
         }
+    }
+
+    public void updateClients(String lobbyId) {
+        Lobby lobby = lobbies.get(lobbyId);
+        eventPublisher.publishEvent(new PlayerListUpdateEvent(this, lobbyId, lobby.getPlayers()));
+        eventPublisher.publishEvent(new SettingsUpdateEvent(this, lobbyId, lobby.getSettings()));
     }
 
     // throws 404 if lobbyId is invalid, else do nothing.
@@ -87,11 +99,12 @@ public class LobbyService {
         Player player = new Player(user.getId(), user.getUsername(), user.getToken());
 
         try {
-            if (lobby.getHost().getToken().equals(player.getToken())) {player.setIsHost(true);}
             lobby.addPlayer(player);
+            eventPublisher.publishEvent(new PlayerListUpdateEvent(this, lobbyId, lobby.getPlayers()));
+            eventPublisher.publishEvent(new SettingsUpdateEvent(this, lobbyId, lobby.getSettings()));
         }
-        catch (LobbyFullException e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "The lobby you are trying to join is full.");
+        catch (LobbyLockedException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Sorry, the lobby you wanted to join is full or the game is already in progress.");
         }
 
         return lobby.getPlayers();
@@ -140,5 +153,9 @@ public class LobbyService {
         return lobby.getHost();
     }
 
+    /* Getter for testing */
+    public HashMap<String, Lobby> getLobbies() {
+        return this.lobbies;
+    }
 
 }
