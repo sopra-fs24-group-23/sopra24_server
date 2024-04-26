@@ -3,7 +3,6 @@ package ch.uzh.ifi.hase.soprafs24.controller;
 import ch.uzh.ifi.hase.soprafs24.entity.GameSettings;
 import ch.uzh.ifi.hase.soprafs24.entity.Player;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
-import ch.uzh.ifi.hase.soprafs24.events.GameStateChangeEvent;
 import ch.uzh.ifi.hase.soprafs24.events.LobbyClosedEvent;
 import ch.uzh.ifi.hase.soprafs24.events.PlayerListUpdateEvent;
 import ch.uzh.ifi.hase.soprafs24.events.SettingsUpdateEvent;
@@ -60,20 +59,7 @@ public class LobbyWebsocketController {
     public void updateClients(@DestinationVariable String lobbyId) {
         lobbyService.updateClients(lobbyId);
     }
-/*
-    @MessageMapping("/lobbies/{lobbyId}/join")
-    public void addPlayer(@DestinationVariable String lobbyId, @Payload UserTokenDTO userTokenDTO) {
-        // convert tokenDTO to user
-        User userToAdd = DTOMapper.INSTANCE.convertUserTokenDTOtoEntity(userTokenDTO);
-        // add user to lobby as a player
-        List<Player> players = lobbyService.addPlayer(lobbyId, userToAdd);
-        // update clients with new player-list
-        this.updatePlayerList(lobbyId, players);
-        // update clients with current settings
-        GameSettings settings = lobbyService.getLobbyById(lobbyId).getSettings();
-        this.updateSettings(lobbyId, settings);
-    }
-*/
+
     @MessageMapping("/lobbies/{lobbyId}/leave")
     public void removePlayer(@DestinationVariable String lobbyId, @Payload UserTokenDTO userTokenDTO) {
         // convert tokenDTO to user
