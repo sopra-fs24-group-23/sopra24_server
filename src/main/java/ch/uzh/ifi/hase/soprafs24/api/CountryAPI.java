@@ -11,29 +11,23 @@ public class CountryAPI extends APIManager {
 
     public CountryAPI(String apiKey, String baseUrl) {
         setApiKey(apiKey);
-        setBaseUrl(baseUrl);
+        setBaseUrl("https://country-by-api-ninjas.p.rapidapi.com");
     }
 
-    // Adjust the method to take a country name as a parameter
-    public String performRequest(String answer) {
+    public String performRequest(String countryName) {
         try {
-            // Adjust parameters to fetch all countries without limit
-            // Note: Depending on the API, you may need to adjust this query to properly fetch or search for countries
-            String parameters = "fields=name";
+            String parameters = "name=" + countryName.replace(" ", "%20");
 
             URL url = new URL(getBaseUrl() + "/v1/country?" + parameters);
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
 
-            // Set API key header
             connection.setRequestProperty("X-RapidAPI-Key", getApiKey());
-            connection.setRequestProperty("X-RapidAPI-Host", "referential.p.rapidapi.com");
+            connection.setRequestProperty("X-RapidAPI-Host", "country-by-api-ninjas.p.rapidapi.com");
 
-            // Check the response code
             int responseCode = connection.getResponseCode();
 
             if (responseCode == HttpURLConnection.HTTP_OK) {
-                // Read the response
                 BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 String inputLine;
                 StringBuilder response = new StringBuilder();
@@ -43,12 +37,10 @@ public class CountryAPI extends APIManager {
                 }
                 in.close();
 
-                // Parse the response to check if the country exists
                 JSONArray countries = new JSONArray(response.toString());
-                for (int i = 0; i < countries.length(); i++) {
-                    JSONObject country = countries.getJSONObject(i);
-                    String countryValue = country.optString("value");
-                    if (countryValue.toLowerCase().contains(answer.toLowerCase())) {
+                if (countries.length() > 0) {
+                    JSONObject country = countries.getJSONObject(0);
+                    if (country.getString("name").equalsIgnoreCase(countryName)) {
                         return "True";
                     }
                 }
@@ -59,18 +51,15 @@ public class CountryAPI extends APIManager {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "False"; // Return "false" or an appropriate error message if an exception occurs
+        return "False";
     }
 
     public static void main(String[] args) {
-        // Use your actual API key and the base URL for the API
         String apiKey = "7f9f1b12c5msh0ee2d0b9a2cbbb7p158dc9jsn62d752680b9e";
-        String baseUrl = "https://referential.p.rapidapi.com";
+        CountryAPI countryAPI = new CountryAPI(apiKey, "");
+        String countryName = "South Africa"; // Example country name
+        String result = countryAPI.performRequest(countryName); // Pass the country name
 
-       // CountryAPI countryAPI = new CountryAPI(apiKey, baseUrl);
-       // String answer = "china"; // Example country name
-      //  String result = countryAPI.performRequest(answer); // Pass the country name
-
-      //  System.out.println("Is " + answer + " a country? " + result);
+        System.out.println("Is " + countryName + " a country? " + result);
     }
 }

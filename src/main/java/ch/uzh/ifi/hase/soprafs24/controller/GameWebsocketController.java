@@ -96,4 +96,8 @@ public class GameWebsocketController {
                 gameStateDTO
         );
     }
+    public void setMessagingTemplate(SimpMessagingTemplate messagingTemplate) {
+        this.msgTemplate = messagingTemplate;
+    }
+
 }

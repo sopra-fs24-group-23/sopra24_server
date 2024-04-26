@@ -20,7 +20,6 @@ public class Answer {
     }
 
     public int calculateScore() {
-
         int score = 0;
 
         if (isCorrect) {
@@ -34,9 +33,7 @@ public class Answer {
         return score;
     }
 
-    public CompletableFuture<Boolean> checkAnswer(String currentLetter) {
-        Category answerCategory = CategoryFactory.createCategory(this.category);
-
+    public CompletableFuture<Boolean> checkAnswer(Category answerCategory, String currentLetter) {
         return CompletableFuture.supplyAsync(() -> {
             try {
                 // only check answer if not a non-doubted joker

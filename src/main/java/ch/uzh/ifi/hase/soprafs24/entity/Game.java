@@ -1,5 +1,7 @@
 package ch.uzh.ifi.hase.soprafs24.entity;
 
+import ch.uzh.ifi.hase.soprafs24.categories.Category;
+import ch.uzh.ifi.hase.soprafs24.categories.CategoryFactory;
 import ch.uzh.ifi.hase.soprafs24.constant.GamePhase;
 import ch.uzh.ifi.hase.soprafs24.exceptions.PlayerNotFoundException;
 
@@ -12,6 +14,11 @@ public class Game {
     private final GameSettings settings;
     private Integer currentRoundNumber;
     private GamePhase currentPhase;
+
+    public void setCurrentLetter(String currentLetter) {
+        this.currentLetter = currentLetter;
+    }
+
     private String currentLetter;
     private final HashMap<String, Integer> answerMap;
     private volatile boolean playerHasAnswered;
@@ -62,7 +69,10 @@ public class Game {
 
         for (Player player : players) {
             for (Answer answer : player.getCurrentAnswers()) {
-                CompletableFuture<Void> checkFuture = answer.checkAnswer(this.currentLetter)
+
+                Category answerCategory = CategoryFactory.createCategory(answer.getCategory());
+
+                CompletableFuture<Void> checkFuture = answer.checkAnswer(answerCategory, this.currentLetter)
                     .thenApply((isCorrect) -> {
                         answer.setIsCorrect(isCorrect);
 
@@ -216,6 +226,7 @@ public class Game {
 
     // this is pretty disgusting... wopsieee
     public void doubtAnswers(String username, List<Vote> votes) throws PlayerNotFoundException {
+        boolean playerExists = false;
         for (Vote vote : votes) {
             for (Player p : players) {
                 if (p.getUsername().equals(vote.getUsername())) {
@@ -224,8 +235,12 @@ public class Game {
                             a.setIsDoubted(true);
                         }
                     }
+                    playerExists = true;
                 }
             }
+        }
+        if (!playerExists) {
+            throw new PlayerNotFoundException("Player not found");
         }
         for (Player p : players) {
             if (p.getUsername().equals(username)) {
