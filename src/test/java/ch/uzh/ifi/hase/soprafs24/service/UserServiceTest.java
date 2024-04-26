@@ -10,6 +10,9 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class UserServiceTest {
@@ -64,5 +67,101 @@ public class UserServiceTest {
     // is thrown
     assertThrows(ResponseStatusException.class, () -> userService.createUser(testUser));
   }
+    @Test
+    public void updateUser_updatesUserWithValidInfo_success() {
+        // Setup existing user in the database
+        Mockito.when(userRepository.findById(testUser.getId())).thenReturn(java.util.Optional.of(testUser));
+        Mockito.when(userRepository.findByUsername("newUsername")).thenReturn(null); // Ensure no user with new username exists
+
+        // New input for the user
+        User updatedInput = new User();
+        updatedInput.setUsername("newUsername");
+        updatedInput.setPassword("newPassword");
+
+        // Execute the update
+        User updatedUser = userService.updateUser(updatedInput, testUser.getId());
+
+        // Verify that saveAndFlush is called instead of save
+        Mockito.verify(userRepository).saveAndFlush(testUser);
+        assertEquals("newUsername", updatedUser.getUsername());
+    }
+
+
+    @Test
+    public void updateUser_usernameAlreadyExists_throwsException() {
+        // Setup existing user in the database
+        Mockito.when(userRepository.findById(testUser.getId())).thenReturn(java.util.Optional.of(testUser));
+        // Simulate that the new username is already taken
+        User newUserWithSameUsername = new User();
+        newUserWithSameUsername.setId(2L); // Ensure this user is different by giving a different ID
+        Mockito.when(userRepository.findByUsername("newUsername")).thenReturn(newUserWithSameUsername);
+
+        // New input for the user
+        User updatedInput = new User();
+        updatedInput.setUsername("newUsername");
+
+        // Additional check to ensure values are not null before method call
+        assertNotNull(userRepository.findByUsername("newUsername"), "Mocked findByUsername returned null");
+        assertNotNull(userRepository.findById(testUser.getId()), "Mocked findById returned null");
+
+        // Execute and verify that exception is thrown
+        assertThrows(ResponseStatusException.class, () -> userService.updateUser(updatedInput, testUser.getId()));
+    }
+    @Test
+    public void loginUser_withCorrectCredentials_returnsUser() {
+        // Setup
+        Mockito.when(userRepository.findByUsername("testUsername")).thenReturn(testUser);
+
+        // Action
+        User loggedInUser = userService.loginUser("testUsername", "testPassword");
+
+        // Assert
+        assertNotNull(loggedInUser.getToken());
+        assertEquals("testUsername", loggedInUser.getUsername());
+    }
+
+    @Test
+    public void loginUser_withIncorrectPassword_throwsException() {
+        // Setup
+        Mockito.when(userRepository.findByUsername("testUsername")).thenReturn(testUser);
+
+        // Action & Assert
+        assertThrows(ResponseStatusException.class, () -> userService.loginUser("testUsername", "wrongPassword"));
+    }
+    @Test
+    public void logout_validToken_userLoggedOut() {
+        // Setup
+        testUser.setToken("someToken");
+        Mockito.when(userRepository.findByToken("someToken")).thenReturn(testUser);
+
+        // Action
+        User loggedOutUser = userService.logout("someToken");
+
+        // Assert
+        assertNull(loggedOutUser.getToken());
+        Mockito.verify(userRepository).saveAndFlush(testUser);
+    }
+    @Test
+    public void getGamesPlayedRanking_returnsCorrectOrder() {
+        // Setup
+        User user1 = new User();
+        user1.setGamesPlayed(10);
+        User user2 = new User();
+        user2.setGamesPlayed(5);
+
+        // Use a mutable list such as ArrayList
+        List<User> users = new ArrayList<>();
+        users.add(user1);
+        users.add(user2);
+        Mockito.when(userRepository.findAll()).thenReturn(users);
+
+        // Action
+        List<User> rankedUsers = userService.getGamesPlayedRanking(2L);
+
+        // Assert
+        assertEquals(2, rankedUsers.size());
+        assertEquals(10, rankedUsers.get(0).getGamesPlayed());
+    }
+
 
 }
