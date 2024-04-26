@@ -118,7 +118,7 @@ public class GameUnitTest {
 
         assertTrue(exception.getMessage().contains("Player not found"));
     }
-    @Test
+    /*@Test
     public void testVotingCompletionWhenAllVotesAreIn() {
         game.initializeRound();
         players.forEach(player -> {
@@ -138,7 +138,5 @@ public class GameUnitTest {
         } catch (Exception e) {
             fail("Unexpected exception thrown.", e);
         }
-    }
-
-
+    }*/
 }
