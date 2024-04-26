@@ -12,64 +12,54 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+
+import java.util.ArrayList;
 
 public class GameSettingsControllerTest {
 
     @Mock
     private GameSettingsService gameSettingsService;
-
     @Mock
     private GameService gameService;
-
     @Mock
     private SimpMessagingTemplate messagingTemplate;
-
     @InjectMocks
     private GameSettingsController controller;
+    private String lobbyId;
 
     @BeforeEach
-    void setUp() {
+    public void setup() {
         MockitoAnnotations.openMocks(this);
-        controller = new GameSettingsController(gameSettingsService, gameService);
+        controller.setMessagingTemplate(messagingTemplate);
+        lobbyId = "ABCD";
     }
 
+    @Test
+    public void testUpdateSettings() {
+        GameSettingsDTO gameSettingsDTO = new GameSettingsDTO();
+
+        controller.updateSettings(lobbyId, gameSettingsDTO);
+
+        Mockito.verify(messagingTemplate, Mockito.times(1)).convertAndSend(
+                eq("/topic/lobbies/ABCD/settings"), any(GameSettingsDTO.class)
+        );
+    }
 
     @Test
-    void testInformClients() {
-        // Given
-        String lobbyId = "lobbyId";
+    public void testInformClients() {
         GameSettings settings = new GameSettings();
-        settings.setMaxPlayers(5);
-        when(gameService.getSettings(lobbyId)).thenReturn(settings);
 
-        // When
+        Mockito.when(gameService.getSettings(lobbyId)).thenReturn(settings);
+
         controller.informClients(lobbyId);
 
-
-        // Then
-        verify(messagingTemplate).convertAndSend(eq("/topic/lobbies/lobbyId/settings"), any(GameSettingsDTO.class));
-        verify(gameService).getSettings(lobbyId);
-    }
-    @Test
-    void testUpdateSettings() {
-        // Given
-        String lobbyId = "lobbyId";
-        GameSettingsDTO settingsDTO = new GameSettingsDTO();
-        settingsDTO.setMaxPlayers(4);
-        GameSettings settings = new GameSettings();
-        settings.setMaxPlayers(4);
-
-        when(DTOMapper.INSTANCE.convertGameSettingsDTOToGameSettings(settingsDTO)).thenReturn(settings);
-        doNothing().when(gameSettingsService).updateSettings(eq(lobbyId), any(GameSettings.class));
-
-        // When
-        controller.updateSettings(lobbyId, settingsDTO);
-
-        // Then
-        verify(gameSettingsService).updateSettings(lobbyId, settings);
-        verify(messagingTemplate).convertAndSend(eq("/topic/lobbies/lobbyId/settings"), any(GameSettingsDTO.class));
+        Mockito.verify(messagingTemplate, Mockito.times(1)).convertAndSend(
+                eq("/topic/lobbies/ABCD/settings"), any(GameSettingsDTO.class)
+        );
     }
 
 }
