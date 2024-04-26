@@ -4,7 +4,10 @@ import static ch.uzh.ifi.hase.soprafs24.constant.GamePhase.AWAITING_ANSWERS;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.junit.jupiter.api.Assertions.*;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
+
 
 import ch.uzh.ifi.hase.soprafs24.constant.GamePhase;
 import ch.uzh.ifi.hase.soprafs24.controller.GameWebsocketController;
@@ -29,15 +32,18 @@ public class GameWebsocketControllerTest {
     @Mock
     private GameService gameService;
 
-    @MockBean
+    @Mock
     private SimpMessagingTemplate messagingTemplate;
 
     @InjectMocks
     private GameWebsocketController controller;
 
+
     @BeforeEach
     public void setup() {
-        MockitoAnnotations.openMocks(this);}
+        MockitoAnnotations.openMocks(this);
+        controller.setMessagingTemplate(messagingTemplate);
+    }
 
     @Test
     public void testHandleGameStateChange() {

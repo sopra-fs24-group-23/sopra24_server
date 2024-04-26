@@ -16,6 +16,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.context.ApplicationEventPublisher;
@@ -48,6 +49,7 @@ class LobbyServiceTest {
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
+
         user = new User();
         user.setUsername("user1");
         user.setToken("ceffcvf");
@@ -67,6 +69,15 @@ class LobbyServiceTest {
 
     @Test
     void getLobbyById_ExistingId_ReturnsLobby() {
+        user = new User();
+        user.setUsername("user1");
+        user.setToken("ceffcvf");
+        System.out.println("username:" + user.getUsername() + " " + "token" + user.getToken());
+        user.setToken("defaultToken");
+
+
+        lobby = lobbyService.createLobby(user);
+
         assertEquals(lobby, lobbyService.getLobbyById(lobby.getId()));
     }
 
@@ -88,9 +99,9 @@ class LobbyServiceTest {
         user = new User();
         user.setUsername("user1");
         user.setToken("ceffcvf");
-        System.out.println("username:" + user.getUsername() + " " + "token" + user.getToken());
         user.setToken("defaultToken");
         Player player = new Player(user.getId(),user.getUsername(),user.getToken());
+
 
 
         lobby = lobbyService.createLobby(user) ;
