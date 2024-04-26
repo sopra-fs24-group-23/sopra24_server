@@ -4,7 +4,9 @@ import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.entity.Player;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.events.LobbyClosedEvent;
-import ch.uzh.ifi.hase.soprafs24.exceptions.LobbyFullException;
+import ch.uzh.ifi.hase.soprafs24.events.PlayerListUpdateEvent;
+import ch.uzh.ifi.hase.soprafs24.events.SettingsUpdateEvent;
+import ch.uzh.ifi.hase.soprafs24.exceptions.LobbyLockedException;
 import ch.uzh.ifi.hase.soprafs24.exceptions.UnauthorizedException;
 import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -64,6 +66,12 @@ public class LobbyService {
         }
     }
 
+    public void updateClients(String lobbyId) {
+        Lobby lobby = lobbies.get(lobbyId);
+        eventPublisher.publishEvent(new PlayerListUpdateEvent(this, lobbyId, lobby.getPlayers()));
+        eventPublisher.publishEvent(new SettingsUpdateEvent(this, lobbyId, lobby.getSettings()));
+    }
+
     // throws 404 if lobbyId is invalid, else do nothing.
     public void checkLobbyId(String lobbyId) {
         Lobby lobby = this.lobbies.get(lobbyId);
@@ -87,11 +95,12 @@ public class LobbyService {
         Player player = new Player(user.getId(), user.getUsername(), user.getToken());
 
         try {
-            if (lobby.getHost().getToken().equals(player.getToken())) {player.setIsHost(true);}
             lobby.addPlayer(player);
+            eventPublisher.publishEvent(new PlayerListUpdateEvent(this, lobbyId, lobby.getPlayers()));
+            eventPublisher.publishEvent(new SettingsUpdateEvent(this, lobbyId, lobby.getSettings()));
         }
-        catch (LobbyFullException e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "The lobby you are trying to join is full.");
+        catch (LobbyLockedException e) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "Sorry, the lobby you wanted to join is full or the game is already in progress.");
         }
 
         return lobby.getPlayers();
