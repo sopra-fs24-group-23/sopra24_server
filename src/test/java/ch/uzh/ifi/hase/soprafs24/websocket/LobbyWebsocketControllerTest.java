@@ -1,20 +1,18 @@
-/*package ch.uzh.ifi.hase.soprafs24.websocket;
+package ch.uzh.ifi.hase.soprafs24.websocket;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.*;
-import static org.mockito.ArgumentMatchers.*;
 
-import ch.uzh.ifi.hase.soprafs24.categories.Category;
 import ch.uzh.ifi.hase.soprafs24.controller.LobbyWebsocketController;
 import ch.uzh.ifi.hase.soprafs24.entity.GameSettings;
 import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.entity.Player;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.GameSettingsDTO;
-import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyStateDTO;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.BeforeEach;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
@@ -27,7 +25,6 @@ import ch.uzh.ifi.hase.soprafs24.events.LobbyClosedEvent;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @SpringBootTest
@@ -35,10 +32,8 @@ public class LobbyWebsocketControllerTest {
 
     @Mock
     private LobbyService lobbyService;
-
     @Mock
     private SimpMessagingTemplate messagingTemplate;
-
     @InjectMocks
     private LobbyWebsocketController controller;
 
@@ -61,30 +56,6 @@ public class LobbyWebsocketControllerTest {
                 eq("Lobby Closed.")
         );
     }
-
-    @Test
-    public void testAddPlayer() {
-        Player host = new Player(1L, "dssdf", "eerferfe");
-        Lobby lobby = new Lobby(host);
-        String lobbyId = lobby.getId();
-        lobby.setSettings(new GameSettings()); // Make sure settings are set to prevent NPE
-        UserTokenDTO userTokenDTO = new UserTokenDTO(); // Set required fields
-        User user = new User(); // Mocked conversion result
-        when(lobbyService.addPlayer(eq(lobbyId), any(User.class))).thenReturn(new ArrayList<>());
-        when(lobbyService.getLobbyById(lobbyId)).thenReturn(lobby); // Ensure this does not return null
-
-        controller.addPlayer(lobbyId, userTokenDTO);
-
-        verify(messagingTemplate).convertAndSend(
-                eq("/topic/lobbies/" + lobbyId + "/players"),
-                any(List.class)
-        );
-        verify(messagingTemplate).convertAndSend(
-                eq("/topic/lobbies/" + lobbyId + "/settings"),
-                any(GameSettingsDTO.class)
-        );
-    }
-//
 
     @Test
     public void testRemovePlayer() {
@@ -144,58 +115,5 @@ public class LobbyWebsocketControllerTest {
                 any(GameSettingsDTO.class)
         );
     }
-    @Test
-    public void testJoinFullLobby() {
-        String lobbyId = "fullLobbyId";
-        UserTokenDTO userTokenDTO = new UserTokenDTO();
-        User user = new User(); // Mocked conversion result
-
-        when(lobbyService.addPlayer(eq(lobbyId), any(User.class))).thenThrow(new RuntimeException("Lobby is full"));
-
-        assertThrows(RuntimeException.class, () -> {
-            controller.addPlayer(lobbyId, userTokenDTO);
-        });
-
-        verifyNoInteractions(messagingTemplate);
-    }
-
-    @Test
-    public void testLeaveNonexistentUser() {
-        String lobbyId = "testLobbyId";
-        UserTokenDTO userTokenDTO = new UserTokenDTO();
-        User user = new User(); // Mocked conversion result
-
-        when(lobbyService.removePlayer(eq(lobbyId), any(User.class))).thenThrow(new RuntimeException("User not found in lobby"));
-
-        assertThrows(RuntimeException.class, () -> {
-            controller.removePlayer(lobbyId, userTokenDTO);
-        });
-
-        verifyNoInteractions(messagingTemplate);
-    }
-
-    @Test
-    public void testInvalidLobbyIdOnJoin() {
-        String invalidLobbyId = "invalidLobbyId";
-        UserTokenDTO userTokenDTO = new UserTokenDTO();
-        when(lobbyService.addPlayer(eq(invalidLobbyId), any(User.class)))
-                .thenThrow(new NullPointerException());
-        assertThrows(ResponseStatusException.class, () -> {
-            controller.addPlayer(invalidLobbyId, userTokenDTO);
-        });
-
-        verifyNoInteractions(messagingTemplate);
-    }
-
-    @Test
-    public void testUpdateLobbyState() {
-        String lobbyId = "testLobbyId";
-        controller.updateLobbyState(lobbyId, true, true);
-
-        verify(messagingTemplate).convertAndSend(
-                eq("/topic/lobbies/" + lobbyId + "/settings"),
-                any(LobbyStateDTO.class)
-        );
-    }
-}*/
+}
 

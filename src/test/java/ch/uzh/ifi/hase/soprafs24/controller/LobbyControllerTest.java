@@ -50,6 +50,7 @@ public class LobbyControllerTest {
         assertEquals("lobbyId", result.getId());
         verify(lobbyService).createLobby(any(User.class));
     }
+
     @Test
     void testDeleteLobby() {
         UserTokenDTO userTokenDTO = new UserTokenDTO();
@@ -61,6 +62,7 @@ public class LobbyControllerTest {
 
         verify(lobbyService).deleteLobby(eq("lobbyId"), any(User.class));
     }
+
     @Test
     void testCheckLobbyId() {
         doNothing().when(lobbyService).checkLobbyId(anyString());
@@ -69,6 +71,7 @@ public class LobbyControllerTest {
 
         verify(lobbyService).checkLobbyId("lobbyId");
     }
+
     @Test
     void testGetHostName() {
 
@@ -84,5 +87,4 @@ public class LobbyControllerTest {
         assertEquals(host.getUsername(), result.getUsername());
         verify(lobbyService).getHost("lobbyId");
     }
-
 }
