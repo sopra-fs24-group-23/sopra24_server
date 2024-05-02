@@ -59,10 +59,10 @@ public class UserService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The username cannot be empty. Please try again.");
         }
 
-        // Check if username is already
+        // Check if username is already taken
         User userByUsername = userRepository.findByUsername(userInput.getUsername());
         if (userByUsername != null && !userByUsername.getId().equals(userId)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "This username is already taken. Please choose a different username.");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "This username is already taken. Please choose a different username.");
         }
 
         // update attributes
