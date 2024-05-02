@@ -44,7 +44,7 @@ The webapp is automatically deployed to google cloud whenever you push to the **
 - Franziska Geiger, [fr4n715k4](https://github.com/fr4n715k4)
 - Nilaksan Selliah, [nilaksan97](https://github.com/nilaksan97)
 - Nils Hegetschweiler, [nilshgt](https://github.com/nilshgt)
-- Jonas Krumm, [dedphish](https://github.com/orgs/Dedphish)
+- Jonas Krumm, [dedphish](https://github.com/Dedphish)
 
 We thank Stefan Schuler ([Steesch](https://github.com/steesch)) for supporting us as our TA throughout the project.
 
