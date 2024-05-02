@@ -51,7 +51,7 @@ We thank Stefan Schuler ([Steesch](https://github.com/steesch)) for supporting u
 Further, we thank [royru](https://github.com/royru), [isicu](https://github.com/isicu), [marcoleder](https://github.com/marcoleder), [v4lentin1879](https://github.com/v4lentin1879), [luis-tm](https://github.com/luis-tm) and [SvenRingger](https://github.com/SvenRingger) for creating and providing us with a template upon which we built this project. 
 
 ## License
-[GNU GPLv3](/LICENCE)
+[GNU GPLv3](https://github.com/sopra-fs24-group-23/sopra24_server/blob/main/LICENSE)
 
 GlobalGuess is a game about finding terms with a common starting letter as quickly as possible
 Copyright (C) 2024  Franziska Geiger, Nilaksan Selliah, Nils Hegetschweiler, Jonas Krumm
