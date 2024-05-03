@@ -133,6 +133,8 @@
 
 ### Jonas
 - 25.4 - 1.5, Jonas, sopra-fs24-group-23/sopra24_server/issues/167
+- 25.4 - 1.5, Jonas, sopra-fs24-group-23/sopra24_server/issues/170
+- 25.4 - 1.5, Jonas, sopra-fs24-group-23/sopra24_client/issues/119
 
 ### Franziska
 - 25.4 - 1.5, Franziska, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/113](https://github.com/sopra-fs24-group-23/sopra24_client/issues/113)
