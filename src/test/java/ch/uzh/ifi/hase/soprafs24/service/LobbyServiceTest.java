@@ -6,7 +6,9 @@ import static org.mockito.Mockito.*;
 import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.entity.Player;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
+import ch.uzh.ifi.hase.soprafs24.entity.Vote;
 import ch.uzh.ifi.hase.soprafs24.events.LobbyClosedEvent;
+import ch.uzh.ifi.hase.soprafs24.exceptions.PlayerNotFoundException;
 import ch.uzh.ifi.hase.soprafs24.exceptions.UnauthorizedException;
 import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.UserTokenDTO;
@@ -24,9 +26,11 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
@@ -121,6 +125,30 @@ class LobbyServiceTest {
     void deleteLobby_NotByHost_ThrowsException() {
         User nonHostUser = new User();
         assertThrows(ResponseStatusException.class, () -> lobbyService.deleteLobby(lobby.getId(), nonHostUser));
+    }
+
+    @Test
+    void checkLobbyId_NonExistentId(){
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            lobbyService.checkLobbyId("nonExistentId");
+        });
+
+        assertTrue(exception.getMessage().contains("The lobby you are trying to join does not exist."));
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
+    }
+
+    @Test
+    void checkLobbyId_IdExists() {
+        user = new User();
+        user.setUsername("user1");
+        user.setToken("ceffcvf");
+
+        when(userRepository.findByToken(user.getToken())).thenReturn(user);
+
+        Lobby newLobby = lobbyService.createLobby(user);
+
+        assertDoesNotThrow(() -> lobbyService.checkLobbyId(newLobby.getId()));
     }
 
     //Todo Additional tests for addPlayer, removePlayer, and kickPlayer would be similar
