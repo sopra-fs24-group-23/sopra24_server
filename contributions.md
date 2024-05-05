@@ -117,9 +117,6 @@
 - 18.4 - 24.4, Jonas, sopra-fs24-group-23/sopra24_client/issues/52
 
 ### Nils
-- 18.4 - 24.4, Nils, [https://github.com/sopra-fs24-group-23/sopra24_server/issues/11](https://github.com/sopra-fs24-group-23/sopra24_server/issues/11)
-- 18.4 - 24.4, Nils, [https://github.com/sopra-fs24-group-23/sopra24_server/issues/34](https://github.com/sopra-fs24-group-23/sopra24_server/issues/34)
-- 18.4 - 24.4, Nils, [https://github.com/sopra-fs24-group-23/sopra24_server/issues/83](https://github.com/sopra-fs24-group-23/sopra24_server/issues/83)
 - 18.4 - 24.4, Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/39](https://github.com/sopra-fs24-group-23/sopra24_client/issues/39)
 - 18.4 - 24.4, Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/53](https://github.com/sopra-fs24-group-23/sopra24_client/issues/53)
 
@@ -141,14 +138,16 @@
 - 25.4 - 1.5, Franziska, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/114](https://github.com/sopra-fs24-group-23/sopra24_client/issues/114)
 - 25.4 - 1.5, Franziska, [https://github.com/sopra-fs24-group-23/sopra24_server/issues/169](https://github.com/sopra-fs24-group-23/sopra24_server/issues/169)
 
+### Nils
+- 25.4 - 1.5, Nils, [https://github.com/sopra-fs24-group-23/sopra24_server/issues/11](https://github.com/sopra-fs24-group-23/sopra24_server/issues/11)
+- 25.4 - 1.5, Nils, [https://github.com/sopra-fs24-group-23/sopra24_server/issues/34](https://github.com/sopra-fs24-group-23/sopra24_server/issues/34)
+- 25.4 - 1.5, Nils, [https://github.com/sopra-fs24-group-23/sopra24_server/issues/83](https://github.com/sopra-fs24-group-23/sopra24_server/issues/83)
+
 ## Week 6 | 2.5. - 8.5.
 ### Jonas
 - 2.5. - 8.5., Jonas, sopra-fs24-group-23/sopra24_server/issues/172
 - 2.5. - 8.5., Jonas, sopra-fs24-group-23/sopra24_server/issues/173
 - 2.5. - 8.5., Jonas, sopra-fs24-group-23/sopra24_server/issues/174
-
-
-
 
 
 
