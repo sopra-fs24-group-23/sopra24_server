@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs24.service;
 
+import ch.uzh.ifi.hase.soprafs24.constant.ColorRequirement;
 import ch.uzh.ifi.hase.soprafs24.entity.Player;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
@@ -58,6 +59,10 @@ public class UserService {
         if (userInput.getUsername() == null || userInput.getUsername().trim().isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The username cannot be empty. Please try again.");
         }
+        // check if input color is empty
+        else if (userInput.getColor() == null) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The color attribute cannot be empty. Please provide a valid value.");
+        }
 
         // Check if username is already taken
         User userByUsername = userRepository.findByUsername(userInput.getUsername());
@@ -65,8 +70,23 @@ public class UserService {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "This username is already taken. Please choose a different username.");
         }
 
+        // Check if user has required score to set color
+        String colorCode = persistedUser.getColor();
+        Integer totalScore = persistedUser.getTotalScore();
+        try {
+            ColorRequirement requirement = ColorRequirement.getByColorCode(colorCode);
+            if (totalScore < requirement.getScoreRequirement()) {
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The user does not have the total score required for this color.");
+            }
+        }
+        catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The provided color code is invalid.");
+        }
+
         // update attributes
+        persistedUser.setColor(userInput.getColor());
         persistedUser.setUsername(userInput.getUsername());
+
         // save to DB
         userRepository.saveAndFlush(persistedUser);
         return persistedUser;

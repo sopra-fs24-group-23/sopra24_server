@@ -46,7 +46,7 @@ public class LobbyService {
     public Lobby createLobby(User hostToken) {
         // fetch host from DB and initialize player object
         User host = userRepository.findByToken(hostToken.getToken());
-        Player hostPlayer = new Player(host.getId(), host.getUsername(), host.getToken());
+        Player hostPlayer = new Player(host.getId(), host.getUsername(), host.getToken(), host.getColor());
         hostPlayer.setIsHost(true);
         // create new lobby, store to lobby list
         Lobby newLobby = new Lobby(hostPlayer);
@@ -96,7 +96,7 @@ public class LobbyService {
         User user = userRepository.findByToken(userToAdd.getToken());
 
         // create new player object from user and add to the lobby
-        Player player = new Player(user.getId(), user.getUsername(), user.getToken());
+        Player player = new Player(user.getId(), user.getUsername(), user.getToken(), user.getColor());
 
         try {
             lobby.addPlayer(player);
