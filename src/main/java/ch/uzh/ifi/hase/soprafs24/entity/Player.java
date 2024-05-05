@@ -11,6 +11,7 @@ import java.util.List;
 public class Player {
 
     private Long id;
+    private String color;
     private String token;
     private String username;
     private Integer currentScore;
@@ -19,7 +20,8 @@ public class Player {
     private boolean hasVoted;
     private boolean isHost;
 
-    public Player(Long id, String username, String token) {
+    public Player(Long id, String username, String token, String color) {
+        this.color = color;
         this.id = id;
         this.token = token;
         this.username = username;

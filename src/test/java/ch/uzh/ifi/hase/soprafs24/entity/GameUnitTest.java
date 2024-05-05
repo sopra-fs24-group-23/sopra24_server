@@ -29,8 +29,8 @@ public class GameUnitTest {
         settings.setScoreboardDuration(2); // duration for scoreboard display in seconds
 
         players = new ArrayList<>();
-        players.add(new Player(1L, "player1", "token1"));
-        players.add(new Player(2L, "player2", "token2"));
+        players.add(new Player(1L, "player1", "token1", "#000000"));
+        players.add(new Player(2L, "player2", "token2", "#000000"));
 
         game = new Game(settings, players);
     }

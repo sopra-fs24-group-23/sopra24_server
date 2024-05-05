@@ -50,8 +50,8 @@ public class GameServiceTest {
         settings.setVotingDuration(1);
         settings.setScoreboardDuration(1);
 
-        Player playerOne = new Player(1L, "Player1", "ABCD");
-        Player playerTwo = new Player(2L, "Player2", "EFGH");
+        Player playerOne = new Player(1L, "Player1", "ABCD", "#000000");
+        Player playerTwo = new Player(2L, "Player2", "EFGH", "#000000");
         players = new ArrayList<>();
         players.add(playerOne);
         players.add(playerTwo);

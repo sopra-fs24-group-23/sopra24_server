@@ -57,7 +57,7 @@ class LobbyServiceTest {
         user.setToken("defaultToken");
         when(userRepository.findByToken("defaultToken")).thenReturn(user);
 
-        Player player = new Player(user.getId(),user.getUsername(),user.getToken());
+        Player player = new Player(user.getId(),user.getUsername(),user.getToken(), user.getColor());
         player.setToken("ceffcvf");
         System.out.println("player username: " + player.getUsername() + " " + "playertoken: " + player.getToken());
 
@@ -100,7 +100,7 @@ class LobbyServiceTest {
         user.setUsername("user1");
         user.setToken("ceffcvf");
         user.setToken("defaultToken");
-        Player player = new Player(user.getId(),user.getUsername(),user.getToken());
+        Player player = new Player(user.getId(),user.getUsername(),user.getToken(), user.getColor());
 
 
 
