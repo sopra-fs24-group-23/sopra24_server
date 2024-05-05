@@ -1,5 +1,4 @@
 package ch.uzh.ifi.hase.soprafs24.categories;
-
 import ch.uzh.ifi.hase.soprafs24.api.CityAPI;
 
 public class City implements Category {
@@ -12,7 +11,7 @@ public class City implements Category {
     }
     @Override
     public String fetchResultsFromApi(String cityName) {
-       CityAPI cityAPI = new CityAPI(API_KEY, BASE_URL);
+       CityAPI cityAPI = new CityAPI();
        return cityAPI.performRequest(cityName);
     }
 
