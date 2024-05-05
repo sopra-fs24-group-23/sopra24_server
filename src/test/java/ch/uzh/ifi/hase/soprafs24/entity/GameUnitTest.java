@@ -1,6 +1,5 @@
-package ch.uzh.ifi.hase.soprafs24.service;
+package ch.uzh.ifi.hase.soprafs24.entity;
 
-import ch.uzh.ifi.hase.soprafs24.entity.*;
 import ch.uzh.ifi.hase.soprafs24.exceptions.PlayerNotFoundException;
 import ch.uzh.ifi.hase.soprafs24.constant.GamePhase;
 import org.junit.jupiter.api.BeforeEach;
