@@ -4,6 +4,8 @@ package ch.uzh.ifi.hase.soprafs24.rest.dto;
 public class UserPutDTO {
     private String username;
 
+    private String color;
+
     public String getUsername() {
         return username;
     }
@@ -12,4 +14,11 @@ public class UserPutDTO {
         this.username = username;
     }
 
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
 }
