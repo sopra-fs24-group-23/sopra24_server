@@ -54,12 +54,12 @@ public class CountryAPI extends APIManager {
         return "False";
     }
 
-    public static void main(String[] args) {
-        String apiKey = "7f9f1b12c5msh0ee2d0b9a2cbbb7p158dc9jsn62d752680b9e";
-        CountryAPI countryAPI = new CountryAPI(apiKey, "");
-        String countryName = "sri lanka"; // Example country name
-        String result = countryAPI.performRequest(countryName); // Pass the country name
+    //public static void main(String[] args) {
+      //  String apiKey = "7f9f1b12c5msh0ee2d0b9a2cbbb7p158dc9jsn62d752680b9e";
+        //CountryAPI countryAPI = new CountryAPI(apiKey, "");
+        //String countryName = "sri lanka"; // Example country name
+        //String result = countryAPI.performRequest(countryName); // Pass the country name
 
-        System.out.println("Is " + countryName + " a country? " + result);
-    }
+        //System.out.println("Is " + countryName + " a country? " + result);
+    //}
 }
