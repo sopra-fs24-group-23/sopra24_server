@@ -14,6 +14,7 @@ public class Game {
     private final GameSettings settings;
     private Integer currentRoundNumber;
     private GamePhase currentPhase;
+    private GameState gameState;
 
     public void setCurrentLetter(String currentLetter) {
         this.currentLetter = currentLetter;
@@ -223,6 +224,10 @@ public class Game {
         );
     }
 
+    public void setState(GameState gameState) {
+        this.gameState = gameState;
+    }
+
     public void setPlayerAnswers(String username, List<Answer> answers) {
 
         System.out.printf("Setting answers for %s \n", username);
@@ -294,6 +299,10 @@ public class Game {
 
     public void setInputPhaseClosed(boolean inputPhaseClosed) {
         this.inputPhaseClosed = inputPhaseClosed;
+    }
+
+    public void removePlayer(User user) {
+        this.players.removeIf(player -> player.getUsername().equals(user.getUsername()));
     }
 
 }

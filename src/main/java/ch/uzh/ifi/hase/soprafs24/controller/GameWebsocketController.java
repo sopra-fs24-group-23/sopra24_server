@@ -14,6 +14,7 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import ch.uzh.ifi.hase.soprafs24.rest.dto.UserTokenDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,6 +76,17 @@ public class GameWebsocketController {
         gameService.doubtAnswers(lobbyId, username, votes);
     }
 
+    @MessageMapping("/games/{lobbyId}/leave")
+    public void leaveGame(@DestinationVariable String lobbyId, @Payload UserTokenDTO userTokenDTO) {
+        User user = DTOMapper.INSTANCE.convertUserTokenDTOtoEntity(userTokenDTO);
+        gameService.removePlayerFromGame(lobbyId, user);
+        updateGameStateForRemainingPlayers(lobbyId);
+    }
+
+    private void updateGameStateForRemainingPlayers(String lobbyId) {
+        GameState gameState = gameService.getGameState(lobbyId);
+        updateGameState(lobbyId, gameState);
+    }
 
     /** Server to client(s) communication **/
     private void updateGameState(String lobbyId, GameState gameState) {

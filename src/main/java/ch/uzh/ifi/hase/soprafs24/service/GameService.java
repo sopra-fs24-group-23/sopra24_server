@@ -197,4 +197,24 @@ public class GameService {
                 )
         );
     }
+
+    public void removePlayerFromGame(String lobbyId, User user) {
+        Game game = games.get(lobbyId);
+        game.removePlayer(user);
+    }
+
+    public void updateGameStateForRemainingPlayers(String lobbyId) {
+        GameState gameState = getGameState(lobbyId);
+        updateGameState(lobbyId, gameState);
+    }
+
+    private void updateGameState(String gameId, GameState gameState) {
+        Game game = games.get(gameId);
+        if (game != null) {
+            game.setState(gameState);
+            updateClients(gameId, gameState);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found with ID: " + gameId);
+        }
+    }
 }
