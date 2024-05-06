@@ -24,6 +24,7 @@ public class Game {
     private volatile boolean playerHasAnswered;
     private boolean inputPhaseClosed = false;
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+    private List<String> recentLetters = new ArrayList<>();
 
     // to make finding users and answers easier and more efficient, we should probably introduce answer IDs, and
     // change the player list to a map or similar.
@@ -187,7 +188,28 @@ public class Game {
     }
     private String generateRandomLetter() {
         Random random = new Random();
-        return String.valueOf((char) ('A' + random.nextInt(26)));
+        String letter;
+        int attempts = 0;
+        do {
+            letter = String.valueOf((char) ('A' + random.nextInt(26)));
+            attempts++;
+            if (attempts > 10) { // Fallback to sequential search after 10 attempts
+                for (int i = 0; i < 26; i++) {
+                    letter = String.valueOf((char) ('A' + i));
+                    if (!recentLetters.contains(letter)) {
+                        break;
+                    }
+                }
+            }
+        } while (recentLetters.contains(letter));
+    
+        // Update recent letters list
+        if (recentLetters.size() >= 10) { // Assuming we keep track of the last 10 letters
+            recentLetters.remove(0); // Remove the oldest letter
+        }
+        recentLetters.add(letter);
+    
+        return letter;
     }
 
     /* GETTERS / SETTERS */
