@@ -15,9 +15,6 @@ public class Game {
     private Integer currentRoundNumber;
     private GamePhase currentPhase;
 
-    public void setCurrentLetter(String currentLetter) {
-        this.currentLetter = currentLetter;
-    }
 
     private String currentLetter;
     private final HashMap<String, Integer> answerMap;
@@ -173,9 +170,6 @@ public class Game {
     }
 
     /* HELPER METHODS */
-
-    /** Generate a random uppercase letter **/
-
     public CompletableFuture<Void> waitForDuration(Long duration) {
         CompletableFuture<Void> future = new CompletableFuture<>();
 
@@ -186,6 +180,7 @@ public class Game {
 
         return future;
     }
+
     private String generateRandomLetter() {
         Random random = new Random();
         String letter;
@@ -202,13 +197,13 @@ public class Game {
                 }
             }
         } while (recentLetters.contains(letter));
-    
+
         // Update recent letters list
         if (recentLetters.size() >= 10) { // Assuming we keep track of the last 10 letters
             recentLetters.remove(0); // Remove the oldest letter
         }
         recentLetters.add(letter);
-    
+
         return letter;
     }
 
@@ -221,6 +216,10 @@ public class Game {
                 players,
                 currentRoundNumber
         );
+    }
+
+    public void setCurrentLetter(String currentLetter) {
+        this.currentLetter = currentLetter;
     }
 
     public void setPlayerAnswers(String username, List<Answer> answers) {
