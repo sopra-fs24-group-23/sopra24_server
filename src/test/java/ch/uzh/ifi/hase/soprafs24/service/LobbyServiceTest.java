@@ -3,11 +3,9 @@ package ch.uzh.ifi.hase.soprafs24.service;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
-import ch.uzh.ifi.hase.soprafs24.entity.Player;
-import ch.uzh.ifi.hase.soprafs24.entity.User;
-import ch.uzh.ifi.hase.soprafs24.entity.Vote;
+import ch.uzh.ifi.hase.soprafs24.entity.*;
 import ch.uzh.ifi.hase.soprafs24.events.LobbyClosedEvent;
+import ch.uzh.ifi.hase.soprafs24.exceptions.LobbyLockedException;
 import ch.uzh.ifi.hase.soprafs24.exceptions.PlayerNotFoundException;
 import ch.uzh.ifi.hase.soprafs24.exceptions.UnauthorizedException;
 import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
@@ -151,5 +149,104 @@ class LobbyServiceTest {
         assertDoesNotThrow(() -> lobbyService.checkLobbyId(newLobby.getId()));
     }
 
-    //Todo Additional tests for addPlayer, removePlayer, and kickPlayer would be similar
+    @Test
+    void checkPlayerAddedToLobbySuccess() {
+        user = new User();
+        user.setUsername("user1");
+        user.setToken("ceffcvf");
+
+        User userToAdd = new User();
+        userToAdd.setUsername("user2");
+        userToAdd.setToken("akakaka5");
+
+        when(userRepository.findByToken(user.getToken())).thenReturn(user);
+        Lobby newLobby = lobbyService.createLobby(user);
+
+        // find user corresponding to received token
+        when(userRepository.findByToken(userToAdd.getToken())).thenReturn(userToAdd);
+
+        // create new player object from user and add to the lobby
+        Player player = new Player(userToAdd.getId(), userToAdd.getUsername(), userToAdd.getToken(), userToAdd.getColor());
+
+        assertDoesNotThrow(() -> lobbyService.addPlayer(newLobby.getId(), userToAdd));
+
+    }
+
+    @Test
+    void checkPlayerAddedToLobbyFailed() {
+        user = new User();
+        user.setUsername("user1");
+        user.setToken("ceffcvf");
+
+        User userToAdd = new User();
+        userToAdd.setUsername("user2");
+        userToAdd.setToken("akakaka5");
+
+        when(userRepository.findByToken(user.getToken())).thenReturn(user);
+        Lobby newLobby = lobbyService.createLobby(user);
+
+        // Create a GameSettings object and set maxPlayers to 1
+        GameSettings settings = new GameSettings();
+        settings.setMaxPlayers(1);
+
+        newLobby.setSettings(settings);
+
+        // find user corresponding to received token
+        when(userRepository.findByToken(userToAdd.getToken())).thenReturn(userToAdd);
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            lobbyService.addPlayer(newLobby.getId(), userToAdd);
+        });
+
+        assertTrue(exception.getMessage().contains("Sorry, the lobby you wanted to join is full or the game is already in progress."));
+        assertEquals(HttpStatus.CONFLICT, exception.getStatus());
+    }
+
+    @Test
+    void checkRemovePlayerFromLobbySuccess(){
+        user = new User();
+        user.setUsername("user1");
+        user.setToken("ceffcvf");
+
+        User userToAdd = new User();
+        userToAdd.setUsername("user2");
+        userToAdd.setToken("akakaka5");
+
+        when(userRepository.findByToken(user.getToken())).thenReturn(user);
+        Lobby newLobby = lobbyService.createLobby(user);
+
+        // find user corresponding to received token
+        when(userRepository.findByToken(userToAdd.getToken())).thenReturn(userToAdd);
+
+        Player player = new Player(userToAdd.getId(), userToAdd.getUsername(), userToAdd.getToken(), userToAdd.getColor());
+        // Add the player to the lobby
+        lobbyService.addPlayer(newLobby.getId(), userToAdd);
+
+        // Remove the player again and check that no exception is thrown
+        assertDoesNotThrow(() -> lobbyService.removePlayer(newLobby.getId(), userToAdd));
+
+    }
+
+    @Test
+    void checkRemovePlayerFromLobbyFailed(){
+        user = new User();
+        user.setUsername("user1");
+        user.setToken("ceffcvf");
+
+        User notAddedUser = new User();
+        notAddedUser.setUsername("user2");
+        notAddedUser.setToken("abcdefg1");
+
+        when(userRepository.findByToken(user.getToken())).thenReturn(user);
+        Lobby newLobby = lobbyService.createLobby(user);
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            lobbyService.removePlayer(newLobby.getId(), notAddedUser);
+        });
+
+        assertTrue(exception.getMessage().contains("The player you tried to remove from the lobby was not found."));
+        assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
+    }
+
+    //Todo Additional tests for removePlayer, and kickPlayer would be similar
 }
