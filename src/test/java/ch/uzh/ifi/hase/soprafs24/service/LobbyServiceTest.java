@@ -248,5 +248,56 @@ class LobbyServiceTest {
         assertEquals(HttpStatus.NOT_FOUND, exception.getStatus());
     }
 
-    //Todo Additional tests for removePlayer, and kickPlayer would be similar
+    @Test
+    void checkKickPlayerFromLobbySuccess(){
+        user = new User();
+        user.setUsername("user1");
+        user.setToken("ceffcvf");
+
+        User userToKick = new User();
+        userToKick.setUsername("user2");
+        userToKick.setToken("akakaka5");
+
+        when(userRepository.findByToken(user.getToken())).thenReturn(user);
+        Lobby newLobby = lobbyService.createLobby(user);
+
+        // find user corresponding to received token
+        when(userRepository.findByToken(userToKick.getToken())).thenReturn(userToKick);
+
+        Player player = new Player(userToKick.getId(), userToKick.getUsername(), userToKick.getToken(), userToKick.getColor());
+        // Add the player to the lobby
+        lobbyService.addPlayer(newLobby.getId(), userToKick);
+
+        assertDoesNotThrow(() -> lobbyService.kickPlayer(newLobby.getId(), user, userToKick.getUsername()));
+    }
+
+    @Test
+    void checkKickPlayerFromLobbyFailed(){
+        user = new User();
+        user.setUsername("user1");
+        user.setToken("ceffcvf");
+
+        User unauthorizedUser = new User();
+        unauthorizedUser.setUsername("user2");
+        unauthorizedUser.setToken("akakaka5");
+
+        when(userRepository.findByToken(user.getToken())).thenReturn(user);
+        Lobby newLobby = lobbyService.createLobby(user);
+
+        // find user corresponding to received token
+        when(userRepository.findByToken(unauthorizedUser.getToken())).thenReturn(unauthorizedUser);
+
+        Player player = new Player(unauthorizedUser.getId(), unauthorizedUser.getUsername(), unauthorizedUser.getToken(), unauthorizedUser.getColor());
+        // Add the player to the lobby
+        lobbyService.addPlayer(newLobby.getId(), unauthorizedUser);
+
+        // The unauthorized user tries to kick the host
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
+            lobbyService.kickPlayer(newLobby.getId(), unauthorizedUser, user.getUsername());
+        });
+
+        assertEquals(HttpStatus.UNAUTHORIZED, exception.getStatus());
+
+    }
+
 }
