@@ -7,7 +7,6 @@
 - 28.3 - 3.4, Jonas, sopra-fs24-group-23/sopra24_server/issues/82
 
 ### Nils
-- 28.3 - 3.4, Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/10](https://github.com/sopra-fs24-group-23/sopra24_client/issues/10)
 - 28.3 - 3.4, Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/49](https://github.com/sopra-fs24-group-23/sopra24_client/issues/49)
 - 28.3 - 3.4, Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/50](https://github.com/sopra-fs24-group-23/sopra24_client/issues/50)
 
@@ -41,7 +40,7 @@
 
 ### Nils
 - 4.4 - 10.4, Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/9](https://github.com/sopra-fs24-group-23/sopra24_client/issues/9)
-- 4.4 - 10.4, Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/30](https://github.com/sopra-fs24-group-23/sopra24_client/issues/30)
+- 4.4 - 10.4, Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/48](https://github.com/sopra-fs24-group-23/sopra24_client/issues/48)
 - 4.4 - 10.4, Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/61](https://github.com/sopra-fs24-group-23/sopra24_client/issues/61)
 
 ### Franziska
