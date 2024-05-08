@@ -150,8 +150,8 @@
 - 2.5. - 8.5., Jonas, sopra-fs24-group-23/sopra24_server/issues/174
 
 ### Nils
-- 2.5. - 8.5, Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/122](https://github.com/sopra-fs24-group-23/sopra24_server/issues/122)
-- 2.5. - 8.5, Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/106](https://github.com/sopra-fs24-group-23/sopra24_server/issues/106)
+- 2.5. - 8.5, Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/122](https://github.com/sopra-fs24-group-23/sopra24_client/issues/122)
+- 2.5. - 8.5, Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/106](https://github.com/sopra-fs24-group-23/sopra24_client/issues/106)
 - 2.5. - 8.5, Nils, [https://github.com/sopra-fs24-group-23/sopra24_server/issues/149](https://github.com/sopra-fs24-group-23/sopra24_server/issues/149)
 - 2.5. - 8.5, Nils, [https://github.com/sopra-fs24-group-23/sopra24_server/issues/142](https://github.com/sopra-fs24-group-23/sopra24_server/issues/142)
 
