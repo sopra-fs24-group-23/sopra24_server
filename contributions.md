@@ -140,7 +140,7 @@
 
 ### Nils
 - 25.4 - 1.5, Nils, [https://github.com/sopra-fs24-group-23/sopra24_server/issues/11](https://github.com/sopra-fs24-group-23/sopra24_server/issues/11)
-- 25.4 - 1.5, Nils, [https://github.com/sopra-fs24-group-23/sopra24_server/issues/34](https://github.com/sopra-fs24-group-23/sopra24_server/issues/34)
+- 25.4 - 1.5, Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/89](https://github.com/sopra-fs24-group-23/sopra24_client/issues/89)
 - 25.4 - 1.5, Nils, [https://github.com/sopra-fs24-group-23/sopra24_server/issues/83](https://github.com/sopra-fs24-group-23/sopra24_server/issues/83)
 
 ## Week 6 | 2.5. - 8.5.
