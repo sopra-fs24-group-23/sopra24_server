@@ -1,6 +1,6 @@
 # Contributions
 
-## Week 1 | 28.3. - 3.4.
+## Week 1 | 28.3. - 3.4. (holiday week)
 ### Jonas
 - 28.3 - 3.4, Jonas, sopra-fs24-group-23/sopra24_server/issues/101
 - 28.3 - 3.4, Jonas, sopra-fs24-group-23/sopra24_server/issues/97
