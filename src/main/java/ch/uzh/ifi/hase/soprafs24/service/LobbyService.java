@@ -62,7 +62,6 @@ public class LobbyService {
         User host = userRepository.findByUsername(lobby.getHost().getUsername());
 
 
-        // if request was made by host
         if (host.getToken().equals(userToken.getToken())) {
             // delete lobby
             lobbies.remove(lobbyId);
