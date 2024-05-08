@@ -48,8 +48,8 @@ public class GameWebsocketControllerTest {
     @Test
     public void testHandleGameStateChange() {
         // Given
-        Player player1 = new Player(1L,"player1","qsdwq");
-        Player player2 =  new Player(2L,"player2","fre");
+        Player player1 = new Player(1L,"player1","qsdwq", "#000000");
+        Player player2 =  new Player(2L,"player2","fre", "#000000");
 
         List<Player> players = new ArrayList<>();
         players.add(player1);
@@ -85,8 +85,8 @@ public class GameWebsocketControllerTest {
     @Test
     public void testUpdateClients() {
         // Given
-        Player player1 = new Player(1L,"player1","qsdwq");
-       Player player2 =  new Player(2L,"player2","fre");
+        Player player1 = new Player(1L,"player1","qsdwq", "#000000");
+       Player player2 =  new Player(2L,"player2","fre", "#000000");
 
         List<Player> players = new ArrayList<>();
         players.add(player1);

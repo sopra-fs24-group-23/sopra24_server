@@ -9,6 +9,10 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         @JsonSubTypes.Type(value = Animal.class, name = "animal"),
         @JsonSubTypes.Type(value = Celebrity.class, name = "celebrity"),
         @JsonSubTypes.Type(value = MoviesSeries.class, name = "movies"),
+        @JsonSubTypes.Type(value = MoviesSeries.class, name = "car"),
+        @JsonSubTypes.Type(value = MoviesSeries.class, name = "food"),
+
+
 
         // Other implementations
 })

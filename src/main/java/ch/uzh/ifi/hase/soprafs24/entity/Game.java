@@ -14,16 +14,15 @@ public class Game {
     private final GameSettings settings;
     private Integer currentRoundNumber;
     private GamePhase currentPhase;
+    private GameState gameState;
 
-    public void setCurrentLetter(String currentLetter) {
-        this.currentLetter = currentLetter;
-    }
 
     private String currentLetter;
     private final HashMap<String, Integer> answerMap;
     private volatile boolean playerHasAnswered;
     private boolean inputPhaseClosed = false;
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
+    private List<String> recentLetters = new ArrayList<>();
 
     // to make finding users and answers easier and more efficient, we should probably introduce answer IDs, and
     // change the player list to a map or similar.
@@ -172,9 +171,6 @@ public class Game {
     }
 
     /* HELPER METHODS */
-
-    /** Generate a random uppercase letter **/
-
     public CompletableFuture<Void> waitForDuration(Long duration) {
         CompletableFuture<Void> future = new CompletableFuture<>();
 
@@ -185,9 +181,31 @@ public class Game {
 
         return future;
     }
+
     private String generateRandomLetter() {
         Random random = new Random();
-        return String.valueOf((char) ('A' + random.nextInt(26)));
+        String letter;
+        int attempts = 0;
+        do {
+            letter = String.valueOf((char) ('A' + random.nextInt(26)));
+            attempts++;
+            if (attempts > 10) { // Fallback to sequential search after 10 attempts
+                for (int i = 0; i < 26; i++) {
+                    letter = String.valueOf((char) ('A' + i));
+                    if (!recentLetters.contains(letter)) {
+                        break;
+                    }
+                }
+            }
+        } while (recentLetters.contains(letter));
+
+        // Update recent letters list
+        if (recentLetters.size() >= 10) { // Assuming we keep track of the last 10 letters
+            recentLetters.remove(0); // Remove the oldest letter
+        }
+        recentLetters.add(letter);
+
+        return letter;
     }
 
     /* GETTERS / SETTERS */
@@ -199,6 +217,14 @@ public class Game {
                 players,
                 currentRoundNumber
         );
+    }
+
+    public void setState(GameState gameState) {
+        this.gameState = gameState;
+    }
+
+    public void setCurrentLetter(String currentLetter) {
+        this.currentLetter = currentLetter;
     }
 
     public void setPlayerAnswers(String username, List<Answer> answers) {
@@ -226,6 +252,16 @@ public class Game {
 
     // this is pretty disgusting... wopsieee
     public void doubtAnswers(String username, List<Vote> votes) throws PlayerNotFoundException {
+        boolean playerExists = false;
+        for (Player p : players) {
+            if (p.getUsername().equals(username)) {
+                playerExists = true;
+                break;
+            }
+        }
+        if (!playerExists) {
+            throw new PlayerNotFoundException("Player not found");
+        }
         for (Vote vote : votes) {
             for (Player p : players) {
                 if (p.getUsername().equals(vote.getUsername())) {
@@ -262,6 +298,10 @@ public class Game {
 
     public void setInputPhaseClosed(boolean inputPhaseClosed) {
         this.inputPhaseClosed = inputPhaseClosed;
+    }
+
+    public void removePlayer(User user) {
+        this.players.removeIf(player -> player.getUsername().equals(user.getUsername()));
     }
 
 }

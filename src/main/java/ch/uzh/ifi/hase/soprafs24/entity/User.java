@@ -26,8 +26,11 @@ public class User implements Serializable {
     @Column(nullable = false)
     private String password;
 
-    @Column()
+    @Column
     private String token;
+
+    @Column
+    private String color;
 
     @Column
     private Integer totalScore;
@@ -39,6 +42,7 @@ public class User implements Serializable {
     private Integer gamesPlayed;
 
     public User() {
+        this.color = "#000000";
         this.totalScore = 0;
         this.gamesWon = 0;
         this.gamesPlayed = 0;
@@ -98,5 +102,13 @@ public class User implements Serializable {
 
     public void setGamesPlayed(Integer gamesPlayed) {
         this.gamesPlayed = gamesPlayed;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 }

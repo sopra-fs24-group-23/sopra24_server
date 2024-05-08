@@ -37,7 +37,7 @@ public class LobbyControllerTest {
 
         User host = new User();
         host.setId(1L);
-        Player player = new Player(host.getId(),host.getUsername(),host.getToken());
+        Player player = new Player(host.getId(),host.getUsername(),host.getToken(), host.getColor());
         Lobby lobby = new Lobby(player);
         lobby.setId("lobbyId");
 
@@ -76,7 +76,7 @@ public class LobbyControllerTest {
 
         User host = new User();
         host.setId(1L);
-        Player player = new Player(host.getId(),host.getUsername(),host.getToken());
+        Player player = new Player(host.getId(),host.getUsername(),host.getToken(), host.getColor());
 
         when(lobbyService.getHost(anyString())).thenReturn(player);
 

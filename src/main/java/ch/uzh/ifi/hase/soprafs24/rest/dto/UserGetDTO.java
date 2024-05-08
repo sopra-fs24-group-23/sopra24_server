@@ -3,6 +3,7 @@ package ch.uzh.ifi.hase.soprafs24.rest.dto;
 public class UserGetDTO extends UserTokenDTO {
 
     private Long id;
+    private String color;
     private String username;
     private Integer totalScore;
     private Integer gamesPlayed;
@@ -47,5 +48,13 @@ public class UserGetDTO extends UserTokenDTO {
 
     public void setGamesWon(Integer gamesWon) {
         this.gamesWon = gamesWon;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 }

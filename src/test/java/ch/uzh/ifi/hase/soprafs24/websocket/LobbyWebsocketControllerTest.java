@@ -103,7 +103,7 @@ public class LobbyWebsocketControllerTest {
         // Given
         String lobbyId = "testLobbyId";
         GameSettings settings = new GameSettings();
-        Player host = new Player(1l,"csdc","dscs");
+        Player host = new Player(1l,"csdc","dscs", "#000000");
         when(lobbyService.getLobbyById(lobbyId)).thenReturn(new Lobby(host));
 
         // When

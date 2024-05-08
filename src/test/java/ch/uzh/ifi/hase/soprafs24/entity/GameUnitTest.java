@@ -1,6 +1,5 @@
-package ch.uzh.ifi.hase.soprafs24.service;
+package ch.uzh.ifi.hase.soprafs24.entity;
 
-import ch.uzh.ifi.hase.soprafs24.entity.*;
 import ch.uzh.ifi.hase.soprafs24.exceptions.PlayerNotFoundException;
 import ch.uzh.ifi.hase.soprafs24.constant.GamePhase;
 import org.junit.jupiter.api.BeforeEach;
@@ -29,8 +28,8 @@ public class GameUnitTest {
         settings.setScoreboardDuration(2); // duration for scoreboard display in seconds
 
         players = new ArrayList<>();
-        players.add(new Player(1L, "player1", "token1"));
-        players.add(new Player(2L, "player2", "token2"));
+        players.add(new Player(1L, "player1", "token1", "#000000"));
+        players.add(new Player(2L, "player2", "token2", "#000000"));
 
         game = new Game(settings, players);
     }
@@ -107,6 +106,30 @@ public class GameUnitTest {
 
         game.setPhase(GamePhase.INPUT);  // This would normally be handled by the game logic after the wait
         assertEquals(GamePhase.INPUT, game.getState().getCurrentPhase());
+    }
+
+    @Test
+    public void testVotingForNonExistentPlayer() {
+        game.initializeRound();
+        Exception exception = assertThrows(PlayerNotFoundException.class, () -> {
+            game.doubtAnswers("nonExistentPlayer", Arrays.asList(new Vote()));
+        });
+
+        assertTrue(exception.getMessage().contains("Player not found"));
+    }
+
+    @Test
+    public void testVotingForValidPlayerWhoVoted() throws PlayerNotFoundException {
+        game.initializeRound();
+        Vote vote = new Vote();
+
+        Answer answer1 = new Answer("Country", "Denmark");
+        game.setPlayerAnswers(players.get(0).getUsername(), Arrays.asList(answer1));
+
+        vote.setUsername(players.get(0).getUsername());
+        vote.setCategory("Country");
+
+        game.doubtAnswers(players.get(0).getUsername(), Arrays.asList(vote));
     }
 
     /*@Test

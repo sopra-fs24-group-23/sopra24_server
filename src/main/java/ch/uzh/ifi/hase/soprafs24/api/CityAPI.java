@@ -1,68 +1,58 @@
 package ch.uzh.ifi.hase.soprafs24.api;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class CityAPI extends APIManager {
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.util.HashSet;
+import java.util.Set;
 
-    public CityAPI(String apiKey, String baseUrl) {
-        setApiKey(apiKey);
-        setBaseUrl("https://city-by-api-ninjas.p.rapidapi.com");
+public class CityAPI {
+
+    private final String citiesFilePath = "/Users/nili/Desktop/UZH/FS24/SOPRA/SOPRa_TEAM23/sopra24_server/src/main/java/ch/uzh/ifi/hase/soprafs24/api/cities500 copy 2.txt";
+    private final Set<String> cityNames;
+
+    public CityAPI() {
+        // Load city names from the file into a set
+        this.cityNames = loadCityNamesFromFile();
     }
 
-    public String performRequest(String cityName) {
-        try {
-            String parameters = "name=" + cityName + "&country=US&limit=1";
-            URL url = new URL(getBaseUrl() + "/v1/city?" + parameters);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod("GET");
-
-            connection.setRequestProperty("X-RapidAPI-Key", getApiKey());
-            connection.setRequestProperty("X-RapidAPI-Host", "city-by-api-ninjas.p.rapidapi.com");
-
-            int responseCode = connection.getResponseCode();
-            System.out.println("Response Code: " + responseCode);
-
-            BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-            String inputLine;
-            StringBuilder response = new StringBuilder();
-
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
+    private Set<String> loadCityNamesFromFile() {
+        Set<String> cityNames = new HashSet<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(citiesFilePath))) {
+            StringBuilder jsonContent = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                jsonContent.append(line);
             }
-            in.close();
 
-            System.out.println("Raw Response: " + response.toString()); // Log raw response
-            if (responseCode == HttpURLConnection.HTTP_OK && response.length() > 0) {
-                JSONArray cities = new JSONArray(response.toString());
-                if (cities.length() > 0) {
-                    JSONObject city = cities.getJSONObject(0);
-                    if (city.getString("name").equalsIgnoreCase(cityName)) {
-                        return "True";
-                    }
-                }
-                return "False";
+            JSONArray jsonArray = new JSONArray(jsonContent.toString());
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject cityObject = jsonArray.getJSONObject(i);
+                String cityName = cityObject.optString("name", "").toLowerCase();
+                cityNames.add(cityName);
             }
-            else {
-                System.out.println("GET request not worked or empty response");
-            }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return "False";
+        return cityNames;
     }
 
- //   public static void main(String[] args) {
-   //     String apiKey = "7f9f1b12c5msh0ee2d0b9a2cbbb7p158dc9jsn62d752680b9e";
-     //   CityAPI cityAPI = new CityAPI(apiKey, "");
-       // String cityName = "New York"; // Example city name
-        //String result = cityAPI.performRequest(cityName); // Pass the city name
 
-       // System.out.println("Is " + cityName + " a city? " + result);
-   // }
+    public String performRequest(String cityName) {
+        if (cityNames.contains(cityName.toLowerCase())) {
+            return "True";
+        } else {
+            return "False";
+        }
+    }
+
+    public static void main(String[] args) {
+        CityAPI cityAPI = new CityAPI();
+        String cityName = "florida"; // Example city name
+        String result = cityAPI.performRequest(cityName.toLowerCase()); // Pass the city name (converted to lowercase)
+
+        System.out.println("Is " + cityName + " a city? " + result);
+    }
 }

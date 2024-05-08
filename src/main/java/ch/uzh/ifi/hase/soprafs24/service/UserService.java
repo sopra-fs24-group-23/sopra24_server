@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs24.service;
 
+import ch.uzh.ifi.hase.soprafs24.constant.ColorRequirement;
 import ch.uzh.ifi.hase.soprafs24.entity.Player;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
@@ -58,15 +59,33 @@ public class UserService {
         if (userInput.getUsername() == null || userInput.getUsername().trim().isEmpty()) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The username cannot be empty. Please try again.");
         }
+        // check if input color is empty
+        else if (userInput.getColor() == null || userInput.getColor().isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The color attribute cannot be empty. Please provide a valid value.");
+        }
 
-        // Check if username is already
-        User userByUsername = userRepository.findByUsername(userInput.getUsername());
-        if (userByUsername != null && !userByUsername.getId().equals(userId)) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "This username is already taken. Please choose a different username.");
+        // Check if username is already taken ONLY, if user didn't input their current username
+        if (!userInput.getUsername().equals(persistedUser.getUsername())) {
+            checkIfUsernameTaken(userInput);
+        }
+
+        // Check if user has required score to set color
+        String colorCode = userInput.getColor();
+        Integer totalScore = persistedUser.getTotalScore();
+        try {
+            ColorRequirement requirement = ColorRequirement.getByColorCode(colorCode);
+            if (totalScore < requirement.getScoreRequirement()) {
+                throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "The user does not have the total score required for this color.");
+            }
+        }
+        catch (IllegalArgumentException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The provided color code is invalid.");
         }
 
         // update attributes
+        persistedUser.setColor(userInput.getColor());
         persistedUser.setUsername(userInput.getUsername());
+
         // save to DB
         userRepository.saveAndFlush(persistedUser);
         return persistedUser;
@@ -159,12 +178,5 @@ public class UserService {
         return this.userRepository.findById(userId).orElseThrow(
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "The user with the provided ID doesn't exist.")
         );
-    }
-    public User findUserByName(String username) {
-        User user = userRepository.findByUsername(username);
-        if (user == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found with username: " + username);
-        }
-        return user;
     }
 }

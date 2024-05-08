@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs24.service;
 
+import ch.uzh.ifi.hase.soprafs24.constant.ColorRequirement;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,10 +9,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -34,10 +37,12 @@ public class UserServiceTest {
     testUser.setId(1L);
     testUser.setUsername("testUsername");
     testUser.setPassword("testPassword");
+    testUser.setTotalScore(100);
 
     // when -> any object is being save in the userRepository -> return the dummy
     // testUser
     Mockito.when(userRepository.save(Mockito.any())).thenReturn(testUser);
+    Mockito.when(userRepository.findById(testUser.getId())).thenReturn(Optional.of(testUser));
   }
 
   @Test
@@ -70,7 +75,6 @@ public class UserServiceTest {
     @Test
     public void updateUser_updatesUserWithValidInfo_success() {
         // Setup existing user in the database
-        Mockito.when(userRepository.findById(testUser.getId())).thenReturn(java.util.Optional.of(testUser));
         Mockito.when(userRepository.findByUsername("newUsername")).thenReturn(null); // Ensure no user with new username exists
 
         // New input for the user
@@ -89,8 +93,6 @@ public class UserServiceTest {
 
     @Test
     public void updateUser_usernameAlreadyExists_throwsException() {
-        // Setup existing user in the database
-        Mockito.when(userRepository.findById(testUser.getId())).thenReturn(java.util.Optional.of(testUser));
         // Simulate that the new username is already taken
         User newUserWithSameUsername = new User();
         newUserWithSameUsername.setId(2L); // Ensure this user is different by giving a different ID
@@ -107,6 +109,56 @@ public class UserServiceTest {
         // Execute and verify that exception is thrown
         assertThrows(ResponseStatusException.class, () -> userService.updateUser(updatedInput, testUser.getId()));
     }
+
+    @Test
+    public void updateUser_inputOwnUsername_passes() {
+        User userInput = new User();
+        userInput.setColor("#000000");
+        userInput.setUsername("testUser");
+
+        assertDoesNotThrow(() -> userService.updateUser(userInput, testUser.getId()));
+    }
+
+    @Test
+    public void updateUser_invalidColorCode_throwsBadRequest() {
+      User userInput = new User();
+      userInput.setColor("#NOTACOLORCODE_12345");
+      userInput.setUsername("newUsername");
+
+      ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> userService.updateUser(userInput, testUser.getId()));
+      assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
+    }
+
+    @Test
+    public void updateUser_wrongColorCode_throwsBadRequest() {
+        User userInput = new User();
+        userInput.setColor("#FFFFFF"); // white color
+        userInput.setUsername("newUsername");
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> userService.updateUser(userInput, testUser.getId()));
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
+    }
+
+    @Test
+    public void updateUser_emptyColor_throwsBadRequest() {
+        User userInput = new User();
+        userInput.setColor(""); // white color
+        userInput.setUsername("newUsername");
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> userService.updateUser(userInput, testUser.getId()));
+        assertEquals(HttpStatus.BAD_REQUEST, exception.getStatus());
+    }
+
+    @Test
+    public void updateUser_insufficientTotalScore_throwsUnauthorized() {
+        User userInput = new User();
+        userInput.setColor(ColorRequirement.PURPLE.getColorCode()); // required score: 5000
+        userInput.setUsername("newUsername");
+
+        ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> userService.updateUser(userInput, testUser.getId()));
+        assertEquals(HttpStatus.UNAUTHORIZED, exception.getStatus());
+    }
+
     @Test
     public void loginUser_withCorrectCredentials_returnsUser() {
         // Setup

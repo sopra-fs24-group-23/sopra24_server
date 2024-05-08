@@ -19,11 +19,11 @@ public class GameSettings {
 
     public GameSettings() {
         // setting standard values - TODO: set standard categories
-        this.maxRounds = 5;
-        this.votingDuration = 30;
-        this.scoreboardDuration = 30;
-        this.inputDuration = 60;
-        this.maxPlayers = 4;
+        this.maxRounds = 2;
+        this.votingDuration = 3;
+        this.scoreboardDuration = 3;
+        this.inputDuration = 3;
+        this.maxPlayers = 5;
         // setting standard categories
         this.categories = new ArrayList<>();
         this.categories.add(new City());

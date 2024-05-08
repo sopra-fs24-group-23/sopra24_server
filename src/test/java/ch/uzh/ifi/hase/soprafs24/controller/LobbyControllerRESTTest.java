@@ -37,7 +37,7 @@ public class LobbyControllerRESTTest {
         UserTokenDTO userTokenDTO = new UserTokenDTO();
         userTokenDTO.setToken("TestToken");
 
-        Player testPlayer = new Player(1L, "TestUsername", "TestToken");
+        Player testPlayer = new Player(1L, "TestUsername", "TestToken", "#000000");
 
         Lobby testLobby = new Lobby(testPlayer);
 
