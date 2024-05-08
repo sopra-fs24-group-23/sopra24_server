@@ -118,6 +118,7 @@
 ### Nils
 - 18.4 - 24.4, Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/39](https://github.com/sopra-fs24-group-23/sopra24_client/issues/39)
 - 18.4 - 24.4, Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/53](https://github.com/sopra-fs24-group-23/sopra24_client/issues/53)
+- 18.4 - 24.4, Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/79](https://github.com/sopra-fs24-group-23/sopra24_client/issues/79)
 
 ## Week 5 | 25.4. - 1.5.
 ### Nilaksan
