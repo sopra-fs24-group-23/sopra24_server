@@ -293,8 +293,7 @@ class LobbyServiceTest {
         assertEquals(HttpStatus.UNAUTHORIZED, exception.getStatus());
 
     }
-
-    // Don't know how to test this. When the host leaves the host is null, and removePlayer gives NullPointerException.
+    
     @Test
     void testRemoveHostDeletesLobby(){
         user = new User();
