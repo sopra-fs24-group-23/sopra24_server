@@ -17,6 +17,7 @@ public class FoodAPI {
         this.baseUrl = baseUrl;
     }
 
+
     public String performRequest(String query) {
         try {
             String encodedQuery = URLEncoder.encode(query, "UTF-8");
@@ -71,10 +72,10 @@ public class FoodAPI {
     }
 
 
-//    public static void main(String[] args) {
-  //    FoodAPI foodAPI = new FoodAPI("7f9f1b12c5msh0ee2d0b9a2cbbb7p158dc9jsn62d752680b9e", "https://nutrition-by-api-ninjas.p.rapidapi.com");
+    //public static void main(String[] args) {
+      //FoodAPI foodAPI = new FoodAPI("7f9f1b12c5msh0ee2d0b9a2cbbb7p158dc9jsn62d752680b9e", "https://nutrition-by-api-ninjas.p.rapidapi.com");
     //String input = "hotdog"; // Example celebrity name
     //String result = foodAPI.performRequest(input);
     //System.out.println("Result: " + result);
-    //}
+//    }
 }
