@@ -17,11 +17,19 @@ public class AnimalAPITest {
     }
 
     @Test
-    public void testPerformRequest() throws Exception {
+    public void testPerformRequestTrue() {
 
         String input = "fox"; // Example animal name to test
         String result = animalAPI.performRequest(input);
 
         assertEquals("True", result);
+    }
+
+    @Test
+    public void testPerformRequestFalse(){
+        String input = "elleeefant";
+        String result = animalAPI.performRequest(input);
+
+        assertEquals("False", result);
     }
 }

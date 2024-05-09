@@ -293,7 +293,7 @@ class LobbyServiceTest {
         assertEquals(HttpStatus.UNAUTHORIZED, exception.getStatus());
 
     }
-    
+
     @Test
     void testRemoveHostDeletesLobby(){
         user = new User();

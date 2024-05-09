@@ -6,25 +6,25 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class AnimalTest {
+public class CountryTest {
 
-    private Animal animal;
+    private Country country;
 
     @BeforeEach
-    public void setup() {
-       animal = new Animal();
+    public void setup(){
+        country = new Country();
     }
 
     @Test
     public void testValidateAnswerTrue(){
-        boolean result = animal.validateAnswer("cat");
+        boolean result = country.validateAnswer("Japan");
 
         assertTrue(result);
     }
 
     @Test
     public void testValidateAnswerFalse(){
-        boolean result = animal.validateAnswer("cake");
+        boolean result = country.validateAnswer("Wonderland");
 
         assertFalse(result);
     }
