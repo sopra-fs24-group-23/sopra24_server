@@ -15,12 +15,12 @@ public class FoodTest {
         food = new Food();
     }
 
-    /*@Test
+    @Test
     public void testValidateAnswerTrue(){
         boolean result = food.validateAnswer("fruit");
 
         assertTrue(result);
-    }*/
+    }
 
     @Test
     public void testValidateAnswerFalse(){
