@@ -15,9 +15,9 @@ public class CategoryFactory {
             case "Celebrity":
                 return new Celebrity();
             case "Food":
-                return new Celebrity();
+                return new Food();
             case "Car":
-                return new Celebrity();
+                return new Car();
             default:
                 throw new IllegalArgumentException("Invalid category name: " + categoryName);
         }
