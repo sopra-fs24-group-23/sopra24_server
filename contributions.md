@@ -168,6 +168,12 @@
 - 2.5. - 8.5, Nilaksan, [https://github.com/sopra-fs24-group-23/sopra24_server/issues/176](https://github.com/sopra-fs24-group-23/sopra24_server/issues/176)
 - 2.5. - 8.5, Nilaksan, [https://github.com/sopra-fs24-group-23/sopra24_server/issues/177](https://github.com/sopra-fs24-group-23/sopra24_server/issues/177)
 
+## Week 7 | 9.5. - 15.5.
+### Jonas
+- 9.5. - 15.5., Jonas, sopra-fs24-group-23/sopra24_server/issues/186
+- 9.5. - 15.5., Jonas, sopra-fs24-group-23/sopra24_server/issues/180
+- 9.5. - 15.5., Jonas, sopra-fs24-group-23/sopra24_server/issues/182
+
 
 
 
