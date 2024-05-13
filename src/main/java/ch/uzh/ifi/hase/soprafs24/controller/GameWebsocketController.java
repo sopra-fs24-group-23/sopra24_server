@@ -80,13 +80,9 @@ public class GameWebsocketController {
     public void leaveGame(@DestinationVariable String lobbyId, @Payload UserTokenDTO userTokenDTO) {
         User user = DTOMapper.INSTANCE.convertUserTokenDTOtoEntity(userTokenDTO);
         gameService.removePlayerFromGame(lobbyId, user);
-        updateGameStateForRemainingPlayers(lobbyId);
+        updateGameState(lobbyId, gameService.getGameState(lobbyId));
     }
 
-    private void updateGameStateForRemainingPlayers(String lobbyId) {
-        GameState gameState = gameService.getGameState(lobbyId);
-        updateGameState(lobbyId, gameState);
-    }
 
     /** Server to client(s) communication **/
     private void updateGameState(String lobbyId, GameState gameState) {
