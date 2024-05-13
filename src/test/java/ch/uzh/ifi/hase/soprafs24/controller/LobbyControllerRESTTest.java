@@ -39,7 +39,7 @@ public class LobbyControllerRESTTest {
 
         Player testPlayer = new Player(1L, "TestUsername", "TestToken", "#000000");
 
-        Lobby testLobby = new Lobby(testPlayer);
+        Lobby testLobby = new Lobby(testPlayer, "testId");
 
         given(lobbyService.createLobby(Mockito.any())).willReturn(testLobby);
 

@@ -64,7 +64,7 @@ class LobbyServiceTest {
         System.out.println("player username: " + player.getUsername() + " " + "playertoken: " + player.getToken());
 
         player.setIsHost(true);
-        lobby = new Lobby(player);
+        lobby = new Lobby(player, "testId");
         lobby.setHost(player);
 
     }

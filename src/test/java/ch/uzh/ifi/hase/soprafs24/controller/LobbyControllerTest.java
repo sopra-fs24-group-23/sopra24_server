@@ -38,8 +38,7 @@ public class LobbyControllerTest {
         User host = new User();
         host.setId(1L);
         Player player = new Player(host.getId(),host.getUsername(),host.getToken(), host.getColor());
-        Lobby lobby = new Lobby(player);
-        lobby.setId("lobbyId");
+        Lobby lobby = new Lobby(player, "lobbyId");
 
         when(lobbyService.createLobby(any(User.class))).thenReturn(lobby);
 
