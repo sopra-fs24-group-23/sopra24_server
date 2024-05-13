@@ -132,6 +132,11 @@ public class LobbyService {
             }
         }
 
+        // delete lobby if empty
+        if (lobby.getPlayers().isEmpty()) {
+            lobbies.remove(lobbyId);
+        }
+
         return lobby.getPlayers();
     }
 
