@@ -76,6 +76,10 @@ public class Lobby {
         return settings;
     }
 
+    public void setGameRunning(Boolean gameRunning) {
+        isGameRunning = gameRunning;
+    }
+
     public void setSettings(GameSettings settings) {
         if (players.size() >= settings.getMaxPlayers()) {
             this.isLobbyFull = true;

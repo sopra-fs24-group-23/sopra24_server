@@ -43,6 +43,7 @@ public class GameWebsocketController {
     public void startGame(@DestinationVariable String lobbyId) {
         // Retrieve game settings and players from the lobby
         Lobby lobby = lobbyService.getLobbyById(lobbyId);
+        lobby.setGameRunning(true);
         GameSettings settings = lobby.getSettings();
         List<Player> players = lobby.getPlayers();
         // Start the game
