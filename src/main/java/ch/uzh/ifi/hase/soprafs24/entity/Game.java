@@ -153,13 +153,14 @@ public class Game {
         // schedule check every second; complete future if all votes received
         holder[0] = scheduler.scheduleAtFixedRate(() -> {
             boolean allVotesReceived = true;
-            for (Player player : players ) {
-                if (!player.getHasVoted()) {
-                    allVotesReceived = false;
-                    break;
+            synchronized (players) {
+                for (Player player : players ) {
+                    if (!player.getHasVoted()) {
+                        allVotesReceived = false;
+                        break;
+                    }
                 }
             }
-
             if (allVotesReceived) {
                 holder[0].cancel(false);
                 future.complete(null);
@@ -301,7 +302,9 @@ public class Game {
     }
 
     public void removePlayer(User user) {
-        this.players.removeIf(player -> player.getUsername().equals(user.getUsername()));
+        synchronized (players) {
+            this.players.removeIf(player -> player.getToken().equals(user.getToken()));
+        }
     }
 
 }
