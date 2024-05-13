@@ -149,7 +149,7 @@
 - 2.5. - 8.5., Jonas, sopra-fs24-group-23/sopra24_server/issues/173
 - 2.5. - 8.5., Jonas, sopra-fs24-group-23/sopra24_server/issues/174
 - 2.5. - 8.5., Jonas, sopra-fs24-group-23/sopra24_client/issues/124
-- 
+
 ### Nils
 - 2.5. - 8.5, Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/122](https://github.com/sopra-fs24-group-23/sopra24_client/issues/122)
 - 2.5. - 8.5, Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/106](https://github.com/sopra-fs24-group-23/sopra24_client/issues/106)
