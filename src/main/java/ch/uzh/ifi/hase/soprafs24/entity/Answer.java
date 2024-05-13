@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs24.entity;
 
 import ch.uzh.ifi.hase.soprafs24.categories.Category;
 import ch.uzh.ifi.hase.soprafs24.categories.CategoryFactory;
+import ch.uzh.ifi.hase.soprafs24.categories.MoviesSeries;
 import com.fasterxml.jackson.annotation.JsonSetter;
 
 import java.util.concurrent.CompletableFuture;
@@ -88,8 +89,10 @@ public class Answer {
     }
 
     public String getCategory() {
+
         return category;
     }
+
 
     public String getAnswer() {
         return answer;
