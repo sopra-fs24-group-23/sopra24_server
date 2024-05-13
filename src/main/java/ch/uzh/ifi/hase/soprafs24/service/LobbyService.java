@@ -18,6 +18,7 @@ import org.springframework.web.server.ResponseStatusException;
 import javax.transaction.Transactional;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 @Service
 @Transactional
@@ -49,7 +50,7 @@ public class LobbyService {
         Player hostPlayer = new Player(host.getId(), host.getUsername(), host.getToken(), host.getColor());
         hostPlayer.setIsHost(true);
         // create new lobby, store to lobby list
-        Lobby newLobby = new Lobby(hostPlayer);
+        Lobby newLobby = new Lobby(hostPlayer, generateId());
         this.lobbies.put(newLobby.getId(), newLobby);
         return newLobby;
     }
@@ -157,4 +158,39 @@ public class LobbyService {
         return this.lobbies;
     }
 
+    /* Helpers */
+    private String generateId() {
+        // try random 10 times
+        for (int j = 0; j < 10; j++) {
+            String id = getRandomString(5, 65, 90);
+            if (!lobbies.containsKey(id)) {
+                return id;
+            }
+        }
+
+        // start increasing length until string is unique
+        int length = 5;
+        while (true) {
+            String id = getRandomString(length, 65, 90);
+            if (!lobbies.containsKey(id)) {
+                return id;
+            }
+            else {
+                length++;
+            }
+        }
+    }
+
+    private String getRandomString(int length, int rangeStart, int rangeEnd) {
+        StringBuilder stringBuilder = new StringBuilder(length);
+        Random random = new Random();
+
+        for (int i = 0; i < length; i++) {
+            int randomInt = random.nextInt(rangeEnd - rangeStart); // 0-25 = 26 ints
+            char c = (char) (rangeStart + randomInt);
+            stringBuilder.append(c);
+        }
+
+        return stringBuilder.toString();
+    }
 }
