@@ -293,12 +293,8 @@ public class Game {
         return this.playerHasAnswered;
     }
 
-    public boolean isInputPhaseClosed() {
-        return inputPhaseClosed;
-    }
-
-    public void setInputPhaseClosed(boolean inputPhaseClosed) {
-        this.inputPhaseClosed = inputPhaseClosed;
+    public void setCategories(List<Category> categories) {
+        this.settings.setCategories(categories);
     }
 
     public void removePlayer(User user) {

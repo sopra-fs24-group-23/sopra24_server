@@ -1,8 +1,11 @@
 package ch.uzh.ifi.hase.soprafs24.service;
 
+import ch.uzh.ifi.hase.soprafs24.categories.Category;
+import ch.uzh.ifi.hase.soprafs24.categories.CategoryFactory;
 import ch.uzh.ifi.hase.soprafs24.constant.GamePhase;
 import ch.uzh.ifi.hase.soprafs24.entity.*;
 import ch.uzh.ifi.hase.soprafs24.events.GameStateChangeEvent;
+import ch.uzh.ifi.hase.soprafs24.events.SettingsUpdateEvent;
 import ch.uzh.ifi.hase.soprafs24.exceptions.PlayerNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,18 +17,16 @@ import org.springframework.web.server.ResponseStatusException;
 import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
 
 import javax.transaction.Transactional;
-import java.util.Map;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.Collections;
-import java.util.Comparator;
 
 @Service
 @Transactional
 public class GameService {
     private ConcurrentHashMap<String, Game> games = new ConcurrentHashMap<>();
     private final ApplicationEventPublisher eventPublisher;
+
     @Autowired
     private UserRepository userRepository;
 
@@ -123,6 +124,10 @@ public class GameService {
     /* GamePhase specific helpers */
     private CompletableFuture<Void> handleScoreboardPhase(String gameId, Game game) {
         System.out.println("SCOREBOARD PHASE BEING HANDLED");
+        if (getSettings(gameId).getIsRandom()) {
+            game.setCategories(CategoryFactory.getRandomCategories());
+        }
+        updateSettings(gameId, game.getSettings());
         updateClients(gameId, game.getState());
         return game.waitScoreboard();
     }
@@ -169,7 +174,7 @@ public class GameService {
     }
 
     /* General Helper Methods*/
-    public void updateStatistics(Game game) {
+    private void updateStatistics(Game game) {
         List<Player> players = game.getPlayers();
         Player winner = Collections.max(players, Comparator.comparing(Player::getCurrentScore));
         for (Player player : players) {
@@ -198,23 +203,18 @@ public class GameService {
         );
     }
 
+    private void updateSettings(String gameId, GameSettings settings) {
+        eventPublisher.publishEvent(
+                new SettingsUpdateEvent(
+                        this,
+                        gameId,
+                        settings
+                )
+        );
+    }
+
     public void removePlayerFromGame(String lobbyId, User user) {
         Game game = games.get(lobbyId);
         game.removePlayer(user);
-    }
-
-    public void updateGameStateForRemainingPlayers(String lobbyId) {
-        GameState gameState = getGameState(lobbyId);
-        updateGameState(lobbyId, gameState);
-    }
-
-    private void updateGameState(String gameId, GameState gameState) {
-        Game game = games.get(gameId);
-        if (game != null) {
-            game.setState(gameState);
-            updateClients(gameId, gameState);
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Game not found with ID: " + gameId);
-        }
     }
 }

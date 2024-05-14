@@ -3,17 +3,20 @@ package ch.uzh.ifi.hase.soprafs24.categories;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 public class CategoryFactory {
-    private static final List<Category> standardCategories = new ArrayList<>(Arrays.asList(
-            new Animal(),
-            new Country(),
-            new City(),
-            new MoviesSeries(),
-            new Celebrity(),
-            new Food(),
-            new Car()
-    ));
+
+    // To add a new category, add the name here, and add it to the switch statement below
+    private static final String[] categoryNames = new String[]{
+            "Animal",
+            "Country",
+            "City",
+            "Movie/Series",
+            "Celebrity",
+            "Food",
+            "Car"
+    };
 
     public static Category createCategory(String categoryName) {
         switch (categoryName) {
@@ -31,25 +34,26 @@ public class CategoryFactory {
                 return new Food();
             case "Car":
                 return new Car();
-            case "Random":
-                return new RandomCategory(standardCategories);
-            case "Random: Movie/Series":
-                return new RandomCategory(standardCategories);
-            case "Random: City":
-                return new RandomCategory(standardCategories);
-            case "Random: Country":
-                return new RandomCategory(standardCategories);
-            case "Random: Animal":
-                return new RandomCategory(standardCategories);
-            case "Random: Food":
-                return new RandomCategory(standardCategories);
-            case "Random: Car":
-                return new RandomCategory(standardCategories);
-            case "Random: Celebrity":
-                return new RandomCategory(standardCategories);
-
             default:
                 throw new IllegalArgumentException("Invalid category name: " + categoryName);
         }
+    }
+
+    // returns list of three, non-equal, random categories
+    public static List<Category> getRandomCategories() {
+        Random random = new Random();
+        List<Category> categories = new ArrayList<>();
+
+        while (categories.size() < 3) {
+            int index = random.nextInt(categoryNames.length);
+
+            Category randCategory = CategoryFactory.createCategory(categoryNames[index]);
+
+            if (!categories.contains(randCategory)) {
+                categories.add(randCategory);
+            }
+        }
+
+        return categories;
     }
 }

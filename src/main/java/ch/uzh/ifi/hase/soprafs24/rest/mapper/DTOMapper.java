@@ -68,6 +68,7 @@ public interface DTOMapper {
     @Mapping (source = "inputDuration", target = "inputDuration")
     @Mapping (source = "scoreboardDuration", target = "scoreboardDuration")
     @Mapping (source = "maxPlayers", target = "maxPlayers")
+    @Mapping (source = "isRandom", target = "isRandom")
     GameSettings convertGameSettingsDTOToGameSettings(GameSettingsDTO gameSettingsDTO);
 
     @Mapping (source = "categories", target = "categories", qualifiedByName = "mapCategoriesToStrings")
@@ -76,6 +77,7 @@ public interface DTOMapper {
     @Mapping (source = "inputDuration", target = "inputDuration")
     @Mapping (source = "scoreboardDuration", target = "scoreboardDuration")
     @Mapping (source = "maxPlayers", target = "maxPlayers")
+    @Mapping (source = "isRandom", target = "isRandom")
     GameSettingsDTO convertGameSettingsToGameSettingsDTO(GameSettings gameSettings);
 
     @Named("mapStringsToCategories")

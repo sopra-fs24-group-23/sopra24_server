@@ -35,7 +35,6 @@ public class GameSettingsController {
     @MessageMapping("/lobbies/{lobbyId}/settings")
     public void updateSettings(@DestinationVariable String lobbyId, @Payload GameSettingsDTO settingsDTO) {
         GameSettings settings = DTOMapper.INSTANCE.convertGameSettingsDTOToGameSettings(settingsDTO);
-
         gameSettingsService.updateSettings(lobbyId, settings);
         this.sendSettings(lobbyId, settings);
     }
