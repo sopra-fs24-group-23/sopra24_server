@@ -19,6 +19,7 @@ public class Player {
     private boolean hasAnswered;
     private boolean hasVoted;
     private boolean isHost;
+    private boolean isReady = false;
 
     public Player(Long id, String username, String token, String color) {
         this.color = color;
@@ -91,5 +92,13 @@ public class Player {
 
     public void setIsHost(boolean host) {
         isHost = host;
+    }
+
+    public boolean isReady() {
+        return isReady;
+    }
+
+    public void setReady(boolean ready) {
+        isReady = ready;
     }
 }

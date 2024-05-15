@@ -55,6 +55,11 @@ public class GameWebsocketController {
         gameService.closeInputs(lobbyId);
     }
 
+    @MessageMapping("/games/{lobbyId}/ready/{username}")
+    public void setPlayerReady(@DestinationVariable String lobbyId, @DestinationVariable String username) {
+        gameService.setPlayerReady(lobbyId, username);
+    }
+
     @MessageMapping("/games/{lobbyId}/answers/{username}")
     public void receiveAnswers(@DestinationVariable String lobbyId,
                                @DestinationVariable String username,

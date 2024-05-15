@@ -63,6 +63,8 @@ public class Game {
         return false;
     }
 
+
+
     public CompletableFuture<Void> calculateScores(){
         List<CompletableFuture<Void>> scoreFutures = new ArrayList<>();
 
@@ -182,6 +184,37 @@ public class Game {
 
         return future;
     }
+
+    public void setPlayerReady(String username) {
+        Player player = players.stream().filter(p -> p.getUsername().equals(username)).findFirst().orElse(null);
+        player.setReady(true);
+      }
+      
+      public boolean areAllPlayersReady() {
+        return players.stream().allMatch(Player::isReady);
+      }
+
+      public void resetAllPlayersReady() {
+        for (Player player : players) {
+          player.setReady(false);
+        }
+      }
+      
+      public void advancePhase() {
+        switch (this.currentPhase) {
+          case VOTING:
+            this.currentPhase = GamePhase.VOTING_RESULTS;
+            break;
+          case VOTING_RESULTS:
+            this.currentPhase = GamePhase.SCOREBOARD;
+            break;
+          case SCOREBOARD:
+            this.currentPhase = GamePhase.INPUT;
+            break;
+          default:
+            break;
+        }
+      }
 
     private String generateRandomLetter() {
         Random random = new Random();
