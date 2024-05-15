@@ -66,8 +66,8 @@ public class UserController {
 
     @GetMapping("/users/{userId}")
     @ResponseStatus(HttpStatus.OK)
-    public UserGetDTO getUser(@PathVariable Long userId) {
-        User user = userService.findById(userId);
+    public UserGetDTO getUser(@PathVariable Long userId, @RequestHeader("token") String token) {
+        User user = userService.getUser(userId, token);
         return DTOMapper.INSTANCE.convertEntityToUserGetDTO(user);
     }
 

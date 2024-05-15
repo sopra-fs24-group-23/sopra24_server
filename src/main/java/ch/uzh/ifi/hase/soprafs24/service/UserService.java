@@ -179,4 +179,12 @@ public class UserService {
                 () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "The user with the provided ID doesn't exist.")
         );
     }
+
+    public User getUser(Long userId, String token) {
+        User user = findById(userId);
+        if(user.getToken().equals(token)) {
+            return user;
+        }
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Token mismatch.");
+    }
 }
