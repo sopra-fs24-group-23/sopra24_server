@@ -1,3 +1,5 @@
+package ch.uzh.ifi.hase.soprafs24.config;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.cors.CorsConfiguration;
@@ -13,6 +15,7 @@ public class WebConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true);
         config.addAllowedOrigin("http://localhost:3000");
+        config.addAllowedOrigin("https://localhost:3000");
         config.addAllowedOrigin("https://sopra-fs24-group-23-client.oa.r.appspot.com");
         config.addAllowedHeader("*");
         config.addAllowedMethod("*");
