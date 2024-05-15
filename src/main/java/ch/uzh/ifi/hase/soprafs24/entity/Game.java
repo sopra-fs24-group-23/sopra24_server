@@ -80,7 +80,8 @@ public class Game {
                         answer.setIsUnique(answerMap.get(answer.getAnswer()) <= 1);
 
                         // Calculate and update the score
-                        int score = answer.calculateScore();
+                        answer.calculateScore();
+                        int score = answer.getScore();
                         player.setCurrentScore(player.getCurrentScore() + score);
 
                         return null;
