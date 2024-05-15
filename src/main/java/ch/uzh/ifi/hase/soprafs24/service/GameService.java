@@ -175,12 +175,30 @@ public class GameService {
     /* General Helper Methods*/
     private void updateStatistics(Game game) {
         List<Player> players = game.getPlayers();
-        Player winner = Collections.max(players, Comparator.comparing(Player::getCurrentScore));
+
+        // determine winner(s)
+        int maxScore = 0;
+        List<Player> winners = new ArrayList<>();
+
+        for (Player player : players) {
+            // if new maxScore, clear winners, add new winner
+            if (player.getCurrentScore() > maxScore) {
+                maxScore = player.getCurrentScore();
+                winners.clear();
+                winners.add(player);
+            }
+            // if same score as maxScore -> add player to winners
+            else if (player.getCurrentScore() == maxScore) {
+                winners.add(player);
+            }
+        }
+
+        // update statistics
         for (Player player : players) {
             User user = userRepository.findByUsername(player.getUsername());
             user.setGamesPlayed(user.getGamesPlayed() + 1);
             user.setTotalScore(user.getTotalScore() + player.getCurrentScore());
-            if (player.equals(winner)) {
+            if (winners.size() == 1 && player.equals(winners.get(0))) {
                 user.setGamesWon(user.getGamesWon() + 1);
             }
             userRepository.save(user);
