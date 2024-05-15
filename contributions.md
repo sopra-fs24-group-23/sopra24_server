@@ -179,7 +179,7 @@
 - 9.5. - 15.5., Jonas, sopra-fs24-group-23/sopra24_server/issues/185
 - 9.5. - 15.5., Jonas, sopra-fs24-group-23/sopra24_client/issues/130
 - 9.5. - 15.5., Jonas, sopra-fs24-group-23/sopra24_client/issues/131
-- 9.5. - 15.5., Jonas, sopra-fs24-group-23/sopra24_client/issues/133
+- 9.5. - 15.5., Jonas, sopra-fs24-group-23/sopra24_client/issues/135
 
 
 
