@@ -13,6 +13,7 @@ public class PlayerGetDTO {
     private boolean hasAnswered;
     private boolean hasVoted;
     private boolean isHost;
+    private String color;
 
     public Long getId() {
     return id;
@@ -68,5 +69,13 @@ public class PlayerGetDTO {
 
     public void setIsHost(boolean host) {
         isHost = host;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 }

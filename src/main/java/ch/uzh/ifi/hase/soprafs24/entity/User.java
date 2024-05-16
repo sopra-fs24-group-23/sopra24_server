@@ -43,7 +43,7 @@ public class User implements Serializable {
 
     public User() {
         this.color = "#000000";
-        this.totalScore = 0;
+        this.totalScore = 500;
         this.gamesWon = 0;
         this.gamesPlayed = 0;
     }
