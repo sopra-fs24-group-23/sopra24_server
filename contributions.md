@@ -196,5 +196,11 @@
 - 9.5 - 15.5, Nilaksan, [https://github.com/sopra-fs24-group-23/sopra24_server/issues/197](https://github.com/sopra-fs24-group-23/sopra24_server/issues/197)
 - 9.5 - 15.5, Nilaksan, [https://github.com/sopra-fs24-group-23/sopra24_server/issues/204](https://github.com/sopra-fs24-group-23/sopra24_server/issues/204)
 
+### Franziska
+- 9.5 - 15.5, Franziska, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/128](https://github.com/sopra-fs24-group-23/sopra24_client/issues/128)
+- 9.5 - 15.5, Franziska, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/129](https://github.com/sopra-fs24-group-23/sopra24_client/issues/129)
+- 9.5 - 15.5, Franziska, [https://github.com/sopra-fs24-group-23/sopra24_server/issues/191](https://github.com/sopra-fs24-group-23/sopra24_server/issues/191)
+- 9.5 - 15.5, Franziska, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/111](https://github.com/sopra-fs24-group-23/sopra24_client/issues/111)
+
 
 
