@@ -181,8 +181,8 @@
 - 9.5. - 15.5., Jonas, sopra-fs24-group-23/sopra24_client/issues/131
 - 9.5. - 15.5., Jonas, sopra-fs24-group-23/sopra24_client/issues/135
 
-
-
-
-
-
+### Nils
+- 9.5 - 15.5, Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/38](https://github.com/sopra-fs24-group-23/sopra24_client/issues/38)
+- 9.5 - 15.5, Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/111](https://github.com/sopra-fs24-group-23/sopra24_client/issues/111)
+- 9.5 - 15.5, Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/136](https://github.com/sopra-fs24-group-23/sopra24_client/issues/136)
+- 9.5 - 15.5, Nils, [https://github.com/sopra-fs24-group-23/sopra24_server/issues/200](https://github.com/sopra-fs24-group-23/sopra24_server/issues/200)
