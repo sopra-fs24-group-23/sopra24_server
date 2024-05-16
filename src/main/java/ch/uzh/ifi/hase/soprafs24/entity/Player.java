@@ -101,4 +101,12 @@ public class Player {
     public void setReady(boolean ready) {
         isReady = ready;
     }
+
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
 }
