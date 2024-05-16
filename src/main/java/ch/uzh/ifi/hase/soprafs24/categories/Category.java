@@ -11,15 +11,28 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
         @JsonSubTypes.Type(value = MoviesSeries.class, name = "movies"),
         @JsonSubTypes.Type(value = Car.class, name = "car"),
         @JsonSubTypes.Type(value = Food.class, name = "food"),
-
-
-
-        // Other implementations
 })
-public interface Category {
-    boolean validateAnswer(String answer);
-    String fetchResultsFromApi(String input);
-    String getName();
+
+public abstract class Category {
+
+    abstract public boolean validateAnswer(String answer);
+
+    abstract public String getName();
+
+    abstract String fetchResultsFromApi(String input);
+
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || this.getClass() != obj.getClass()) {
+            return false;
+        }
+
+        return this.getName().equals(((Category) obj).getName());
+    }
 }
 
 
