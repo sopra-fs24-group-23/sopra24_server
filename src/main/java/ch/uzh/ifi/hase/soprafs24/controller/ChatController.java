@@ -24,12 +24,18 @@ public class ChatController {
     @MessageMapping("/sendMessage")
     @SendTo("/topic/messages")
     public ChatMessage sendMessage(ChatMessage message) {
+        if (message == null) {
+            throw new IllegalArgumentException("Message cannot be null");
+        }
         System.out.println("Received Message:" + message);
         return message;
     }
 
     @PostMapping("/send")
     public void send(@RequestBody ChatMessage message) {
+        if (message == null) {
+            throw new IllegalArgumentException("Message cannot be null");
+        }
         messagingTemplate.convertAndSend("/topic/messages", message);
     }
 }
