@@ -175,47 +175,45 @@ public class Game {
     }
 
     /* HELPER METHODS */
-    public CompletableFuture<Void> waitForDuration(Long duration) {
+    private CompletableFuture<Void> waitForDuration(Long duration) {
         CompletableFuture<Void> future = new CompletableFuture<>();
+        final ScheduledFuture<?>[] holder = new ScheduledFuture<?>[1];
+
+        // schedule check every second; complete future if all votes received
+        holder[0] = scheduler.scheduleAtFixedRate(() -> {
+            boolean allPlayersReady = true;
+            synchronized (players) {
+                for (Player player : players ) {
+                    if (!player.isReady()) {
+                        allPlayersReady = false;
+                        break;
+                    }
+                }
+            }
+            if (allPlayersReady) {
+                holder[0].cancel(false);
+                this.resetAllPlayersReady();
+                future.complete(null);
+            }
+
+        }, 0, 1, TimeUnit.SECONDS);
 
         // schedule timeout logic after X seconds
         scheduler.schedule(() -> {
-            future.complete(null);
+            holder[0].cancel(false);
+            if(!future.isDone()) {
+                future.complete(null);
+            }
         }, duration, TimeUnit.SECONDS);
 
         return future;
     }
 
-    public void setPlayerReady(String username) {
-        Player player = players.stream().filter(p -> p.getUsername().equals(username)).findFirst().orElse(null);
-        player.setReady(true);
-      }
-      
-      public boolean areAllPlayersReady() {
-        return players.stream().allMatch(Player::isReady);
-      }
-
-      public void resetAllPlayersReady() {
+    private void resetAllPlayersReady() {
         for (Player player : players) {
-          player.setReady(false);
+            player.setReady(false);
         }
-      }
-      
-      public void advancePhase() {
-        switch (this.currentPhase) {
-          case VOTING:
-            this.currentPhase = GamePhase.VOTING_RESULTS;
-            break;
-          case VOTING_RESULTS:
-            this.currentPhase = GamePhase.SCOREBOARD;
-            break;
-          case SCOREBOARD:
-            this.currentPhase = GamePhase.INPUT;
-            break;
-          default:
-            break;
-        }
-      }
+    }
 
     private String generateRandomLetter() {
         Random random = new Random();
@@ -254,8 +252,9 @@ public class Game {
         );
     }
 
-    public void setState(GameState gameState) {
-        this.gameState = gameState;
+    public void setPlayerReady(String username) {
+        Player player = players.stream().filter(p -> p.getUsername().equals(username)).findFirst().orElse(null);
+        player.setReady(true);
     }
 
     public void setCurrentLetter(String currentLetter) {

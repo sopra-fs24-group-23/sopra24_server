@@ -19,9 +19,10 @@ public class Player {
     private boolean hasAnswered;
     private boolean hasVoted;
     private boolean isHost;
-    private boolean isReady = false;
+    private boolean isReady;
 
     public Player(Long id, String username, String token, String color) {
+        this.isReady = false;
         this.color = color;
         this.id = id;
         this.token = token;

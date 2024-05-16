@@ -115,11 +115,6 @@ public class GameService {
     public void setPlayerReady(String gameId, String username) {
         Game game = games.get(gameId);
         game.setPlayerReady(username);
-        if (game.areAllPlayersReady()) {
-            game.advancePhase();
-            game.resetAllPlayersReady();
-            updateClients(gameId, game.getState());
-        }
     }
 
     public Game getGameById(String gameId) {
