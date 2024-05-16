@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs24.controller;
 
 import ch.uzh.ifi.hase.soprafs24.entity.ChatMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -21,21 +22,12 @@ public class ChatController {
         this.messagingTemplate = messagingTemplate;
     }
 
-    @MessageMapping("/sendMessage")
-    @SendTo("/topic/messages")
-    public ChatMessage sendMessage(ChatMessage message) {
+    @MessageMapping("/chat/{lobbyId}")
+    public void sendMessage(ChatMessage message, @DestinationVariable String lobbyId) {
         if (message == null) {
             throw new IllegalArgumentException("Message cannot be null");
         }
         System.out.println("Received Message:" + message);
-        return message;
-    }
-
-    @PostMapping("/send")
-    public void send(@RequestBody ChatMessage message) {
-        if (message == null) {
-            throw new IllegalArgumentException("Message cannot be null");
-        }
-        messagingTemplate.convertAndSend("/topic/messages", message);
+        messagingTemplate.convertAndSend(String.format("/topic/chat/%s", lobbyId), message);
     }
 }

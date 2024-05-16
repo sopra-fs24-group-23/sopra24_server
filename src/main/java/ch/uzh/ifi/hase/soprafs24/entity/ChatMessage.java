@@ -2,6 +2,7 @@ package ch.uzh.ifi.hase.soprafs24.entity;
 
 public class ChatMessage {
     private String sender;
+    private String color;
     private String content;
     private String timestamp;
 
@@ -21,8 +22,6 @@ public class ChatMessage {
         this.timestamp = timestamp;
     }
 
-
-
     public String getSender() {
         return sender;
     }
@@ -31,5 +30,12 @@ public class ChatMessage {
         this.sender = sender;
     }
 
+    public String getColor() {
+        return color;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
+    }
 }
 
