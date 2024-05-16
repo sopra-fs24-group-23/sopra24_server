@@ -64,7 +64,7 @@ class LobbyServiceTest {
         System.out.println("player username: " + player.getUsername() + " " + "playertoken: " + player.getToken());
 
         player.setIsHost(true);
-        lobby = new Lobby(player);
+        lobby = new Lobby(player, "testId");
         lobby.setHost(player);
 
     }
@@ -165,9 +165,6 @@ class LobbyServiceTest {
         // find user corresponding to received token
         when(userRepository.findByToken(userToAdd.getToken())).thenReturn(userToAdd);
 
-        // create new player object from user and add to the lobby
-        Player player = new Player(userToAdd.getId(), userToAdd.getUsername(), userToAdd.getToken(), userToAdd.getColor());
-
         assertDoesNotThrow(() -> lobbyService.addPlayer(newLobby.getId(), userToAdd));
 
     }
@@ -218,7 +215,6 @@ class LobbyServiceTest {
         // find user corresponding to received token
         when(userRepository.findByToken(userToAdd.getToken())).thenReturn(userToAdd);
 
-        Player player = new Player(userToAdd.getId(), userToAdd.getUsername(), userToAdd.getToken(), userToAdd.getColor());
         // Add the player to the lobby
         lobbyService.addPlayer(newLobby.getId(), userToAdd);
 
@@ -264,7 +260,6 @@ class LobbyServiceTest {
         // find user corresponding to received token
         when(userRepository.findByToken(userToKick.getToken())).thenReturn(userToKick);
 
-        Player player = new Player(userToKick.getId(), userToKick.getUsername(), userToKick.getToken(), userToKick.getColor());
         // Add the player to the lobby
         lobbyService.addPlayer(newLobby.getId(), userToKick);
 
@@ -287,7 +282,6 @@ class LobbyServiceTest {
         // find user corresponding to received token
         when(userRepository.findByToken(unauthorizedUser.getToken())).thenReturn(unauthorizedUser);
 
-        Player player = new Player(unauthorizedUser.getId(), unauthorizedUser.getUsername(), unauthorizedUser.getToken(), unauthorizedUser.getColor());
         // Add the player to the lobby
         lobbyService.addPlayer(newLobby.getId(), unauthorizedUser);
 
@@ -298,6 +292,21 @@ class LobbyServiceTest {
 
         assertEquals(HttpStatus.UNAUTHORIZED, exception.getStatus());
 
+    }
+
+    @Test
+    void testRemoveHostDeletesLobby(){
+        user = new User();
+        user.setUsername("user1");
+        user.setToken("ceffcvf");
+
+        when(userRepository.findByToken(user.getToken())).thenReturn(user);
+        Lobby newLobby = lobbyService.createLobby(user);
+
+        when(userRepository.findByUsername(user.getUsername())).thenReturn(user);
+        lobbyService.removePlayer(newLobby.getId(), user);
+
+        assertFalse(lobbyService.getLobbies().containsKey(newLobby.getId()));
     }
 
 }

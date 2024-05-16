@@ -4,6 +4,7 @@ import java.util.List;
 
 public class GameSettingsDTO {
     private List<String> categories;
+    private boolean isRandom;
     private Integer maxRounds;
     private Integer votingDuration;
     private Integer inputDuration;
@@ -56,5 +57,13 @@ public class GameSettingsDTO {
 
     public void setInputDuration(Integer inputDuration) {
         this.inputDuration = inputDuration;
+    }
+
+    public boolean getIsRandom() {
+        return isRandom;
+    }
+
+    public void setIsRandom(boolean random) {
+        isRandom = random;
     }
 }

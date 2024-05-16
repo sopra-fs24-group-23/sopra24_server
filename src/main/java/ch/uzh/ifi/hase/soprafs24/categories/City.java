@@ -1,7 +1,7 @@
 package ch.uzh.ifi.hase.soprafs24.categories;
 import ch.uzh.ifi.hase.soprafs24.api.CityAPI;
 
-public class City implements Category {
+public class City extends Category {
 
     @Override
     public boolean validateAnswer(String answer) {

@@ -14,10 +14,10 @@ public class Lobby {
     private Boolean isGameRunning;
     private Boolean isLobbyFull;
 
-    public Lobby(Player host) {
+    public Lobby(Player host, String id) {
         // initialize fields
-        this.id = UUID.randomUUID().toString();
         this.host = host;
+        this.id = id;
         this.settings = new GameSettings();
         this.isGameRunning = false;
         this.isLobbyFull = false;
@@ -74,6 +74,10 @@ public class Lobby {
 
     public GameSettings getSettings() {
         return settings;
+    }
+
+    public void setGameRunning(Boolean gameRunning) {
+        isGameRunning = gameRunning;
     }
 
     public void setSettings(GameSettings settings) {

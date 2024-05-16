@@ -11,6 +11,7 @@ import java.util.List;
 
 public class GameSettings {
     private List<Category> categories;
+    private boolean isRandom;
     private Integer maxRounds;
     private Integer votingDuration;
     private Integer inputDuration;
@@ -19,17 +20,17 @@ public class GameSettings {
 
     public GameSettings() {
         // setting standard values - TODO: set standard categories
-        this.maxRounds = 2;
-        this.votingDuration = 3;
-        this.scoreboardDuration = 3;
-        this.inputDuration = 3;
+        this.maxRounds = 5;
+        this.isRandom = false;
+        this.votingDuration = 30;
+        this.scoreboardDuration = 15;
+        this.inputDuration = 30;
         this.maxPlayers = 5;
         // setting standard categories
         this.categories = new ArrayList<>();
         this.categories.add(new City());
         this.categories.add(new Country());
         this.categories.add(new MoviesSeries());
-
     }
 
     public Integer getMaxRounds() {
@@ -79,5 +80,13 @@ public class GameSettings {
 
     public void setCategories(List<Category> categories) {
         this.categories = categories;
+    }
+
+    public boolean getIsRandom() {
+        return isRandom;
+    }
+
+    public void setIsRandom(boolean random) {
+        isRandom = random;
     }
 }

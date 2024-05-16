@@ -43,6 +43,7 @@ public class GameWebsocketController {
     public void startGame(@DestinationVariable String lobbyId) {
         // Retrieve game settings and players from the lobby
         Lobby lobby = lobbyService.getLobbyById(lobbyId);
+        lobby.setGameRunning(true);
         GameSettings settings = lobby.getSettings();
         List<Player> players = lobby.getPlayers();
         // Start the game
@@ -52,6 +53,11 @@ public class GameWebsocketController {
     @MessageMapping("/games/{lobbyId}/close-inputs")
     public void closeInputs(@DestinationVariable String lobbyId) {
         gameService.closeInputs(lobbyId);
+    }
+
+    @MessageMapping("/games/{lobbyId}/ready/{username}")
+    public void setPlayerReady(@DestinationVariable String lobbyId, @DestinationVariable String username) {
+        gameService.setPlayerReady(lobbyId, username);
     }
 
     @MessageMapping("/games/{lobbyId}/answers/{username}")
@@ -80,13 +86,9 @@ public class GameWebsocketController {
     public void leaveGame(@DestinationVariable String lobbyId, @Payload UserTokenDTO userTokenDTO) {
         User user = DTOMapper.INSTANCE.convertUserTokenDTOtoEntity(userTokenDTO);
         gameService.removePlayerFromGame(lobbyId, user);
-        updateGameStateForRemainingPlayers(lobbyId);
+        updateGameState(lobbyId, gameService.getGameState(lobbyId));
     }
 
-    private void updateGameStateForRemainingPlayers(String lobbyId) {
-        GameState gameState = gameService.getGameState(lobbyId);
-        updateGameState(lobbyId, gameState);
-    }
 
     /** Server to client(s) communication **/
     private void updateGameState(String lobbyId, GameState gameState) {

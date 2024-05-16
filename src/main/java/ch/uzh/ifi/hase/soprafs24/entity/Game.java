@@ -63,6 +63,8 @@ public class Game {
         return false;
     }
 
+
+
     public CompletableFuture<Void> calculateScores(){
         List<CompletableFuture<Void>> scoreFutures = new ArrayList<>();
 
@@ -78,7 +80,8 @@ public class Game {
                         answer.setIsUnique(answerMap.get(answer.getAnswer()) <= 1);
 
                         // Calculate and update the score
-                        int score = answer.calculateScore();
+                        answer.calculateScore();
+                        int score = answer.getScore();
                         player.setCurrentScore(player.getCurrentScore() + score);
 
                         return null;
@@ -153,13 +156,14 @@ public class Game {
         // schedule check every second; complete future if all votes received
         holder[0] = scheduler.scheduleAtFixedRate(() -> {
             boolean allVotesReceived = true;
-            for (Player player : players ) {
-                if (!player.getHasVoted()) {
-                    allVotesReceived = false;
-                    break;
+            synchronized (players) {
+                for (Player player : players ) {
+                    if (!player.getHasVoted()) {
+                        allVotesReceived = false;
+                        break;
+                    }
                 }
             }
-
             if (allVotesReceived) {
                 holder[0].cancel(false);
                 future.complete(null);
@@ -171,15 +175,44 @@ public class Game {
     }
 
     /* HELPER METHODS */
-    public CompletableFuture<Void> waitForDuration(Long duration) {
+    private CompletableFuture<Void> waitForDuration(Long duration) {
         CompletableFuture<Void> future = new CompletableFuture<>();
+        final ScheduledFuture<?>[] holder = new ScheduledFuture<?>[1];
+
+        // schedule check every second; complete future if all votes received
+        holder[0] = scheduler.scheduleAtFixedRate(() -> {
+            boolean allPlayersReady = true;
+            synchronized (players) {
+                for (Player player : players ) {
+                    if (!player.isReady()) {
+                        allPlayersReady = false;
+                        break;
+                    }
+                }
+            }
+            if (allPlayersReady) {
+                holder[0].cancel(false);
+                this.resetAllPlayersReady();
+                future.complete(null);
+            }
+
+        }, 0, 1, TimeUnit.SECONDS);
 
         // schedule timeout logic after X seconds
         scheduler.schedule(() -> {
-            future.complete(null);
+            holder[0].cancel(false);
+            if(!future.isDone()) {
+                future.complete(null);
+            }
         }, duration, TimeUnit.SECONDS);
 
         return future;
+    }
+
+    private void resetAllPlayersReady() {
+        for (Player player : players) {
+            player.setReady(false);
+        }
     }
 
     private String generateRandomLetter() {
@@ -219,8 +252,9 @@ public class Game {
         );
     }
 
-    public void setState(GameState gameState) {
-        this.gameState = gameState;
+    public void setPlayerReady(String username) {
+        Player player = players.stream().filter(p -> p.getUsername().equals(username)).findFirst().orElse(null);
+        player.setReady(true);
     }
 
     public void setCurrentLetter(String currentLetter) {
@@ -292,16 +326,14 @@ public class Game {
         return this.playerHasAnswered;
     }
 
-    public boolean isInputPhaseClosed() {
-        return inputPhaseClosed;
-    }
-
-    public void setInputPhaseClosed(boolean inputPhaseClosed) {
-        this.inputPhaseClosed = inputPhaseClosed;
+    public void setCategories(List<Category> categories) {
+        this.settings.setCategories(categories);
     }
 
     public void removePlayer(User user) {
-        this.players.removeIf(player -> player.getUsername().equals(user.getUsername()));
+        synchronized (players) {
+            this.players.removeIf(player -> player.getToken().equals(user.getToken()));
+        }
     }
 
 }
