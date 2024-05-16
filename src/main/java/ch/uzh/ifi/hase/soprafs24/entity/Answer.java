@@ -14,14 +14,14 @@ public class Answer {
     private Boolean isJoker;
     private Boolean isDoubted;
     private Boolean isCorrect;
+    private int score;
 
     public Answer(String category, String answer) {
         this.category = category;
         this.answer = answer;
     }
 
-    public int calculateScore() {
-        int score = 0;
+    public void calculateScore() {
 
         if (isCorrect) {
             score = isUnique ? 10 : 5;
@@ -30,8 +30,6 @@ public class Answer {
         if(!this.isJoker && this.isDoubted) {
             score += 5;
         }
-
-        return score;
     }
 
     public CompletableFuture<Boolean> checkAnswer(Category answerCategory, String currentLetter) {
@@ -96,6 +94,10 @@ public class Answer {
 
     public String getAnswer() {
         return answer;
+    }
+
+    public int getScore() {
+        return score;
     }
 
     @Override

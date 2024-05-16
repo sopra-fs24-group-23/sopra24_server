@@ -29,16 +29,16 @@ public class AnswerUnitTest {
         uniqueAnswer.setIsUnique(true);
         uniqueAnswer.setIsJoker(false);
         uniqueAnswer.setIsDoubted(false);
-
-        Integer uniqueScore = uniqueAnswer.calculateScore();
+        uniqueAnswer.calculateScore();
+        Integer uniqueScore = uniqueAnswer.getScore();
 
         Answer duplicateAnswer = new Answer("City", "Rotterdam");
         duplicateAnswer.setIsCorrect(true);
         duplicateAnswer.setIsUnique(false);
         duplicateAnswer.setIsJoker(false);
         duplicateAnswer.setIsDoubted(false);
-
-        Integer duplicateScore = duplicateAnswer.calculateScore();
+        duplicateAnswer.calculateScore();
+        Integer duplicateScore = duplicateAnswer.getScore();
 
         assertEquals(10, uniqueScore);
         assertEquals(5, duplicateScore);
