@@ -110,6 +110,8 @@ public class GameWebsocketController {
                 gameStateDTO
         );
     }
+
+    /* Setter for Testing */
     public void setMessagingTemplate(SimpMessagingTemplate messagingTemplate) {
         this.msgTemplate = messagingTemplate;
     }
