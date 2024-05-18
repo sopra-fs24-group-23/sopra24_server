@@ -52,9 +52,4 @@ public class ChatControllerTest {
             chatController.sendMessage(message, lobbyId);
         });
     }
-
-    /* Setter for Testing */
-    public void setMessagingTemplate(SimpMessagingTemplate messagingTemplate) {
-        this.messagingTemplate = messagingTemplate;
-    }
 }
