@@ -23,10 +23,13 @@ public class ChatControllerTest {
     @InjectMocks
     private ChatController chatController;
 
+    private String lobbyId;
+
     @BeforeEach
     public void setup() {
         MockitoAnnotations.openMocks(this);
         chatController = new ChatController(messagingTemplate);
+        lobbyId = "testLobbyId";
     }
 
     @Test
@@ -38,12 +41,14 @@ public class ChatControllerTest {
         message.setTimestamp("2024-05-14T10:15:30");
 
         // When
-        ChatMessage response = chatController.sendMessage(message);
+        //ChatMessage response = chatController.sendMessage(message, lobbyId);
+        chatController.sendMessage(message, lobbyId);
 
         // Then
-        assertEquals("user1", response.getSender());
-        assertEquals("Hello, world!", response.getContent());
-        assertEquals("2024-05-14T10:15:30", response.getTimestamp());
+        //assertEquals("user1", response.getSender());
+        //assertEquals("Hello, world!", response.getContent());
+        // assertEquals("2024-05-14T10:15:30", response.getTimestamp());
+        verify(messagingTemplate).convertAndSend(String.format("/topic/chat/%s", lobbyId), message);
     }
 
     @Test
@@ -55,10 +60,10 @@ public class ChatControllerTest {
         message.setTimestamp("2024-05-14T10:15:30");
 
         // When
-        chatController.send(message);
+        chatController.sendMessage(message, lobbyId);
 
         // Then
-        verify(messagingTemplate).convertAndSend(eq("/topic/messages"), any(ChatMessage.class));
+        verify(messagingTemplate).convertAndSend(String.format("/topic/chat/%s", lobbyId), message);
     }
 
     @Test
@@ -68,7 +73,7 @@ public class ChatControllerTest {
 
         // When & Then
         IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> {
-            chatController.sendMessage(message);
+            chatController.sendMessage(message, lobbyId);
         });
         assertEquals("Message cannot be null", thrown.getMessage());
     }
@@ -82,12 +87,14 @@ public class ChatControllerTest {
         message.setTimestamp("2024-05-14T10:15:30");
 
         // When
-        ChatMessage response = chatController.sendMessage(message);
+        //ChatMessage response = chatController.sendMessage(message);
+        chatController.sendMessage(message, lobbyId);
 
         // Then
-        assertEquals("user1", response.getSender());
-        assertEquals("", response.getContent());
-        assertEquals("2024-05-14T10:15:30", response.getTimestamp());
+        //assertEquals("user1", response.getSender());
+        //assertEquals("", response.getContent());
+        //assertEquals("2024-05-14T10:15:30", response.getTimestamp());
+        verify(messagingTemplate).convertAndSend(String.format("/topic/chat/%s", lobbyId), message);
     }
 
     @Test
@@ -99,10 +106,10 @@ public class ChatControllerTest {
         message.setTimestamp("2024-05-14T10:15:30");
 
         // When
-        chatController.send(message);
+        chatController.sendMessage(message, lobbyId);
 
         // Then
-        verify(messagingTemplate).convertAndSend(eq("/topic/messages"), eq(message));
+        verify(messagingTemplate).convertAndSend(String.format("/topic/chat/%s", lobbyId), message);
     }
 
     @Test
@@ -114,10 +121,10 @@ public class ChatControllerTest {
         message.setTimestamp("2024-05-14T10:15:30");
 
         // When
-        chatController.send(message);
+        chatController.sendMessage(message, lobbyId);
 
         // Then
-        verify(messagingTemplate).convertAndSend(eq("/topic/messages"), eq(message));
+        verify(messagingTemplate).convertAndSend(String.format("/topic/chat/%s", lobbyId), message);
     }
 
     @Test
@@ -127,7 +134,7 @@ public class ChatControllerTest {
 
         // When & Then
         IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> {
-            chatController.send(message);
+            chatController.sendMessage(message, lobbyId);
         });
         assertEquals("Message cannot be null", thrown.getMessage());
     }
