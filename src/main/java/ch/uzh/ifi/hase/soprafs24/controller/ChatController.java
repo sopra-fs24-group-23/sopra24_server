@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/chat")
 public class ChatController {
 
-    private final SimpMessagingTemplate messagingTemplate;
+    private SimpMessagingTemplate messagingTemplate;
 
     @Autowired
     public ChatController(SimpMessagingTemplate messagingTemplate) {
@@ -24,10 +24,14 @@ public class ChatController {
 
     @MessageMapping("/chat/{lobbyId}")
     public void sendMessage(ChatMessage message, @DestinationVariable String lobbyId) {
-        if (message == null) {
-            throw new IllegalArgumentException("Message cannot be null");
+        if (message.getContent().isEmpty()) {
+            throw new IllegalArgumentException("Message-content cannot be empty");
         }
-        System.out.println("Received Message:" + message);
         messagingTemplate.convertAndSend(String.format("/topic/chat/%s", lobbyId), message);
+    }
+
+    /* Setter for Testing */
+    public void setMessagingTemplate(SimpMessagingTemplate messagingTemplate) {
+        this.messagingTemplate = messagingTemplate;
     }
 }
