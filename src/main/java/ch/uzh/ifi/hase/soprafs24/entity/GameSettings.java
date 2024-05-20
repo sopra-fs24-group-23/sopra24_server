@@ -18,6 +18,12 @@ public class GameSettings {
     private Integer scoreboardDuration;
     private Integer maxPlayers;
 
+    private static final int MAX_ROUNDS_LIMIT = 10;
+    private static final int MAX_VOTING_DURATION_LIMIT = 90;
+    private static final int MAX_INPUT_DURATION_LIMIT = 90;
+    private static final int MAX_SCOREBOARD_DURATION_LIMIT = 60;
+    private static final int MAX_PLAYERS_LIMIT = 10;
+
     public GameSettings() {
         // setting standard values - TODO: set standard categories
         this.maxRounds = 5;
@@ -38,16 +44,23 @@ public class GameSettings {
     }
 
     public void setMaxRounds(Integer maxRounds) {
-        this.maxRounds = maxRounds;
+        if (maxRounds > MAX_ROUNDS_LIMIT) {
+            throw new IllegalArgumentException("Max Rounds exceeds allowed limits. Please enter a value that does not exceed " + MAX_ROUNDS_LIMIT + ".");
+        } else {
+            this.maxRounds = maxRounds;
+        }
     }
-
 
     public Integer getMaxPlayers() {
         return maxPlayers;
     }
 
     public void setMaxPlayers(Integer maxPlayers) {
-        this.maxPlayers = maxPlayers;
+        if (maxPlayers > MAX_PLAYERS_LIMIT) {
+            throw new IllegalArgumentException("Max Players exceeds allowed limits. Please enter a value that does not exceed " + MAX_PLAYERS_LIMIT + ".");
+        } else {
+            this.maxPlayers = maxPlayers;
+        }
     }
 
     public Integer getVotingDuration() {
@@ -55,7 +68,11 @@ public class GameSettings {
     }
 
     public void setVotingDuration(Integer votingDuration) {
-        this.votingDuration = votingDuration;
+        if (votingDuration > MAX_VOTING_DURATION_LIMIT) {
+            throw new IllegalArgumentException("Voting Duration exceeds allowed limits. Please enter a value that does not exceed " + MAX_VOTING_DURATION_LIMIT + ".");
+        } else {
+            this.votingDuration = votingDuration;
+        }
     }
 
     public Integer getScoreboardDuration() {
@@ -63,7 +80,11 @@ public class GameSettings {
     }
 
     public void setScoreboardDuration(Integer scoreboardDuration) {
-        this.scoreboardDuration = scoreboardDuration;
+        if (scoreboardDuration > MAX_SCOREBOARD_DURATION_LIMIT) {
+            throw new IllegalArgumentException("Scoreboard Duration exceeds allowed limits. Please enter a value that does not exceed " + MAX_SCOREBOARD_DURATION_LIMIT + ".");
+        } else {
+            this.scoreboardDuration = scoreboardDuration;
+        }
     }
 
     public Integer getInputDuration() {
@@ -71,7 +92,11 @@ public class GameSettings {
     }
 
     public void setInputDuration(Integer inputDuration) {
-        this.inputDuration = inputDuration;
+        if (inputDuration > MAX_INPUT_DURATION_LIMIT) {
+            throw new IllegalArgumentException("Input Duration exceeds allowed limits. Please enter a value that does not exceed " + MAX_INPUT_DURATION_LIMIT + ".");
+        } else {
+            this.inputDuration = inputDuration;
+        }
     }
 
     public List<Category> getCategories() {
