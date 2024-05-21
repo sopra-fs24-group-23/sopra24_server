@@ -17,10 +17,16 @@ public class FoodAPI {
         this.baseUrl = baseUrl;
     }
 
-
     public String performRequest(String query) {
         try {
+            if (query == null || query.trim().isEmpty()) {
+                return "False";
+            }
+
+            // Trim and URL encode the query
+            query = query.trim().toLowerCase();
             String encodedQuery = URLEncoder.encode(query, "UTF-8");
+
             String parameters = "query=" + encodedQuery;
             URL url = new URL(baseUrl + "/v1/nutrition?" + parameters);
 
@@ -42,14 +48,12 @@ public class FoodAPI {
                 }
                 in.close();
 
-           //     System.out.println("Response from API: " + response.toString()); // Print the response
-
                 JSONArray nutritionDataArray = new JSONArray(response.toString());
                 for (int i = 0; i < nutritionDataArray.length(); i++) {
                     JSONObject nutritionData = nutritionDataArray.getJSONObject(i);
                     String foodName = nutritionData.optString("name", "").toLowerCase();
 
-                    if (foodName.equals(query.toLowerCase())) { // Check for exact match
+                    if (foodName.equals(query)) { // Check for exact match
                         return "True";
                     }
                 }
@@ -72,10 +76,4 @@ public class FoodAPI {
     }
 
 
-    //public static void main(String[] args) {
-      //FoodAPI foodAPI = new FoodAPI("7f9f1b12c5msh0ee2d0b9a2cbbb7p158dc9jsn62d752680b9e", "https://nutrition-by-api-ninjas.p.rapidapi.com");
-    //String input = "hotdog"; // Example celebrity name
-    //String result = foodAPI.performRequest(input);
-    //System.out.println("Result: " + result);
-//    }
 }

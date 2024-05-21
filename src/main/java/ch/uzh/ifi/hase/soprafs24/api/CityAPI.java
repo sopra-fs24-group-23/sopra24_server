@@ -36,19 +36,10 @@ public class CityAPI {
     }
 
     public String performRequest(String cityName) {
-        if (cityNames.contains(cityName.toLowerCase())) {
+        if (cityNames.contains(cityName.toLowerCase().trim())) {
             return "True";
         } else {
             return "False";
         }
     }
-
-   /*
-    public static void main(String[] args) {
-        CityAPI cityAPI = new CityAPI();
-        String cityName = "florida"; // Example city name
-        String result = cityAPI.performRequest(cityName.toLowerCase()); // Pass the city name (converted to lowercase)
-
-        System.out.println("Is " + cityName + " a city? " + result);
-    }*/
 }
