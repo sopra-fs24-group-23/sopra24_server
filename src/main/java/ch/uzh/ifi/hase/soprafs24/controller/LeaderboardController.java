@@ -5,8 +5,10 @@ import ch.uzh.ifi.hase.soprafs24.rest.dto.PlayerGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.UserGetDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs24.service.UserService;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -25,6 +27,7 @@ public class LeaderboardController {
      * return top 10 by default, take request-param to query custom range. **/
 
     @GetMapping("/leaderboards/games-played")
+    @ResponseStatus(HttpStatus.OK)
     public List<UserGetDTO> getGamesPlayedRanking(@RequestParam(required = false) Long range) {
         long queriedRange = range == null ? 10L : range;
 
@@ -34,6 +37,7 @@ public class LeaderboardController {
     }
 
     @GetMapping("/leaderboards/total-score")
+    @ResponseStatus(HttpStatus.OK)
     public List<UserGetDTO> getTotalScoreRanking(@RequestParam(required = false) Long range) {
         long queriedRange = range == null ? 10L : range;
 
@@ -43,6 +47,7 @@ public class LeaderboardController {
     }
 
     @GetMapping("/leaderboards/games-won")
+    @ResponseStatus(HttpStatus.OK)
     public List<UserGetDTO> getGamesWonRanking(@RequestParam(required = false) Long range) {
         long queriedRange = range == null ? 10L : range;
 
