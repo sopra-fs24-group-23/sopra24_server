@@ -77,7 +77,10 @@ public class Game {
                     .thenApply((isCorrect) -> {
                         answer.setIsCorrect(isCorrect);
 
-                        answer.setIsUnique(answerMap.get(answer.getAnswer()) <= 1);
+                        String cleanAnswer = answer.getAnswer().toLowerCase().trim();
+                        Integer count = answerMap.get(cleanAnswer);
+
+                        answer.setIsUnique(count == null || count < 2);
 
                         // Calculate and update the score
                         answer.calculateScore();

@@ -44,7 +44,7 @@ public class GameSettings {
     }
 
     public void setMaxRounds(Integer maxRounds) {
-        if (maxRounds > MAX_ROUNDS_LIMIT) {
+        if (maxRounds == null || maxRounds > MAX_ROUNDS_LIMIT) {
             throw new IllegalArgumentException("Max Rounds exceeds allowed limits. Please enter a value that does not exceed " + MAX_ROUNDS_LIMIT + ".");
         } else {
             this.maxRounds = maxRounds;
@@ -70,7 +70,7 @@ public class GameSettings {
     }
 
     public void setVotingDuration(Integer votingDuration) {
-        if (votingDuration > MAX_VOTING_DURATION_LIMIT) {
+        if (votingDuration == null || votingDuration > MAX_VOTING_DURATION_LIMIT) {
             throw new IllegalArgumentException("Voting Duration exceeds allowed limits. Please enter a value that does not exceed " + MAX_VOTING_DURATION_LIMIT + ".");
         } else {
             this.votingDuration = votingDuration;
@@ -82,7 +82,7 @@ public class GameSettings {
     }
 
     public void setScoreboardDuration(Integer scoreboardDuration) {
-        if (scoreboardDuration > MAX_SCOREBOARD_DURATION_LIMIT) {
+        if (scoreboardDuration == null || scoreboardDuration > MAX_SCOREBOARD_DURATION_LIMIT) {
             throw new IllegalArgumentException("Scoreboard Duration exceeds allowed limits. Please enter a value that does not exceed " + MAX_SCOREBOARD_DURATION_LIMIT + ".");
         } else {
             this.scoreboardDuration = scoreboardDuration;
@@ -94,7 +94,7 @@ public class GameSettings {
     }
 
     public void setInputDuration(Integer inputDuration) {
-        if (inputDuration > MAX_INPUT_DURATION_LIMIT) {
+        if (inputDuration == null || inputDuration > MAX_INPUT_DURATION_LIMIT) {
             throw new IllegalArgumentException("Input Duration exceeds allowed limits. Please enter a value that does not exceed " + MAX_INPUT_DURATION_LIMIT + ".");
         } else {
             this.inputDuration = inputDuration;

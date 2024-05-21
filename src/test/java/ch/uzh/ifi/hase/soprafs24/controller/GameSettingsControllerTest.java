@@ -41,6 +41,12 @@ public class GameSettingsControllerTest {
     @Test
     public void testUpdateSettings() {
         GameSettingsDTO gameSettingsDTO = new GameSettingsDTO();
+        gameSettingsDTO.setInputDuration(10);
+        gameSettingsDTO.setScoreboardDuration(10);
+        gameSettingsDTO.setVotingDuration(10);
+        gameSettingsDTO.setMaxPlayers(5);
+        gameSettingsDTO.setMaxRounds(5);
+        gameSettingsDTO.setIsRandom(true);
 
         controller.updateSettings(lobbyId, gameSettingsDTO);
 
