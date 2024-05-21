@@ -266,13 +266,15 @@ public class Game {
         System.out.printf("Setting answers for %s \n", username);
 
         answers.forEach((answer) -> {
-            Integer count = answerMap.get(answer.getAnswer());
+            String cleanAnswer = answer.getAnswer().toLowerCase().trim();
+
+            Integer count = answerMap.get(cleanAnswer);
             if (count == null) {
-                answerMap.put(answer.getAnswer(), 1);
+                answerMap.put(cleanAnswer, 1);
             }
             else {
                 count++;
-                answerMap.put(answer.getAnswer(), count);
+                answerMap.put(cleanAnswer, count);
             }
         });
 
