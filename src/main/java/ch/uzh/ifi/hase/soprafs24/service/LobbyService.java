@@ -27,6 +27,7 @@ public class LobbyService {
     private final UserRepository userRepository;
     private HashMap<String, Lobby> lobbies;
     private final ApplicationEventPublisher eventPublisher;
+    private final Random random;
 
     public LobbyService(
             @Qualifier("userRepository") UserRepository userRepository,
@@ -34,6 +35,7 @@ public class LobbyService {
         this.eventPublisher = eventPublisher;
         this.userRepository = userRepository;
         this.lobbies = new HashMap<String, Lobby>();
+        this.random = new Random();
     }
 
     public Lobby getLobbyById(String lobbyId) {
@@ -188,7 +190,6 @@ public class LobbyService {
 
     private String getRandomString(int length, int rangeStart, int rangeEnd) {
         StringBuilder stringBuilder = new StringBuilder(length);
-        Random random = new Random();
 
         for (int i = 0; i < length; i++) {
             int randomInt = random.nextInt(rangeEnd - rangeStart); // 0-25 = 26 ints

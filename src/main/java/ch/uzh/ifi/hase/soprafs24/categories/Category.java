@@ -30,8 +30,12 @@ public abstract class Category {
         if (obj == null || this.getClass() != obj.getClass()) {
             return false;
         }
-
         return this.getName().equals(((Category) obj).getName());
+    }
+
+    @Override
+    public int hashCode() {
+        return getName() == null ? 0 : getName().hashCode();
     }
 }
 

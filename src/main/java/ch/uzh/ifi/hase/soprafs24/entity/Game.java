@@ -256,8 +256,15 @@ public class Game {
     }
 
     public void setPlayerReady(String username) {
-        Player player = players.stream().filter(p -> p.getUsername().equals(username)).findFirst().orElse(null);
-        player.setReady(true);
+        Player player = null;
+        for (Player p : players) {
+            if (p.getUsername().equals(username)) {
+                player = p;
+            }
+        }
+        if (player != null) {
+            player.setReady(true);
+        }
     }
 
     public void setCurrentLetter(String currentLetter) {
