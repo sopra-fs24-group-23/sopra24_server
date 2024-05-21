@@ -4,17 +4,55 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.nio.file.Paths;
+import java.util.HashSet;
+import java.util.Set;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class CountryAPI extends APIManager {
 
+    private final String citiesFilePath = "src/main/java/ch/uzh/ifi/hase/soprafs24/constant/countries.json";
+    private final Set<String> countryNames;
+
+    /*
     public CountryAPI(String apiKey, String baseUrl) {
+        this.countryNames = loadCountriesFromFile();
         setApiKey(apiKey);
         setBaseUrl("https://country-by-api-ninjas.p.rapidapi.com");
     }
+    */
+
+    public CountryAPI() {
+        this.countryNames = loadCountriesFromFile();
+    }
+
+    private Set<String> loadCountriesFromFile() {
+        ObjectMapper mapper = new ObjectMapper();
+        Set<String> countryNames = new HashSet<>();
+        try {
+            countryNames = mapper.readValue(Paths.get(citiesFilePath).toFile(), Set.class);
+        }
+        catch (Exception e) {
+            System.out.println("Issue while loading Countries");
+        }
+        return countryNames;
+    }
 
     public String performRequest(String countryName) {
+        if (countryNames.contains(countryName.toLowerCase())) {
+            return "True";
+        }
+        else {
+            return "False";
+        }
+    }
+    /*
+    public String performRequest(String countryName) {
+
+
         try {
             String parameters = "name=" + countryName.replace(" ", "%20");
 
@@ -53,7 +91,7 @@ public class CountryAPI extends APIManager {
         }
         return "False";
     }
-
+*/
     //public static void main(String[] args) {
       //  String apiKey = "7f9f1b12c5msh0ee2d0b9a2cbbb7p158dc9jsn62d752680b9e";
         //CountryAPI countryAPI = new CountryAPI(apiKey, "");

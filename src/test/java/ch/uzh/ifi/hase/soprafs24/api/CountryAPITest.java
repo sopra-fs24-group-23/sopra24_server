@@ -12,7 +12,8 @@ public class CountryAPITest {
 
     @BeforeEach
     public void setup(){
-        countryAPI = new CountryAPI("7f9f1b12c5msh0ee2d0b9a2cbbb7p158dc9jsn62d752680b9e", "https://country-by-api-ninjas.p.rapidapi.com");
+        countryAPI = new CountryAPI();
+        // countryAPI = new CountryAPI("7f9f1b12c5msh0ee2d0b9a2cbbb7p158dc9jsn62d752680b9e", "https://country-by-api-ninjas.p.rapidapi.com");
     }
 
     @Test
