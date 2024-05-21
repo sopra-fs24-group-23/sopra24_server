@@ -22,7 +22,6 @@ public class Answer {
     }
 
     public void calculateScore() {
-
         if (isCorrect) {
             score = isUnique ? 10 : 5;
         }
@@ -43,7 +42,8 @@ public class Answer {
                     return false;
                 }
                 else {
-                    return answerCategory.validateAnswer(this.answer);
+                    String cleanAnswer = this.answer.toLowerCase().trim();
+                    return answerCategory.validateAnswer(cleanAnswer);
                 }
             }
             catch (Exception e) {
