@@ -34,9 +34,13 @@ public class GameSettingsController {
 
     @MessageMapping("/lobbies/{lobbyId}/settings")
     public void updateSettings(@DestinationVariable String lobbyId, @Payload GameSettingsDTO settingsDTO) {
-        GameSettings settings = DTOMapper.INSTANCE.convertGameSettingsDTOToGameSettings(settingsDTO);
-        gameSettingsService.updateSettings(lobbyId, settings);
-        this.sendSettings(lobbyId, settings);
+        try {
+            GameSettings settings = DTOMapper.INSTANCE.convertGameSettingsDTOToGameSettings(settingsDTO);
+            gameSettingsService.updateSettings(lobbyId, settings);
+            this.sendSettings(lobbyId, settings);
+        } catch (IllegalArgumentException e) {
+            messagingTemplate.convertAndSend(String.format("/topic/lobbies/%s/errors", lobbyId), e.getMessage());
+        }
     }
 
     private void sendSettings(String lobbyId, GameSettings settings) {
