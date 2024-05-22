@@ -19,6 +19,10 @@ public class Answer {
     public Answer(String category, String answer) {
         this.category = category;
         this.answer = answer;
+        this.isUnique = false;
+        this.isJoker = false;
+        this.isDoubted = false;
+        this.isCorrect = false;
     }
 
     public void calculateScore() {
