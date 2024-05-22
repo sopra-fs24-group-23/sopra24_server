@@ -215,4 +215,31 @@ public class UserServiceTest {
         assertEquals(10, rankedUsers.get(0).getGamesPlayed());
     }
 
+    @Test
+    public void getTotalScoreRanking_returnsGivenRange() {
+        User user1 = new User();
+        user1.setUsername("user1");
+        user1.setGamesPlayed(10);
+
+        User user2 = new User();
+        user2.setUsername("user2");
+        user2.setGamesPlayed(5);
+
+        User user3 = new User();
+        user3.setUsername("user3");
+        user3.setGamesPlayed(7);
+
+        List<User> users = new ArrayList<>();
+        users.add(user1);
+        users.add(user2);
+        users.add(user3);
+        Mockito.when(userRepository.findAll()).thenReturn(users);
+
+        List<User> topUsers = userService.getGamesPlayedRanking(2L);
+
+        assertEquals(2, topUsers.size());
+        assertEquals(topUsers.get(0).getUsername(), "user1");
+        assertEquals(topUsers.get(1).getUsername(), "user3");
+    }
+
 }
