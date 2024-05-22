@@ -56,7 +56,9 @@ public class GameSettings {
     }
 
     public void setMaxPlayers(Integer maxPlayers) {
-        if (maxPlayers == null || maxPlayers > MAX_PLAYERS_LIMIT) {
+        if (maxPlayers < 2) {
+            throw new IllegalArgumentException("Max Players cannot be less than 2.");
+        } else if (maxPlayers > MAX_PLAYERS_LIMIT) {
             throw new IllegalArgumentException("Max Players exceeds allowed limits. Please enter a value that does not exceed " + MAX_PLAYERS_LIMIT + ".");
         } else {
             this.maxPlayers = maxPlayers;

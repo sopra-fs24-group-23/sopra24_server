@@ -65,30 +65,39 @@ public class Game {
 
 
 
-    public CompletableFuture<Void> calculateScores(){
+    public CompletableFuture<Void> calculateScores() {
+        Map<String, Integer> answerMap = new HashMap<>();
+
+        // First, build the answer map with normalized answers
+        for (Player player : players) {
+            for (Answer answer : player.getCurrentAnswers()) {
+                String cleanAnswer = answer.getAnswer().toLowerCase().trim();
+                answerMap.put(cleanAnswer, answerMap.getOrDefault(cleanAnswer, 0) + 1);
+            }
+        }
+
         List<CompletableFuture<Void>> scoreFutures = new ArrayList<>();
 
         for (Player player : players) {
             for (Answer answer : player.getCurrentAnswers()) {
-
                 Category answerCategory = CategoryFactory.createCategory(answer.getCategory());
 
                 CompletableFuture<Void> checkFuture = answer.checkAnswer(answerCategory, this.currentLetter)
-                    .thenApply((isCorrect) -> {
-                        answer.setIsCorrect(isCorrect);
+                        .thenApply((isCorrect) -> {
+                            answer.setIsCorrect(isCorrect);
 
-                        String cleanAnswer = answer.getAnswer().toLowerCase().trim();
-                        Integer count = answerMap.get(cleanAnswer);
+                            String cleanAnswer = answer.getAnswer().toLowerCase().trim();
+                            Integer count = answerMap.get(cleanAnswer);
 
-                        answer.setIsUnique(count == null || count < 2);
+                            answer.setIsUnique(count == null || count < 2);
 
-                        // Calculate and update the score
-                        answer.calculateScore();
-                        int score = answer.getScore();
-                        player.setCurrentScore(player.getCurrentScore() + score);
+                            // Calculate and update the score
+                            answer.calculateScore();
+                            int score = answer.getScore();
+                            player.setCurrentScore(player.getCurrentScore() + score);
 
-                        return null;
-                    });
+                            return null;
+                        });
 
                 scoreFutures.add(checkFuture);
             }
@@ -97,6 +106,7 @@ public class Game {
         System.out.println("calculateScores has finished called.");
         return CompletableFuture.allOf(scoreFutures.toArray(new CompletableFuture[0]));
     }
+
 
     public CompletableFuture<Void> waitScoreboard() {
         return waitForDuration(settings.getScoreboardDuration().longValue());

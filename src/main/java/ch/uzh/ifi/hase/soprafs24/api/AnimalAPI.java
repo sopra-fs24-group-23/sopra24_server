@@ -1,4 +1,5 @@
 package ch.uzh.ifi.hase.soprafs24.api;
+
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -17,6 +18,12 @@ public class AnimalAPI {
     }
 
     public String performRequest(String animalName) {
+        if (animalName == null || animalName.trim().length() < 3) { // Minimum length for valid input
+            return "False";
+        }
+
+        animalName = animalName.trim(); // Trim the input
+
         try {
             String encodedName = URLEncoder.encode(animalName, "UTF-8");
             URL url = new URL(baseUrl + "animals?name=" + encodedName);
@@ -38,8 +45,8 @@ public class AnimalAPI {
                 JSONArray animals = new JSONArray(response.toString());
                 for (int i = 0; i < animals.length(); i++) {
                     JSONObject animal = animals.getJSONObject(i);
-                    String name = animal.getString("name").toLowerCase();
-                    if (name.contains(animalName.toLowerCase())) {
+                    String name = animal.getString("name").toLowerCase().trim();
+                    if (name.contains(animalName.toLowerCase())) { // Substring match with trimmed input
                         return "True";
                     }
                 }
@@ -52,10 +59,5 @@ public class AnimalAPI {
             return "False";
         }
     }
-    public static void main(String[] args) {
-        AnimalAPI animalAPI = new AnimalAPI("7f9f1b12c5msh0ee2d0b9a2cbbb7p158dc9jsn62d752680b9e", "https://animals-by-api-ninjas.p.rapidapi.com/v1/");
-        String input = "fox"; // Example animal name to test
-        String result = animalAPI.performRequest(input);
-        System.out.println("Result: " + result);
-    }
+
 }
