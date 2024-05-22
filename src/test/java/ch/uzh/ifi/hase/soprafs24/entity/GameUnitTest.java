@@ -132,6 +132,72 @@ public class GameUnitTest {
         game.doubtAnswers(players.get(0).getUsername(), Arrays.asList(vote));
     }
 
+    @Test
+    public void testCapitalizedDuplicateAnswerNonUnique() {
+        List<Answer> player1Answers = new ArrayList<>();
+        List<Answer> player2Answers = new ArrayList<>();
+
+        Answer city1 = new Answer("City", "Paris");
+        Answer city2 = new Answer("City", "paris");
+
+        Answer country1 = new Answer("Country", "poLand");
+        Answer country2 = new Answer("Country", "Poland");
+
+        player1Answers.add(city1);
+        player1Answers.add(country1);
+
+        player2Answers.add(city2);
+        player2Answers.add(country2);
+
+        game.setPlayerAnswers("player1", player1Answers);
+        game.setPlayerAnswers("player2", player2Answers);
+
+        game.setCurrentLetter("P");
+
+        game.calculateScores();
+
+        List<Player> players = game.getPlayers();
+
+        for (Player player : players) {
+            for (Answer answer : player.getCurrentAnswers()) {
+                assertFalse(answer.getIsUnique());
+            }
+        }
+    }
+
+    @Test
+    public void testLeadingOrTrailingSpacesAnswerNonUnique() {
+        List<Answer> player1Answers = new ArrayList<>();
+        List<Answer> player2Answers = new ArrayList<>();
+
+        Answer city1 = new Answer("City", " Paris");
+        Answer city2 = new Answer("City", "Paris ");
+
+        Answer country1 = new Answer("Country", "  Poland");
+        Answer country2 = new Answer("Country", "Poland");
+
+        player1Answers.add(city1);
+        player1Answers.add(country1);
+
+        player2Answers.add(city2);
+        player2Answers.add(country2);
+
+        game.setPlayerAnswers("player1", player1Answers);
+        game.setPlayerAnswers("player2", player2Answers);
+
+        game.setCurrentLetter("P");
+
+        game.calculateScores();
+
+        List<Player> players = game.getPlayers();
+
+        for (Player player : players) {
+            for (Answer answer : player.getCurrentAnswers()) {
+                assertFalse(answer.getIsUnique());
+            }
+        }
+    }
+
     /*@Test
     public void testVotingCompletionWhenAllVotesAreIn() {
         game.initializeRound();

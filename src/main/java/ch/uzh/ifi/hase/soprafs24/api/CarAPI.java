@@ -19,6 +19,13 @@ public class CarAPI {
 
     public String performRequest(String make) {
         try {
+            if (make == null || make.trim().isEmpty()) {
+                return "False";
+            }
+
+            // Trim the input and convert to lower case
+            make = make.trim().toLowerCase();
+
             String encodedMake = URLEncoder.encode(make, "UTF-8");
             String parameters = "make=" + encodedMake;
             URL url = new URL(baseUrl + "/v1/cars?" + parameters);
@@ -46,7 +53,7 @@ public class CarAPI {
                     JSONObject car = cars.getJSONObject(i);
                     String carMake = car.optString("make", "").toLowerCase();
 
-                    if (carMake.equals(make.toLowerCase())) { // Check for exact match
+                    if (carMake.equals(make)) { // Check for exact match
                         return "True";
                     }
                 }
@@ -68,10 +75,4 @@ public class CarAPI {
         return "False";
     }
 
-    //public static void main(String[] args) {
-      //  CarAPI carAPI = new CarAPI("7f9f1b12c5msh0ee2d0b9a2cbbb7p158dc9jsn62d752680b9e", "https://cars-by-api-ninjas.p.rapidapi.com");
-        //String input = "pagani"; // Example celebrity name
-        //String result = carAPI.performRequest(input);
-        //System.out.println("Result: " + result);
-    //}
 }

@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLEncoder; // Import for URL encoding
+import java.net.URLEncoder;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -19,11 +19,18 @@ public class CelebrityAPI {
 
     public String performRequest(String answer) {
         try {
+            if (answer == null || answer.trim().isEmpty()) {
+                return "False";
+            }
+
+            // Trim the input and convert to lowercase
+            answer = answer.trim().toLowerCase();
+
             // URL Encode the answer to handle spaces and special characters
             String encodedAnswer = URLEncoder.encode(answer, "UTF-8");
             String parameters = "name=" + encodedAnswer;
-            URL url = new URL(baseUrl + "celebrity?" + parameters); // Make sure the base URL ends with a '/'
-            System.out.println("Requesting URL: " + url.toString()); // Print the full URL
+            URL url = new URL(baseUrl + "celebrity?" + parameters);
+            System.out.println("Requesting URL: " + url.toString());
 
             HttpURLConnection connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
@@ -48,13 +55,12 @@ public class CelebrityAPI {
                     JSONObject celebrity = celebrities.getJSONObject(i);
                     String celebrityName = celebrity.optString("name", "").toLowerCase();
 
-                    if (celebrityName.contains(answer.toLowerCase())) {
+                    if (celebrityName.contains(answer)) {
                         return "True";
                     }
                 }
                 return "False";
             } else {
-                // Read the error stream to get more details about the error
                 BufferedReader in = new BufferedReader(new InputStreamReader(connection.getErrorStream()));
                 String inputLine;
                 StringBuilder errorResponse = new StringBuilder();
@@ -68,13 +74,6 @@ public class CelebrityAPI {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "False"; // Return "false" if the request failed
+        return "False";
     }
-
-    //public static void main(String[] args) {
-        //CelebrityAPI celebrityAPI = new CelebrityAPI("7f9f1b12c5msh0ee2d0b9a2cbbb7p158dc9jsn62d752680b9e", "https://celebrity-by-api-ninjas.p.rapidapi.com/v1/");
-        //String input = "Ronaldo"; // Example celebrity name
-       // String result = celebrityAPI.performRequest(input);
-        //System.out.println("Result: " + result);
-    //}
 }

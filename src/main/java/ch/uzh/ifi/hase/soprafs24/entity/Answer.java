@@ -19,6 +19,10 @@ public class Answer {
     public Answer(String category, String answer) {
         this.category = category;
         this.answer = answer;
+        this.isUnique = false;
+        this.isJoker = false;
+        this.isDoubted = false;
+        this.isCorrect = false;
     }
 
     public void calculateScore() {
@@ -30,28 +34,30 @@ public class Answer {
             score += 5;
         }
     }
-
     public CompletableFuture<Boolean> checkAnswer(Category answerCategory, String currentLetter) {
         return CompletableFuture.supplyAsync(() -> {
             try {
                 // only check answer if not a non-doubted joker
-                if(isJoker && !isDoubted) {
+                if (isJoker && !isDoubted) {
                     return true;
                 }
-                else if (answer.isEmpty() || !answer.substring(0,1).toUpperCase().equals(currentLetter)) {
+
+                // Trim the answer before performing checks
+                String cleanAnswer = this.answer.toLowerCase().trim();
+
+                // Check if the answer is empty after trimming
+                if (cleanAnswer.isEmpty() || !cleanAnswer.substring(0, 1).toUpperCase().equals(currentLetter)) {
                     return false;
-                }
-                else {
-                    String cleanAnswer = this.answer.toLowerCase().trim();
+                } else {
                     return answerCategory.validateAnswer(cleanAnswer);
                 }
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 System.out.printf("There was an error while validating answers: %s \n", e.getMessage());
                 return false;
             }
         });
     }
+
 
     public Boolean getIsUnique() {
         return isUnique;

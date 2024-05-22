@@ -18,7 +18,7 @@ public class Game {
 
 
     private String currentLetter;
-    private final HashMap<String, Integer> answerMap;
+    private final ConcurrentHashMap<String, Integer> answerMap;
     private volatile boolean playerHasAnswered;
     private boolean inputPhaseClosed = false;
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
@@ -30,7 +30,7 @@ public class Game {
     public Game(GameSettings settings, List<Player> players) {
         this.settings = settings;
         this.players = players;
-        this.answerMap = new HashMap<>();
+        this.answerMap = new ConcurrentHashMap<>();
         this.currentRoundNumber = 0;
         this.playerHasAnswered = false;
     }
@@ -65,30 +65,29 @@ public class Game {
 
 
 
-    public CompletableFuture<Void> calculateScores(){
+    public CompletableFuture<Void> calculateScores() {
         List<CompletableFuture<Void>> scoreFutures = new ArrayList<>();
 
         for (Player player : players) {
             for (Answer answer : player.getCurrentAnswers()) {
-
                 Category answerCategory = CategoryFactory.createCategory(answer.getCategory());
 
                 CompletableFuture<Void> checkFuture = answer.checkAnswer(answerCategory, this.currentLetter)
-                    .thenApply((isCorrect) -> {
-                        answer.setIsCorrect(isCorrect);
+                        .thenApply((isCorrect) -> {
+                            answer.setIsCorrect(isCorrect);
 
-                        String cleanAnswer = answer.getAnswer().toLowerCase().trim();
-                        Integer count = answerMap.get(cleanAnswer);
+                            String cleanAnswer = answer.getAnswer().toLowerCase().trim();
+                            Integer count = answerMap.get(cleanAnswer);
 
-                        answer.setIsUnique(count == null || count < 2);
+                            answer.setIsUnique(count == null || count < 2);
 
-                        // Calculate and update the score
-                        answer.calculateScore();
-                        int score = answer.getScore();
-                        player.setCurrentScore(player.getCurrentScore() + score);
+                            // Calculate and update the score
+                            answer.calculateScore();
+                            int score = answer.getScore();
+                            player.setCurrentScore(player.getCurrentScore() + score);
 
-                        return null;
-                    });
+                            return null;
+                        });
 
                 scoreFutures.add(checkFuture);
             }
@@ -97,6 +96,7 @@ public class Game {
         System.out.println("calculateScores has finished called.");
         return CompletableFuture.allOf(scoreFutures.toArray(new CompletableFuture[0]));
     }
+
 
     public CompletableFuture<Void> waitScoreboard() {
         return waitForDuration(settings.getScoreboardDuration().longValue());
@@ -256,8 +256,15 @@ public class Game {
     }
 
     public void setPlayerReady(String username) {
-        Player player = players.stream().filter(p -> p.getUsername().equals(username)).findFirst().orElse(null);
-        player.setReady(true);
+        Player player = null;
+        for (Player p : players) {
+            if (p.getUsername().equals(username)) {
+                player = p;
+            }
+        }
+        if (player != null) {
+            player.setReady(true);
+        }
     }
 
     public void setCurrentLetter(String currentLetter) {

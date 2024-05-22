@@ -17,6 +17,8 @@ public class CategoryFactory {
             "Car"
     };
 
+    private static final Random random = new Random();
+
     public static Category createCategory(String categoryName) {
         switch (categoryName) {
             case "Animal":
@@ -40,7 +42,6 @@ public class CategoryFactory {
 
     // returns list of three, non-equal, random categories
     public static List<Category> getRandomCategories() {
-        Random random = new Random();
         List<Category> categories = new ArrayList<>();
 
         while (categories.size() < 3) {
