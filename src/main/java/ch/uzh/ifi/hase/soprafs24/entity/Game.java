@@ -14,7 +14,7 @@ public class Game {
     private final GameSettings settings;
     private Integer currentRoundNumber;
     private GamePhase currentPhase;
-    private GameState gameState;
+    private Random random;
 
 
     private String currentLetter;
@@ -33,6 +33,7 @@ public class Game {
         this.answerMap = new ConcurrentHashMap<>();
         this.currentRoundNumber = 0;
         this.playerHasAnswered = false;
+        this.random = new Random();
     }
 
     public GameSettings getSettings() {
@@ -219,7 +220,6 @@ public class Game {
     }
 
     private String generateRandomLetter() {
-        Random random = new Random();
         String letter;
         int attempts = 0;
         do {

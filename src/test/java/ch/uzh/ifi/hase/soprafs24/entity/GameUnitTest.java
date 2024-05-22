@@ -198,6 +198,53 @@ public class GameUnitTest {
         }
     }
 
+    @Test
+    public void testWaitForVotesPassWhenAllHaveVoted() {
+        List<Vote> votes = new ArrayList<>();
+
+        assertDoesNotThrow(() -> {
+            game.doubtAnswers("player1", votes);
+            game.doubtAnswers("player2", votes);
+        });
+
+        CompletableFuture<Void> votingWait = game.waitForVotes();
+
+        try {
+            votingWait.get(1, TimeUnit.SECONDS);
+        }
+        catch (Exception e) {
+            fail("waitForVotes did not resolve correctly.", e);
+        }
+    }
+
+    @Test
+    public void testSetPlayerReady() {
+        game.setPlayerReady("player1");
+        game.setPlayerReady("player2");
+
+        List<Player> players = game.getPlayers();
+
+        for (Player player : players) {
+            assertTrue(player.isReady());
+        }
+    }
+
+    @Test
+    public void testRemovePlayer() {
+        User user = new User();
+        user.setToken("token1");
+
+        game.removePlayer(user);
+
+        List<Player> players = game.getPlayers();
+
+        for (Player player : players) {
+            assertNotEquals(player.getUsername(), "player1");
+        }
+    }
+
+
+
     /*@Test
     public void testVotingCompletionWhenAllVotesAreIn() {
         game.initializeRound();
