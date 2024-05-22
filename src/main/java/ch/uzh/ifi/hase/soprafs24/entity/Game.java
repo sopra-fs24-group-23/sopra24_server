@@ -18,7 +18,7 @@ public class Game {
 
 
     private String currentLetter;
-    private final HashMap<String, Integer> answerMap;
+    private final ConcurrentHashMap<String, Integer> answerMap;
     private volatile boolean playerHasAnswered;
     private boolean inputPhaseClosed = false;
     private final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
@@ -30,7 +30,7 @@ public class Game {
     public Game(GameSettings settings, List<Player> players) {
         this.settings = settings;
         this.players = players;
-        this.answerMap = new HashMap<>();
+        this.answerMap = new ConcurrentHashMap<>();
         this.currentRoundNumber = 0;
         this.playerHasAnswered = false;
     }
@@ -66,16 +66,6 @@ public class Game {
 
 
     public CompletableFuture<Void> calculateScores() {
-        Map<String, Integer> answerMap = new HashMap<>();
-
-        // First, build the answer map with normalized answers
-        for (Player player : players) {
-            for (Answer answer : player.getCurrentAnswers()) {
-                String cleanAnswer = answer.getAnswer().toLowerCase().trim();
-                answerMap.put(cleanAnswer, answerMap.getOrDefault(cleanAnswer, 0) + 1);
-            }
-        }
-
         List<CompletableFuture<Void>> scoreFutures = new ArrayList<>();
 
         for (Player player : players) {
