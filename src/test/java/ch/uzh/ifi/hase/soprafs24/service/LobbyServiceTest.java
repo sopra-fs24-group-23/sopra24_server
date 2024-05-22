@@ -175,24 +175,34 @@ class LobbyServiceTest {
         user.setUsername("user1");
         user.setToken("ceffcvf");
 
-        User userToAdd = new User();
-        userToAdd.setUsername("user2");
-        userToAdd.setToken("akakaka5");
+        User user2 = new User();
+        user2.setUsername("user2");
+        user2.setToken("token2");
+
+        User user3 = new User();
+        user3.setUsername("user3");
+        user3.setToken("token3");
 
         when(userRepository.findByToken(user.getToken())).thenReturn(user);
         Lobby newLobby = lobbyService.createLobby(user);
 
-        // Create a GameSettings object and set maxPlayers to 1
+        // Create a GameSettings object and set maxPlayers to 2
         GameSettings settings = new GameSettings();
-        settings.setMaxPlayers(1);
+        settings.setMaxPlayers(2);
 
         newLobby.setSettings(settings);
 
         // find user corresponding to received token
-        when(userRepository.findByToken(userToAdd.getToken())).thenReturn(userToAdd);
+        when(userRepository.findByToken(user2.getToken())).thenReturn(user2);
+        when(userRepository.findByToken(user3.getToken())).thenReturn(user3);
 
+        // add second player -> maxPlayers = 2 -> does not throw
+        assertDoesNotThrow(() -> {
+            lobbyService.addPlayer(newLobby.getId(), user2);
+        });
+        // add third player -> does throw
         ResponseStatusException exception = assertThrows(ResponseStatusException.class, () -> {
-            lobbyService.addPlayer(newLobby.getId(), userToAdd);
+            lobbyService.addPlayer(newLobby.getId(), user3);
         });
 
         assertTrue(exception.getMessage().contains("Sorry, the lobby you wanted to join is full or the game is already in progress."));
