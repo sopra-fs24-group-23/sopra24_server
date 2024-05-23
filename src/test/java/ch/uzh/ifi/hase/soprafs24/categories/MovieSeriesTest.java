@@ -16,14 +16,14 @@ public class MovieSeriesTest {
     }
 
     @Test
-    public void testValidateAnswerTrue(){
+    public void validateAnswer_invalidInput_returnTrue(){
         boolean result = moviesSeries.validateAnswer("Bad Boys");
 
         assertTrue(result);
     }
 
     @Test
-    public void testValidateAnswerFalse(){
+    public void validateAnswer_invalidInput_returnFalse(){
         boolean result = moviesSeries.validateAnswer("star of wars");
 
         assertFalse(result);
