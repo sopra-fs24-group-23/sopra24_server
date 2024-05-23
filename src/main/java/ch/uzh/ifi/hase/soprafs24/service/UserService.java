@@ -1,6 +1,7 @@
 package ch.uzh.ifi.hase.soprafs24.service;
 
 import ch.uzh.ifi.hase.soprafs24.constant.ColorRequirement;
+import ch.uzh.ifi.hase.soprafs24.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs24.entity.Player;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
@@ -36,6 +37,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+
     public List<User> getUsers() {
         return this.userRepository.findAll();
     }
@@ -45,6 +47,7 @@ public class UserService {
         checkIfUsernameTaken(newUser);
         // saves the given entity but data is only persisted in the database once
         // flush() is called
+        newUser.setStatus(UserStatus.ONLINE);
         newUser = userRepository.save(newUser);
         userRepository.flush();
 
@@ -95,10 +98,15 @@ public class UserService {
         User persistedUser = userRepository.findByUsername(username);
         checkIfUserExists(persistedUser);
 
+        if (persistedUser.getStatus() == UserStatus.ONLINE) {
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "User is already logged in from another session.");
+        }
+
         if (!persistedUser.getPassword().equals(password)) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Incorrect password.");
         }
         persistedUser.setToken(UUID.randomUUID().toString()); // set new session token
+        persistedUser.setStatus(UserStatus.ONLINE);
         userRepository.saveAndFlush(persistedUser);
 
         return persistedUser;
@@ -113,7 +121,7 @@ public class UserService {
         }
 
         persistedUser.setToken(null);
-
+        persistedUser.setStatus(UserStatus.OFFLINE);
         userRepository.saveAndFlush(persistedUser);
 
         return persistedUser;
