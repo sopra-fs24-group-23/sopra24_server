@@ -1,4 +1,15 @@
-# Backend GlobalGuess
+<h1 align="center">
+  <a href="https://github.com/sopra-fs24-group-23"><img src="https://github.com/sopra-fs24-group-23/sopra24_client/blob/main/public/Images/logo.png" alt="GlobalGuess" width="200"></a>
+  <br>
+  GlobalGuess Backend
+</h1>
+
+<div align="center">
+
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=sopra-fs24-group-23_sopra24_server&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=sopra-fs24-group-23_sopra24_server)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=sopra-fs24-group-23_sopra24_server&metric=coverage)](https://sonarcloud.io/summary/new_code?id=sopra-fs24-group-23_sopra24_server)
+
+</div>
 
 ## Technologies
 This repository uses the [spring framework](https://spring.io/projects/spring-framework). We use the websocket dependency provided by spring, which utilizes the [STOMP](https://stomp.github.io/) protocol for communication.
