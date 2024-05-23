@@ -189,7 +189,6 @@
 - 9.5 - 15.5, Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/136](https://github.com/sopra-fs24-group-23/sopra24_client/issues/136)
 - 9.5 - 15.5, Nils, [https://github.com/sopra-fs24-group-23/sopra24_server/issues/200](https://github.com/sopra-fs24-group-23/sopra24_server/issues/200)
 
-
 ### Nilaksan
 - 9.5 - 15.5, Nilaksan, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/131](https://github.com/sopra-fs24-group-23/sopra24_client/issues/132)
 - 9.5 - 15.5, Nilaksan, [https://github.com/sopra-fs24-group-23/sopra24_server/issues/196](https://github.com/sopra-fs24-group-23/sopra24_server/issues/196)
@@ -203,9 +202,15 @@
 - 9.5 - 15.5, Franziska, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/111](https://github.com/sopra-fs24-group-23/sopra24_client/issues/111)
 
 ## Week 8 | 16.5. - 22.5.
+
 ### Nilaksan
 - 16.5. - 22.5., Nilaksan, [https://github.com/sopra-fs24-group-23/sopra24_server/issues/209](https://github.com/sopra-fs24-group-23/sopra24_server/issues/209)
 - 16.5. - 22.5., Nilaksan, [https://github.com/sopra-fs24-group-23/sopra24_server/issues/208](https://github.com/sopra-fs24-group-23/sopra24_server/issues/208)
 - 16.5. - 22.5., Nilaksan, [https://github.com/sopra-fs24-group-23/sopra24_server/issues/207](https://github.com/sopra-fs24-group-23/sopra24_server/issues/207)
 - 16.5. - 22.5., Nilaksan, [https://github.com/sopra-fs24-group-23/sopra24_server/issues/216](https://github.com/sopra-fs24-group-23/sopra24_server/issues/216)
+
+### Nils
+- 16.5. - 22.5., Nils, [https://github.com/sopra-fs24-group-23/sopra24_server/issues/183](https://github.com/sopra-fs24-group-23/sopra24_server/issues/183)
+- 16.5. - 22.5., Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/126](https://github.com/sopra-fs24-group-23/sopra24_client/issues/126)
+- 16.5. - 22.5., Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/138](https://github.com/sopra-fs24-group-23/sopra24_client/issues/138)
 
