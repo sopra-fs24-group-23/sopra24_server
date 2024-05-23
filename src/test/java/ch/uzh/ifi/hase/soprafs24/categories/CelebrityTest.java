@@ -16,14 +16,14 @@ public class CelebrityTest {
     }
 
     @Test
-    public void testValidateAnswerTrue(){
+    public void validateAnswer_invalidInput_returnTrue(){
         boolean result = celebrity.validateAnswer("Mike Tyson");
 
         assertTrue(result);
     }
 
     @Test
-    public void testValidateAnswerFalse(){
+    public void validateAnswer_invalidInput_returnFalse(){
         boolean result = celebrity.validateAnswer("Tiger Wods");
 
         assertFalse(result);

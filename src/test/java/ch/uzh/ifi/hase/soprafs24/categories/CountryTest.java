@@ -16,14 +16,14 @@ public class CountryTest {
     }
 
     @Test
-    public void testValidateAnswerTrue(){
+    public void validateAnswer_invalidInput_returnTrue(){
         boolean result = country.validateAnswer("Japan");
 
         assertTrue(result);
     }
 
     @Test
-    public void testValidateAnswerFalse(){
+    public void validateAnswer_invalidInput_returnFalse(){
         boolean result = country.validateAnswer("Wonderland");
 
         assertFalse(result);

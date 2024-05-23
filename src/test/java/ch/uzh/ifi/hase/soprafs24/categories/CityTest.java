@@ -16,14 +16,14 @@ public class CityTest {
     }
 
     @Test
-    public void testValidateAnswerTrue(){
+    public void validateAnswer_invalidInput_returnTrue(){
         boolean result = city.validateAnswer("Paris");
 
         assertTrue(result);
     }
 
     @Test
-    public void testValidateAnswerFalse(){
+    public void validateAnswer_invalidInput_returnFalse(){
         boolean result = city.validateAnswer("Switzerland");
 
         assertFalse(result);
