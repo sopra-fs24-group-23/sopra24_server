@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -44,6 +45,32 @@ public class UserServiceTest {
     Mockito.when(userRepository.save(Mockito.any())).thenReturn(testUser);
     Mockito.when(userRepository.findById(testUser.getId())).thenReturn(Optional.of(testUser));
   }
+
+    @Test
+    public void getUsers_returnsAllUsers() {
+        // given
+        User user1 = new User();
+        user1.setId(1L);
+        user1.setUsername("testUsername1");
+        user1.setPassword("testPassword1");
+        user1.setToken("1");
+
+        User user2 = new User();
+        user2.setId(2L);
+        user2.setUsername("testUsername2");
+        user2.setPassword("testPassword2");
+        user2.setToken("2");
+
+        List<User> expectedUsers = Arrays.asList(user1, user2);
+
+        Mockito.when(userRepository.findAll()).thenReturn(expectedUsers);
+
+        // when
+        List<User> actualUsers = userService.getUsers();
+
+        // then
+        assertEquals(expectedUsers, actualUsers);
+    }
 
   @Test
   public void createUser_validInputs_success() {
