@@ -23,7 +23,7 @@ public class UserRepositoryIntegrationTest {
   public void findByUsername_success() {
     // given
     User user = new User();
-    user.setUsername("firstname@lastname");
+    user.setUsername("username");
     user.setStatus(UserStatus.ONLINE);
     user.setPassword("testPassword");
     user.setToken("1");
