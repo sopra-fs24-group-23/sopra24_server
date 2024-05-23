@@ -16,14 +16,14 @@ public class AnimalTest {
     }
 
     @Test
-    public void testValidateAnswerTrue(){
+    public void validateAnswer_validInput_returnTrue(){
         boolean result = animal.validateAnswer("cat");
 
         assertTrue(result);
     }
 
     @Test
-    public void testValidateAnswerFalse(){
+    public void validateAnswer_invalidInput_returnFalse(){
         boolean result = animal.validateAnswer("cake");
 
         assertFalse(result);

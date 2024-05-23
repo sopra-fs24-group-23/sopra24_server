@@ -51,7 +51,7 @@ public class LeaderboardControllerTest {
     }
 
     @Test
-    public void getGamesPlayedRanking_returnUsers() throws Exception {
+    public void getGamesPlayedRanking_returnCorrectJsonObject() throws Exception {
         List<User> users = new ArrayList<>();
         users.add(user1);
         users.add(user2);

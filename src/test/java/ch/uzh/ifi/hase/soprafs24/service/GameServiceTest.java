@@ -69,7 +69,7 @@ public class GameServiceTest {
     }
 
     @Test
-    public void testUpdateStatistics() {
+    public void endGameLoop_validInputs_updatesStatisticsCorrectly() {
         User mockUser1 = new User();
         mockUser1.setGamesPlayed(1);
         mockUser1.setGamesWon(2);
@@ -100,6 +100,35 @@ public class GameServiceTest {
         assertEquals(6, mockUser2.getGamesPlayed());
         assertEquals(7, mockUser2.getGamesWon());
         assertEquals(600, mockUser2.getTotalScore());
+    }
+
+    @Test
+    public void endGameLoop_ifScoresTied_GamesWonDoesntIncrease() {
+        User mockUser1 = new User();
+        mockUser1.setGamesPlayed(1);
+        mockUser1.setGamesWon(0);
+        mockUser1.setTotalScore(100);
+
+        User mockUser2 = new User();
+        mockUser2.setGamesPlayed(1);
+        mockUser2.setGamesWon(0);
+        mockUser2.setTotalScore(100);
+
+        players.get(0).setCurrentScore(100);
+        players.get(1).setCurrentScore(100);
+
+        String gameId = "ABCD";
+        Game game = mock(Game.class);
+
+        Mockito.when(userRepository.findByUsername("Player1")).thenReturn(mockUser1);
+        Mockito.when(userRepository.findByUsername("Player2")).thenReturn(mockUser2);
+
+        Mockito.when(game.getPlayers()).thenReturn(players);
+
+        gameService.endGameLoop(gameId, game);
+
+        assertEquals(0, mockUser1.getGamesWon());
+        assertEquals(0, mockUser2.getGamesWon());
     }
 
 }

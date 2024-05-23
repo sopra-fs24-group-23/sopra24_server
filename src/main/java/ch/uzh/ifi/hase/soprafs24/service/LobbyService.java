@@ -25,7 +25,7 @@ import java.util.Random;
 public class LobbyService {
 
     private final UserRepository userRepository;
-    private HashMap<String, Lobby> lobbies;
+    private final HashMap<String, Lobby> lobbies;
     private final ApplicationEventPublisher eventPublisher;
     private final Random random;
 
@@ -34,7 +34,7 @@ public class LobbyService {
             ApplicationEventPublisher eventPublisher) {
         this.eventPublisher = eventPublisher;
         this.userRepository = userRepository;
-        this.lobbies = new HashMap<String, Lobby>();
+        this.lobbies = new HashMap<>();
         this.random = new Random();
     }
 
@@ -98,15 +98,19 @@ public class LobbyService {
         User user = userRepository.findByToken(userToAdd.getToken());
 
         // create new player object from user and add to the lobby
-        Player player = new Player(user.getId(), user.getUsername(), user.getToken(), user.getColor());
-
-        try {
-            lobby.addPlayer(player);
-            eventPublisher.publishEvent(new PlayerListUpdateEvent(this, lobbyId, lobby.getPlayers()));
-            eventPublisher.publishEvent(new SettingsUpdateEvent(this, lobbyId, lobby.getSettings()));
+        if (user != null) {
+            Player player = new Player(user.getId(), user.getUsername(), user.getToken(), user.getColor());
+            try {
+                lobby.addPlayer(player);
+                eventPublisher.publishEvent(new PlayerListUpdateEvent(this, lobbyId, lobby.getPlayers()));
+                eventPublisher.publishEvent(new SettingsUpdateEvent(this, lobbyId, lobby.getSettings()));
+            }
+            catch (LobbyLockedException e) {
+                throw new ResponseStatusException(HttpStatus.CONFLICT, "Sorry, the lobby you wanted to join is full or the game is already in progress.");
+            }
         }
-        catch (LobbyLockedException e) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Sorry, the lobby you wanted to join is full or the game is already in progress.");
+        else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The user you tried to add was not found in the DB.");
         }
 
         return lobby.getPlayers();
