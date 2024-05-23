@@ -1,5 +1,7 @@
 package ch.uzh.ifi.hase.soprafs24.entity;
 
+import ch.uzh.ifi.hase.soprafs24.constant.UserStatus;
+
 import javax.persistence.*;
 import java.io.Serial;
 import java.io.Serializable;
@@ -19,6 +21,10 @@ public class User implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
+
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    private UserStatus status;
 
     @Column(nullable = false, unique = true)
     private String username;
@@ -110,5 +116,13 @@ public class User implements Serializable {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public UserStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(UserStatus status) {
+        this.status = status;
     }
 }
