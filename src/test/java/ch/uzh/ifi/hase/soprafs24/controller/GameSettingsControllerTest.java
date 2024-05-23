@@ -1,11 +1,9 @@
 package ch.uzh.ifi.hase.soprafs24.controller;
 
 import static org.mockito.Mockito.*;
-import static org.junit.jupiter.api.Assertions.*;
 
 import ch.uzh.ifi.hase.soprafs24.entity.GameSettings;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.GameSettingsDTO;
-import ch.uzh.ifi.hase.soprafs24.rest.mapper.DTOMapper;
 import ch.uzh.ifi.hase.soprafs24.service.GameService;
 import ch.uzh.ifi.hase.soprafs24.service.GameSettingsService;
 import org.junit.jupiter.api.BeforeEach;
@@ -14,17 +12,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-
-import java.util.ArrayList;
 
 public class GameSettingsControllerTest {
 
     @Mock
-    private GameSettingsService gameSettingsService;
-    @Mock
     private GameService gameService;
+    @Mock
+    private GameSettingsService gameSettingsService;
     @Mock
     private SimpMessagingTemplate messagingTemplate;
     @InjectMocks
@@ -39,7 +34,7 @@ public class GameSettingsControllerTest {
     }
 
     @Test
-    public void testUpdateSettings() {
+    public void updateSettings_validInputs_informClients() {
         GameSettingsDTO gameSettingsDTO = new GameSettingsDTO();
         gameSettingsDTO.setInputDuration(10);
         gameSettingsDTO.setScoreboardDuration(10);
@@ -56,7 +51,7 @@ public class GameSettingsControllerTest {
     }
 
     @Test
-    public void testInformClients() {
+    public void informClients_validInputs_sendsMessageToClients() {
         GameSettings settings = new GameSettings();
 
         Mockito.when(gameService.getSettings(lobbyId)).thenReturn(settings);

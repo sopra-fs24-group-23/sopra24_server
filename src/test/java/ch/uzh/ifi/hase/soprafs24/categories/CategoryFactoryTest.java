@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CategoryFactoryTest {
 
     @Test
-    public void testCreateCategory(){
+    public void createCategory_validInput_createCorrectCategory(){
         Category category = CategoryFactory.createCategory("Animal");
         assertTrue(category instanceof Animal);
 
@@ -36,7 +36,7 @@ public class CategoryFactoryTest {
     }
 
     @Test
-    public void getRandomCategories_returnDifferentCategories() {
+    public void getRandomCategories_returnThreeDifferentCategories() {
         List<Category> categories = CategoryFactory.getRandomCategories();
         assertEquals(3, categories.size());
 

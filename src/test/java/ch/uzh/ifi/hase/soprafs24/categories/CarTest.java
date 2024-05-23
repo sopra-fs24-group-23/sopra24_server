@@ -16,14 +16,14 @@ public class CarTest {
     }
 
     @Test
-    public void testValidateAnswerTrue(){
+    public void validateAnswer_invalidInput_returnTrue(){
         boolean result = car.validateAnswer("renault");
 
         assertTrue(result);
     }
 
     @Test
-    public void testValidateAnswerFalse(){
+    public void validateAnswer_invalidInput_returnFalse(){
         boolean result = car.validateAnswer("speedy");
 
         assertFalse(result);
