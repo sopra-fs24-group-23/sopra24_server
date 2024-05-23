@@ -76,17 +76,16 @@ public class Lobby {
         return settings;
     }
 
+    public Boolean isGameRunning() {
+        return this.isGameRunning;
+    }
+
     public void setGameRunning(Boolean gameRunning) {
         isGameRunning = gameRunning;
     }
 
     public void setSettings(GameSettings settings) {
-        if (players.size() >= settings.getMaxPlayers()) {
-            this.isLobbyFull = true;
-        }
-        else {
-            this.isLobbyFull = false;
-        }
+        this.isLobbyFull = players.size() >= settings.getMaxPlayers();
         this.settings = settings;
     }
 

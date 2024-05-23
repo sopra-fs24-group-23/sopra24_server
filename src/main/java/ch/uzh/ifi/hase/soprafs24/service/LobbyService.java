@@ -134,9 +134,10 @@ public class LobbyService {
             }
         }
 
-        // delete lobby if empty
-        if (lobby.getPlayers().isEmpty()) {
+        // delete lobby if the game is running and only one player remains
+        if (lobbies.get(lobbyId) != null && lobby.getPlayers().size() < 2 && lobby.isGameRunning()) {
             lobbies.remove(lobbyId);
+            eventPublisher.publishEvent(new LobbyClosedEvent(this, lobbyId));
         }
 
         return lobby.getPlayers();
