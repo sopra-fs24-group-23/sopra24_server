@@ -22,13 +22,19 @@ The central components of GlobalGuess' game logic are [GameService](/src/main/ja
 ### Running the Project Locally
 To run our app locally follow these steps:
 1. Clone both this repository and the [client repository](https://github.com/sopra-fs24-group-23/sopra24_client/).
-2. Open two terminals at the server directory, either manually or by using IDE-integrated terminals.
-3. With your terminals in the server directory, use the command "./gradlew build" in terminal one, and "./gradlew bootRun" in the other.
+2. Open two terminals at the server directory, either manually or by using IDE-integrated terminals. **Alternatively** run the application directly in your IDE
+3. With your terminals in the server directory, use the command "./gradlew build" in terminal one, and "./gradlew bootRun" in the other. (Skip this if you are running the app through an IDE run config.)
 4. The server should now be running locally on port 8000, navigate to [https://localhost:8000/](https://localhost:8000/) to verify.
 5. Now open a terminal in the client directory, again, either manually or by using an IDE-integrated terminal.
 6. Use the command "npm install" to install all necessary dependencies.
 7. Once the dependencies have been installed, use the command "npm run dev" to run the client locally on port 3000. This should automatically open a browser window at [https://localhost:3000/](https://localhost:3000/)
 8. You're done 🚀 The project should now be running locally. You should be able to set breakpoints in your IDE, that will halt if you trigger them by interacting with your local frontend.
+
+### Setting up Environment Variables
+We use APIs provided by [RapidApis](https://rapidapis.com). The API-key for our project is stored as a Github secret in the server repository. It is automatically injected on deployment, but if you want to run the app locally you need to set up a local environment variable from which the the code can get the value.
+1. Get ahold of the API-key by contacting us.
+2. Create a local environment variable on your device, using the scheme: API_KEY_NINJA=<value>. You can do this via command-line, use a local .env file, or set it in the run-configuration of your IDE of choice (confirmed to work in IntelliJ, under Edit Configurations -> Environment Variables)
+3. Make sure the environment variable is loaded when you try to run the application (you manually need to load .env files)
 
 ### Running Tests
 You can run the test suite either directly from your IDE, or by running "./gradlew build", both should work fine. The latter will provide you with a link in your terminal to a more detailed report on passing/failing tests and thrown exceptions and errors.
