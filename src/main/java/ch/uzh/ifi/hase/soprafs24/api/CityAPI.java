@@ -1,21 +1,15 @@
 package ch.uzh.ifi.hase.soprafs24.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.HashSet;
-import java.util.Optional;
 import java.util.Set;
 
 
 public class CityAPI {
 
-    private final String citiesFilePath = "src/main/java/ch/uzh/ifi/hase/soprafs24/constant/citynames_minpop_20k.json";
+    private final String citiesFilePath = "src/main/resources/citynames_minpop_20k.json";
     private final Set<String> cityNames;
 
     public CityAPI() {
