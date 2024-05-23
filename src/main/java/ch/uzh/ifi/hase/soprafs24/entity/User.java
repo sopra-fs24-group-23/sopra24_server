@@ -22,14 +22,13 @@ public class User implements Serializable {
     @GeneratedValue
     private Long id;
 
-    @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private UserStatus status;
 
-    @Column(nullable = false, unique = true, length = 15)
+    @Column(nullable = false, unique = true)
     private String username;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false)
     private String password;
 
     @Column
