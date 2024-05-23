@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs24.service;
 
+import ch.uzh.ifi.hase.soprafs24.constant.UserStatus;
 import ch.uzh.ifi.hase.soprafs24.entity.Lobby;
 import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.repository.UserRepository;
@@ -32,6 +33,7 @@ public class LobbyServiceIntegrationTest {
         User user = new User();
         user.setToken("ABCD");
         user.setId(1L);
+        user.setStatus(UserStatus.ONLINE);
         user.setUsername("TestUser");
         user.setPassword("TestPassword");
         user.setTotalScore(10);
