@@ -1,29 +1,15 @@
 package ch.uzh.ifi.hase.soprafs24.api;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.nio.file.Paths;
 import java.util.HashSet;
 import java.util.Set;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 public class CountryAPI extends APIManager {
 
-    private final String citiesFilePath = "src/main/java/ch/uzh/ifi/hase/soprafs24/constant/countries.json";
+    private final String citiesFilePath = "src/main/resources/countries.json";
     private final Set<String> countryNames;
-
-    /*
-    public CountryAPI(String apiKey, String baseUrl) {
-        this.countryNames = loadCountriesFromFile();
-        setApiKey(apiKey);
-        setBaseUrl("https://country-by-api-ninjas.p.rapidapi.com");
-    }
-    */
 
     public CountryAPI() {
         this.countryNames = loadCountriesFromFile();
@@ -49,6 +35,4 @@ public class CountryAPI extends APIManager {
             return "False";
         }
     }
-
-
 }
