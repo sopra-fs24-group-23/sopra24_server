@@ -214,3 +214,10 @@
 - 16.5. - 22.5., Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/126](https://github.com/sopra-fs24-group-23/sopra24_client/issues/126)
 - 16.5. - 22.5., Nils, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/138](https://github.com/sopra-fs24-group-23/sopra24_client/issues/138)
 
+### Franziska
+- 16.5. - 22.5., Franziska [https://github.com/sopra-fs24-group-23/sopra24_client/issues/139](https://github.com/sopra-fs24-group-23/sopra24_client/issues/139)
+- 16.5. - 22.5., Franziska [https://github.com/sopra-fs24-group-23/sopra24_client/issues/143](https://github.com/sopra-fs24-group-23/sopra24_client/issues/143)
+- 16.5. - 22.5., Franziska [https://github.com/sopra-fs24-group-23/sopra24_client/issues/103](https://github.com/sopra-fs24-group-23/sopra24_client/issues/103)
+- 16.5. - 22.5., Franziska, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/146](https://github.com/sopra-fs24-group-23/sopra24_client/issues/146)
+- 16.5. - 22.5., Franziska, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/147](https://github.com/sopra-fs24-group-23/sopra24_client/issues/147)
+
