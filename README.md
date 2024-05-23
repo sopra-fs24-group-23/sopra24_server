@@ -22,7 +22,7 @@ The central components of GlobalGuess' game logic are [GameService](/src/main/ja
 ### Running the Project Locally
 To run our app locally follow these steps:
 1. Clone both this repository and the [client repository](https://github.com/sopra-fs24-group-23/sopra24_client/).
-2. Open two terminals at the server directory, either manually or by using IDE-integrated terminals. **Alternatively** run the application directly in your IDE
+2. Open two terminals at the server directory, either manually or by using IDE-integrated terminals. **ALTERNATIVELY** run the application directly in your IDE with a run configuration.
 3. With your terminals in the server directory, use the command "./gradlew build" in terminal one, and "./gradlew bootRun" in the other. (Skip this if you are running the app through an IDE run config.)
 4. The server should now be running locally on port 8000, navigate to [https://localhost:8000/](https://localhost:8000/) to verify.
 5. Now open a terminal in the client directory, again, either manually or by using an IDE-integrated terminal.
