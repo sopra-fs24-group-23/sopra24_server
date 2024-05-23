@@ -1,4 +1,15 @@
-# Backend GlobalGuess
+<h1 align="center">
+  <a href="https://github.com/sopra-fs24-group-23"><img src="https://github.com/sopra-fs24-group-23/sopra24_client/blob/main/public/Images/logo.png" alt="GlobalGuess" width="200"></a>
+  <br>
+  GlobalGuess Backend
+</h1>
+
+<div align="center">
+
+[![Lines of Code](https://sonarcloud.io/api/project_badges/measure?project=sopra-fs24-group-23_sopra24_server&metric=ncloc)](https://sonarcloud.io/summary/new_code?id=sopra-fs24-group-23_sopra24_server)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=sopra-fs24-group-23_sopra24_server&metric=coverage)](https://sonarcloud.io/summary/new_code?id=sopra-fs24-group-23_sopra24_server)
+
+</div>
 
 ## Technologies
 This repository uses the [spring framework](https://spring.io/projects/spring-framework). We use the websocket dependency provided by spring, which utilizes the [STOMP](https://stomp.github.io/) protocol for communication.
@@ -22,13 +33,19 @@ The central components of GlobalGuess' game logic are [GameService](/src/main/ja
 ### Running the Project Locally
 To run our app locally follow these steps:
 1. Clone both this repository and the [client repository](https://github.com/sopra-fs24-group-23/sopra24_client/).
-2. Open two terminals at the server directory, either manually or by using IDE-integrated terminals.
-3. With your terminals in the server directory, use the command "./gradlew build" in terminal one, and "./gradlew bootRun" in the other.
+2. Open two terminals at the server directory, either manually or by using IDE-integrated terminals. **ALTERNATIVELY** run the application directly in your IDE with a run configuration.
+3. With your terminals in the server directory, use the command "./gradlew build" in terminal one, and "./gradlew bootRun" in the other. (Skip this if you are running the app through an IDE run config.)
 4. The server should now be running locally on port 8000, navigate to [https://localhost:8000/](https://localhost:8000/) to verify.
 5. Now open a terminal in the client directory, again, either manually or by using an IDE-integrated terminal.
 6. Use the command "npm install" to install all necessary dependencies.
 7. Once the dependencies have been installed, use the command "npm run dev" to run the client locally on port 3000. This should automatically open a browser window at [https://localhost:3000/](https://localhost:3000/)
 8. You're done 🚀 The project should now be running locally. You should be able to set breakpoints in your IDE, that will halt if you trigger them by interacting with your local frontend.
+
+### Setting up Environment Variables
+We use APIs provided by [RapidApis](https://rapidapis.com). The API-key for our project is stored as a Github secret in the server repository. It is automatically injected on deployment, but if you want to run the app locally you need to set up a local environment variable from which the the code can get the value.
+1. Get ahold of the API-key by contacting us.
+2. Create a local environment variable on your device, using the scheme: API_KEY_NINJA=<value>. You can do this via command-line, use a local .env file, or set it in the run-configuration of your IDE of choice (confirmed to work in IntelliJ, under Edit Configurations -> Environment Variables)
+3. Make sure the environment variable is loaded when you try to run the application (you manually need to load .env files)
 
 ### Running Tests
 You can run the test suite either directly from your IDE, or by running "./gradlew build", both should work fine. The latter will provide you with a link in your terminal to a more detailed report on passing/failing tests and thrown exceptions and errors.
@@ -36,7 +53,19 @@ You can run the test suite either directly from your IDE, or by running "./gradl
 ### Deploying to Google Cloud
 The webapp is automatically deployed to google cloud whenever you push to the **main** branch. This should not require any additional setup on your part.
 
-## Illustrations
+### Releases
+To create a new release for GlobalGuess, create a new tag using git, then push it to both repositories.
+1. Locally, open a terminal in both repositories.
+2. Use one of the git commands below to tag the most recent commit, then push to remote. This should automatically create a tag on Github.
+
+For an annotated tag use:
+```
+git tag -a <tag> -m <message>
+```
+Otherwise use:
+```
+git tag <tag>
+```
 
 ## Roadmap
 
