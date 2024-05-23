@@ -202,5 +202,10 @@
 - 9.5 - 15.5, Franziska, [https://github.com/sopra-fs24-group-23/sopra24_server/issues/191](https://github.com/sopra-fs24-group-23/sopra24_server/issues/191)
 - 9.5 - 15.5, Franziska, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/111](https://github.com/sopra-fs24-group-23/sopra24_client/issues/111)
 
-
+## Week 8 | 16.5. - 22.5.
+### Nilaksan
+- 16.5. - 22.5., Nilaksan, [https://github.com/sopra-fs24-group-23/sopra24_server/issues/209](https://github.com/sopra-fs24-group-23/sopra24_server/issues/209)
+- 16.5. - 22.5., Nilaksan, [https://github.com/sopra-fs24-group-23/sopra24_server/issues/208](https://github.com/sopra-fs24-group-23/sopra24_server/issues/208)
+- 16.5. - 22.5., Nilaksan, [https://github.com/sopra-fs24-group-23/sopra24_server/issues/207](https://github.com/sopra-fs24-group-23/sopra24_server/issues/207)
+- 16.5. - 22.5., Nilaksan, [https://github.com/sopra-fs24-group-23/sopra24_server/issues/216](https://github.com/sopra-fs24-group-23/sopra24_server/issues/216)
 
