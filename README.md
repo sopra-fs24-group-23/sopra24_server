@@ -53,7 +53,19 @@ You can run the test suite either directly from your IDE, or by running "./gradl
 ### Deploying to Google Cloud
 The webapp is automatically deployed to google cloud whenever you push to the **main** branch. This should not require any additional setup on your part.
 
-## Illustrations
+### Releases
+To create a new release for GlobalGuess, create a new tag using git, then push it to both repositories.
+1. Locally, open a terminal in both repositories.
+2. Use one of the git commands below to tag the most recent commit, then push to remote. This should automatically create a tag on Github.
+
+For an annotated tag use:
+```
+git tag -a <tag> -m <message>
+```
+Otherwise use:
+```
+git tag <tag>
+```
 
 ## Roadmap
 
