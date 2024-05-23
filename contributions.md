@@ -221,3 +221,9 @@
 - 16.5. - 22.5., Franziska, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/146](https://github.com/sopra-fs24-group-23/sopra24_client/issues/146)
 - 16.5. - 22.5., Franziska, [https://github.com/sopra-fs24-group-23/sopra24_client/issues/147](https://github.com/sopra-fs24-group-23/sopra24_client/issues/147)
 
+### Jonas
+- 16.5. - 22.5., Jonas, sopra-fs24-group-23/sopra24_server/issues/217
+- 16.5. - 22.5., Jonas, sopra-fs24-group-23/sopra24_server/issues/219
+- 16.5. - 22.5., Jonas, sopra-fs24-group-23/sopra24_client/issues/148
+
+
