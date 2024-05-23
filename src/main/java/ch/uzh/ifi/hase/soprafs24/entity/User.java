@@ -26,10 +26,10 @@ public class User implements Serializable {
     @Column(nullable = false)
     private UserStatus status;
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false, unique = true, length = 15)
     private String username;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 20)
     private String password;
 
     @Column
