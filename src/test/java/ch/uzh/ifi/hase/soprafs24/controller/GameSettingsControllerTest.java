@@ -5,6 +5,7 @@ import static org.mockito.Mockito.*;
 import ch.uzh.ifi.hase.soprafs24.entity.GameSettings;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.GameSettingsDTO;
 import ch.uzh.ifi.hase.soprafs24.service.GameService;
+import ch.uzh.ifi.hase.soprafs24.service.GameSettingsService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
@@ -17,6 +18,8 @@ public class GameSettingsControllerTest {
 
     @Mock
     private GameService gameService;
+    @Mock
+    private GameSettingsService gameSettingsService;
     @Mock
     private SimpMessagingTemplate messagingTemplate;
     @InjectMocks
