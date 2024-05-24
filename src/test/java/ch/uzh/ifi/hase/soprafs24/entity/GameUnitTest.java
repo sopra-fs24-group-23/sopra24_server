@@ -35,32 +35,23 @@ public class GameUnitTest {
     }
 
     @Test
-    public void testInitializeRound_ShouldAdvanceRound() {
+    public void initializeRound_normalSetting_setsCorrectValues() {
         assertTrue(game.initializeRound());
         assertEquals(1, game.getState().getCurrentRoundNumber());
         assertEquals(GamePhase.SCOREBOARD, game.getState().getCurrentPhase());
     }
 
     @Test
-    public void testInitializeRound_ShouldNotAdvanceBeyondMaxRounds() {
+    public void initializeRound_maxRoundsReached_willNotProceed() {
         for (int i = 0; i < settings.getMaxRounds(); i++) {
             game.initializeRound();
         }
         assertFalse(game.initializeRound());
         assertEquals(settings.getMaxRounds(), game.getState().getCurrentRoundNumber());
     }
-    @Test
-    public void testPhaseTransitionFromScoreboardToInput() {
-        game.setPhase(GamePhase.SCOREBOARD);  // Should set phase to SCOREBOARD
-        assertEquals(GamePhase.SCOREBOARD, game.getState().getCurrentPhase());
 
-        game.setPhase(GamePhase.INPUT);  // Manually transition to INPUT for testing
-        game.waitInput().join();  // Assume all players input immediately for simplicity
-
-        assertEquals(GamePhase.INPUT, game.getState().getCurrentPhase(), "Game should transition to INPUT phase after initializing input wait.");
-    }
     @Test
-    public void testInputPhaseCompletesWhenAllPlayersHaveAnsweredSimplified() {
+    public void waitInput_ifAllAnswered_completeFuture() {
         game.initializeRound();
         players.forEach(player -> {
             game.setPlayerAnswers(player.getUsername(), Arrays.asList(new Answer("Category", "Answer")));
@@ -74,8 +65,19 @@ public class GameUnitTest {
         // Check the future without delay since we're simulating immediate completion
         assertDoesNotThrow(() -> inputWait.get(500, TimeUnit.MILLISECONDS), "Input phase should complete immediately as all players have answered.");
     }
+
     @Test
-    public void testScoreCalculation() {
+    public void waitScoreboard_ifAllPlayersReady_skipsTimer() {
+        game.initializeRound();
+        CompletableFuture<Void> scoreboardWait = game.waitScoreboard();
+
+        players.forEach(player -> game.setPlayerReady(player.getUsername()));
+
+        assertDoesNotThrow(() -> scoreboardWait.get(1, TimeUnit.SECONDS));
+    }
+
+    @Test
+    public void calculateScores_validInputs_calculatesCorrectScores() {
         game.initializeRound();
         game.setCurrentLetter("D");
         Player player1 = players.get(0);
@@ -96,16 +98,6 @@ public class GameUnitTest {
         // Assuming a scoring mechanism where correct, unique answers get a score of 10 and non-unique ones get 5
         assertEquals(5, player1.getCurrentScore());
         assertEquals(5, player2.getCurrentScore());
-    }
-    @Test
-    public void testPhaseTransitionAfterScoreboard() {
-        game.initializeRound();
-        game.setPhase(GamePhase.SCOREBOARD);
-        CompletableFuture<Void> transitionFuture = game.waitScoreboard();
-        transitionFuture.join();  // Wait for the scoreboard duration to complete
-
-        game.setPhase(GamePhase.INPUT);  // This would normally be handled by the game logic after the wait
-        assertEquals(GamePhase.INPUT, game.getState().getCurrentPhase());
     }
 
     @Test
@@ -242,28 +234,4 @@ public class GameUnitTest {
             assertNotEquals(player.getUsername(), "player1");
         }
     }
-
-
-
-    /*@Test
-    public void testVotingCompletionWhenAllVotesAreIn() {
-        game.initializeRound();
-        players.forEach(player -> {
-            player.setHasVoted(true);
-        });
-
-        // Direct check before invoking waitVoting()
-        boolean allVoted = players.stream().allMatch(Player::getHasVoted);
-        assertTrue(allVoted, "All players should have their voted flag set before waiting for votes.");
-
-        CompletableFuture<Void> votingWait = game.waitVoting();
-
-        try {
-            votingWait.get(500, TimeUnit.MILLISECONDS);  // This should not throw if all players have voted
-        } catch (TimeoutException e) {
-            fail("Voting phase should complete immediately as all players have voted.", e);
-        } catch (Exception e) {
-            fail("Unexpected exception thrown.", e);
-        }
-    }*/
 }
