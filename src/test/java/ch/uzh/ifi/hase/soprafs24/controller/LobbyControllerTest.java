@@ -1,5 +1,6 @@
 package ch.uzh.ifi.hase.soprafs24.controller;
 
+import static org.mockito.ArgumentCaptor.forClass;
 import static org.mockito.Mockito.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.junit.jupiter.api.Assertions.*;
@@ -7,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.PlayerGetDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -17,6 +19,9 @@ import ch.uzh.ifi.hase.soprafs24.entity.User;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.LobbyIdDTO;
 import ch.uzh.ifi.hase.soprafs24.rest.dto.UserTokenDTO;
 import ch.uzh.ifi.hase.soprafs24.service.LobbyService;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class LobbyControllerTest {
 
@@ -84,5 +89,25 @@ public class LobbyControllerTest {
         assertNotNull(result);
         assertEquals(host.getUsername(), result.getUsername());
         verify(lobbyService).getHost("lobbyId");
+    }
+
+    @Test
+    void testAddPlayer() {
+        UserTokenDTO userTokenDTO = new UserTokenDTO();
+        userTokenDTO.setToken("userToken");
+
+        User userToAdd = new User();
+        userToAdd.setToken(userTokenDTO.getToken());
+
+        List<Player> players = new ArrayList<>();
+        when(lobbyService.addPlayer(anyString(), any(User.class))).thenReturn(players);
+
+        lobbyController.addPlayer("lobbyId", userTokenDTO);
+
+        ArgumentCaptor<User> userCaptor = forClass(User.class);
+        verify(lobbyService).addPlayer(eq("lobbyId"), userCaptor.capture());
+
+        User capturedUser = userCaptor.getValue();
+        assertEquals(userToAdd.getToken(), capturedUser.getToken());
     }
 }
