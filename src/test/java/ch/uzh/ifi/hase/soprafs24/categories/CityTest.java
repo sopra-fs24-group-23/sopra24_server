@@ -16,7 +16,7 @@ public class CityTest {
     }
 
     @Test
-    public void validateAnswer_invalidInput_returnTrue(){
+    public void validateAnswer_validInput_returnTrue(){
         boolean result = city.validateAnswer("Paris");
 
         assertTrue(result);
