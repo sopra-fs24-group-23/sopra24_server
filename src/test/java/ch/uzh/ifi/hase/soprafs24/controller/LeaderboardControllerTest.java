@@ -67,4 +67,40 @@ public class LeaderboardControllerTest {
                 .andExpect(jsonPath("$[1].username").value("user2"))
                 .andExpect(jsonPath("$[1].gamesPlayed").value("1"));
     }
+
+    @Test
+    public void getTotalScoreRanking_returnCorrectJsonObject() throws Exception {
+        List<User> users = new ArrayList<>();
+        users.add(user1);
+        users.add(user2);
+
+        given(userService.getTotalScoreRanking(Mockito.any())).willReturn(users);
+
+        MockHttpServletRequestBuilder getRequest = get("/leaderboards/total-score");
+
+        mockMvc.perform(getRequest)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].username").value("user1"))
+                .andExpect(jsonPath("$[0].totalScore").value("10"))
+                .andExpect(jsonPath("$[1].username").value("user2"))
+                .andExpect(jsonPath("$[1].totalScore").value("20"));
+    }
+
+    @Test
+    public void getGamesWonRanking_returnCorrectJsonObject() throws Exception {
+        List<User> users = new ArrayList<>();
+        users.add(user1);
+        users.add(user2);
+
+        given(userService.getGamesWonRanking(Mockito.any())).willReturn(users);
+
+        MockHttpServletRequestBuilder getRequest = get("/leaderboards/games-won");
+
+        mockMvc.perform(getRequest)
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].username").value("user1"))
+                .andExpect(jsonPath("$[0].gamesWon").value("2"))
+                .andExpect(jsonPath("$[1].username").value("user2"))
+                .andExpect(jsonPath("$[1].gamesWon").value("1"));
+    }
 }
