@@ -41,12 +41,6 @@ To run our app locally follow these steps:
 7. Once the dependencies have been installed, use the command "npm run dev" to run the client locally on port 3000. This should automatically open a browser window at [https://localhost:3000/](https://localhost:3000/)
 8. You're done 🚀 The project should now be running locally. You should be able to set breakpoints in your IDE, that will halt if you trigger them by interacting with your local frontend.
 
-### Setting up Environment Variables
-We use APIs provided by [RapidApis](https://rapidapis.com). The API-key for our project is stored as a Github secret in the server repository. It is automatically injected on deployment, but if you want to run the app locally you need to set up a local environment variable from which the the code can get the value.
-1. Get ahold of the API-key by contacting us.
-2. Create a local environment variable on your device, using the scheme: API_KEY_NINJA=<value>. You can do this via command-line, use a local .env file, or set it in the run-configuration of your IDE of choice (confirmed to work in IntelliJ, under Edit Configurations -> Environment Variables)
-3. Make sure the environment variable is loaded when you try to run the application (you manually need to load .env files)
-
 ### Running Tests
 You can run the test suite either directly from your IDE, or by running "./gradlew build", both should work fine. The latter will provide you with a link in your terminal to a more detailed report on passing/failing tests and thrown exceptions and errors.
 
