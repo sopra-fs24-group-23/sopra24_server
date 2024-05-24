@@ -12,6 +12,7 @@ public class Player {
 
     private Long id;
     private String color;
+
     private String token;
     private String username;
     private Integer currentScore;
