@@ -96,7 +96,10 @@ public class UserService {
 
     public User loginUser(String username, String password) {
         User persistedUser = userRepository.findByUsername(username);
-        checkIfUserExists(persistedUser);
+
+        if (persistedUser == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "We could not find that username");
+        }
 
         if (persistedUser.getStatus() == UserStatus.ONLINE) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, "User is already logged in from another session.");
@@ -171,14 +174,6 @@ public class UserService {
         if (userByUsername != null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
                     String.format(baseErrorMessage, "username", "is"));
-        }
-    }
-
-    private void checkIfUserExists(User user) {
-        User userByUsername = userRepository.findByUsername(user.getUsername());
-
-        if (userByUsername == null) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The requested user was not found.");
         }
     }
 

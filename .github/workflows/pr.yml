@@ -20,11 +20,13 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-        env:
-          API_KEY_NINJA: ${{ secrets.API_KEY_NINJA }}
 
       - name: Build with Gradle
         run: ./gradlew build
+        env:
+          API_KEY_NINJA: ${{ secrets.API_KEY_NINJA }}
 
       - name: Test with Gradle
         run: ./gradlew test
+        env:
+          API_KEY_NINJA: ${{ secrets.API_KEY_NINJA }}

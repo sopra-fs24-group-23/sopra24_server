@@ -269,4 +269,65 @@ public class UserServiceTest {
         assertEquals(topUsers.get(1).getUsername(), "user3");
     }
 
+    @Test
+    public void getTotalScoreRanking_returnsCorrectOrder() {
+        // given
+        User user1 = new User();
+        user1.setId(1L);
+        user1.setUsername("testUsername1");
+        user1.setTotalScore(100);
+
+        User user2 = new User();
+        user2.setId(2L);
+        user2.setUsername("testUsername2");
+        user2.setTotalScore(200);
+
+        User user3 = new User();
+        user3.setId(3L);
+        user3.setUsername("testUsername3");
+        user3.setTotalScore(150);
+
+        List<User> users = Arrays.asList(user1, user2, user3);
+        Mockito.when(userRepository.findAll()).thenReturn(users);
+
+        // when
+        List<User> rankedUsers = userService.getTotalScoreRanking(3L);
+
+        // then
+        assertEquals(3, rankedUsers.size());
+        assertEquals(user2, rankedUsers.get(0)); // user with highest score
+        assertEquals(user3, rankedUsers.get(1)); // user with second highest score
+        assertEquals(user1, rankedUsers.get(2)); // user with lowest score
+    }
+
+    @Test
+    public void getGamesWonRanking_returnsCorrectOrder() {
+        // given
+        User user1 = new User();
+        user1.setId(1L);
+        user1.setUsername("testUsername1");
+        user1.setGamesWon(10);
+
+        User user2 = new User();
+        user2.setId(2L);
+        user2.setUsername("testUsername2");
+        user2.setGamesWon(20);
+
+        User user3 = new User();
+        user3.setId(3L);
+        user3.setUsername("testUsername3");
+        user3.setGamesWon(15);
+
+        List<User> users = Arrays.asList(user1, user2, user3);
+        Mockito.when(userRepository.findAll()).thenReturn(users);
+
+        // when
+        List<User> rankedUsers = userService.getGamesWonRanking(3L);
+
+        // then
+        assertEquals(3, rankedUsers.size());
+        assertEquals(user2, rankedUsers.get(0)); // user with highest games won
+        assertEquals(user3, rankedUsers.get(1)); // user with second highest games won
+        assertEquals(user1, rankedUsers.get(2)); // user with lowest games won
+    }
 }
