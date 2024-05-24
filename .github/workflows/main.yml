@@ -50,7 +50,7 @@ jobs:
         uses: google-github-actions/deploy-appengine@v0.2.0
         with:
           deliverables: app.yaml
-          version: v2
+          version: v3
           project_id: sopra-fs24-group-23-server
           credentials: ${{ secrets.GCP_SERVICE_CREDENTIALS }}
           env_vars: |-
