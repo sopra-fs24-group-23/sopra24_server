@@ -16,8 +16,8 @@ public class CelebrityTest {
     }
 
     @Test
-    public void validateAnswer_invalidInput_returnTrue(){
-        boolean result = celebrity.validateAnswer("Mike Tyson");
+    public void validateAnswer_validInput_returnTrue(){
+        boolean result = celebrity.validateAnswer("Xi Jinping");
 
         assertTrue(result);
     }

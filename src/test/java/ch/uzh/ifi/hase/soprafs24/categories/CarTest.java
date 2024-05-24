@@ -16,7 +16,7 @@ public class CarTest {
     }
 
     @Test
-    public void validateAnswer_invalidInput_returnTrue(){
+    public void validateAnswer_validInput_returnTrue(){
         boolean result = car.validateAnswer("renault");
 
         assertTrue(result);

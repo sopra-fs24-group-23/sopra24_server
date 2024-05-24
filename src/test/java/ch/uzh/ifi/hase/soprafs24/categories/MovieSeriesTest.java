@@ -16,8 +16,8 @@ public class MovieSeriesTest {
     }
 
     @Test
-    public void validateAnswer_invalidInput_returnTrue(){
-        boolean result = moviesSeries.validateAnswer("Bad Boys");
+    public void validateAnswer_validInput_returnTrue(){
+        boolean result = moviesSeries.validateAnswer("X-Men: The Last Stand");
 
         assertTrue(result);
     }

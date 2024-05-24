@@ -16,7 +16,7 @@ public class FoodTest {
     }
 
     @Test
-    public void validateAnswer_invalidInput_returnTrue(){
+    public void validateAnswer_validInput_returnTrue(){
         boolean result = food.validateAnswer("fruit");
 
         assertTrue(result);
