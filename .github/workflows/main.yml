@@ -47,8 +47,8 @@ jobs:
           version: v2
           project_id: sopra-fs24-group-23-server
           credentials: ${{ secrets.GCP_SERVICE_CREDENTIALS }}
-        env:
-          API_KEY_NINJA: ${{ secrets.API_KEY_NINJA }}
+          env_vars: |-
+            API_KEY_NINJA: ${{ secrets.API_KEY_NINJA }}
 
       - name: Test
         run: curl "${{ steps.deploy.outputs.url }}"
