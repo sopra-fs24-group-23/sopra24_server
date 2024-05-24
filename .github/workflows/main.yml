@@ -26,7 +26,6 @@ jobs:
       - name: Test and analyze
         run: ./gradlew test jacocoTestReport sonarqube -Dsonar.projectName=server
         env:
-          API_KEY_NINJA: ${{ secrets.API_KEY_NINJA }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
@@ -47,8 +46,6 @@ jobs:
           version: v2
           project_id: sopra-fs24-group-23-server
           credentials: ${{ secrets.GCP_SERVICE_CREDENTIALS }}
-          env_vars: |-
-            API_KEY_NINJA=${{ secrets.API_KEY_NINJA }}
 
       - name: Test
         run: curl "${{ steps.deploy.outputs.url }}"
