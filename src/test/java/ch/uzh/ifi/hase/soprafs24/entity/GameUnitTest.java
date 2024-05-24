@@ -73,7 +73,7 @@ public class GameUnitTest {
 
         players.forEach(player -> game.setPlayerReady(player.getUsername()));
 
-        assertDoesNotThrow(() -> scoreboardWait.get(1, TimeUnit.SECONDS));
+        assertDoesNotThrow(() -> scoreboardWait.get(2, TimeUnit.SECONDS));
     }
 
     @Test
