@@ -39,6 +39,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
+      - name: Inject secrets into app.yaml
+        run: |
+          echo "runtime: java17" > app.yaml
+          echo "env_variables:" >> app.yaml
+          echo "  API_KEY_NINJA: '${{ secrets.API_KEY_NINJA }}'" >> app.yaml
+
       - name: Deploy to App Engine
         id: deploy
         uses: google-github-actions/deploy-appengine@v0.2.0
@@ -49,6 +55,8 @@ jobs:
           credentials: ${{ secrets.GCP_SERVICE_CREDENTIALS }}
           env_vars: |-
             API_KEY_NINJA=${{ secrets.API_KEY_NINJA }}
+        env:
+          API_KEY_NINJA: ${{ secrets.API_KEY_NINJA }}
 
       - name: Test
         run: curl "${{ steps.deploy.outputs.url }}"
