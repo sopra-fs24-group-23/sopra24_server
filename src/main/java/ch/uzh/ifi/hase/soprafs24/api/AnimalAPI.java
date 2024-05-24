@@ -46,7 +46,20 @@ public class AnimalAPI {
                 for (int i = 0; i < animals.length(); i++) {
                     JSONObject animal = animals.getJSONObject(i);
                     String name = animal.getString("name").toLowerCase().trim();
-                    if (name.contains(animalName.toLowerCase())) { // Substring match with trimmed input
+
+                    // Split name into words
+                    String[] words = name.split("\\s+");
+
+                    // Check if any word matches animalName exactly
+                    boolean matchFound = false;
+                    for (String word : words) {
+                        if (word.equals(animalName)) {
+                            matchFound = true;
+                            break;
+                        }
+                    }
+
+                    if (matchFound) {
                         return "True";
                     }
                 }
@@ -58,6 +71,7 @@ public class AnimalAPI {
             e.printStackTrace();
             return "False";
         }
-    }
 
+    }
+    
 }
