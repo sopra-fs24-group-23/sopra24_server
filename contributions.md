@@ -226,6 +226,7 @@
 - 16.5. - 22.5., Jonas, sopra-fs24-group-23/sopra24_server/issues/219
 - 16.5. - 22.5., Jonas, sopra-fs24-group-23/sopra24_server/issues/220
 - 16.5. - 22.5., Jonas, sopra-fs24-group-23/sopra24_server/issues/221
+- 16.5. - 22.5., Jonas, sopra-fs24-group-23/sopra24_server/issues/226
 - 16.5. - 22.5., Jonas, sopra-fs24-group-23/sopra24_client/issues/148
 
 
