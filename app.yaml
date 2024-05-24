@@ -11,5 +11,8 @@ runtime_config:
 manual_scaling:
   instances: 1
 
+env_variables:
+  API_KEY_NINJA: ${API_KEY_NINJA}
+
 service_account: server-service@sopra-fs24-group-23-server.iam.gserviceaccount.com
 
